@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট</title>
+    <title>সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট স্কুল & কলেজ</title>
     <!-- Tailwind CSS লোড করা হচ্ছে -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -70,12 +70,11 @@
             <div class="flex justify-between items-center h-16">
                 <!-- লোগো/অ্যাপের নাম - লোগো ইমেজ সরানো হয়েছে -->
                 <a href="#home" class="flex items-center space-x-2 text-xl font-extrabold text-white">
-                    <span>সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট</span>
+                    <span>সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট স্কুল & কলেজ</span>
                 </a>
                 
                 <!-- ডেস্কটপ নেভিগেশন মেনু -->
                 <nav class="hidden md:flex space-x-6 items-center">
-                    <!-- লগইন/সাইন আপ বাটন বাদ দেওয়া হলো -->
                     <a href="#home" class="nav-link text-white text-lg font-medium transition duration-300">হোম</a>
                     <a href="#course" class="nav-link text-white text-lg font-medium transition duration-300">কোর্সসমূহ</a>
                     <a href="#features" class="nav-link text-white text-lg font-medium transition duration-300">বৈশিষ্ট্য</a>
@@ -107,10 +106,15 @@
     <!-- সেকশন ১: হোম (Home) - ছবির ডিজাইনের মতো বড় হেডার সেকশন -->
     <section id="home" class="min-h-screen flex items-center text-white pt-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
-            <p class="text-lg font-semibold mb-2">সফলতার ১৪ বছরের পথচলা</p>
+            <!-- নতুন প্লেসমেন্ট: "সফলতার ১৪ বছরের পথচলা" -->
+            <p class="text-lg md:text-xl font-semibold mb-4 text-yellow-300 tracking-wider border border-yellow-300 inline-block px-4 py-1 rounded-full bg-black/10">
+                সফলতার ১৪ বছরের পথচলা
+            </p>
+            
             <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-4">
-                সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট
+                সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট স্কুল & কলেজ
             </h1>
+            
             <p class="text-xl md:text-2xl text-indigo-100 mb-8 max-w-4xl mx-auto">
                 টেকনোলজি নির্ভর উজ্জ্বল ভবিষ্যতের পথে আপনার প্রথম পদক্ষেপ।
             </p>
@@ -129,12 +133,12 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-12 border-b-4 border-primary inline-block pb-1">আমাদের কোর্সসমূহ</h2>
             
-            <!-- কোর্স টপিক এক্সপ্লেইনার (Gemini Feature 1) -->
+            <!-- কোর্স টপিক এক্সপ্লেইনার (Gemini Feature 1) - শুধু LLM জ্ঞান থেকে উত্তর দেবে -->
             <div class="bg-primary/10 p-6 rounded-xl shadow-inner mb-12 border border-primary/30">
                 <h3 class="text-2xl font-bold text-primary mb-4 flex items-center">
-                    ✨ এআই কোর্স এক্সপ্লেইনার
+                    ✨ এআই কোর্স এক্সপ্লেইনার (LLM জ্ঞানভিত্তিক)
                 </h3>
-                <p class="text-gray-700 mb-4">যে কোনো কোর্সের নাম লিখে 'সারসংক্ষেপ তৈরি করুন' বোতামে ক্লিক করুন। এআই আপনাকে একটি সংক্ষিপ্ত ব্যাখ্যা দেবে।</p>
+                <p class="text-gray-700 mb-4">যে কোনো কোর্সের নাম লিখে 'সারসংক্ষেপ তৈরি করুন' বোতামে ক্লিক করুন। এআই আপনাকে একটি সংক্ষিপ্ত, সাধারণ জ্ঞানভিত্তিক ব্যাখ্যা দেবে।</p>
                 <div class="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3">
                     <input type="text" id="course-input" placeholder="যেমন: ডেটা সায়েন্স বা কম্পিউটার অপারেশন" class="flex-grow p-3 rounded-lg border-2 border-primary focus:ring-2 focus:ring-primary focus:border-transparent transition duration-300 text-gray-800" />
                     <button id="generate-summary-btn" class="bg-secondary text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-emerald-500 transition duration-300 flex items-center justify-center" onclick="generateSummary()">
@@ -427,31 +431,6 @@
                         </a>
                     </div>
                 </div>
-
-
-                <!-- এআই চ্যাট অ্যাসিস্ট্যান্ট (Gemini Feature 2) -->
-                <div class="bg-white p-4 rounded-xl shadow-lg text-gray-900 border border-indigo-500">
-                    <h3 class="text-xl font-bold text-primary mb-3 flex items-center justify-center">
-                        📞✨ ভর্তি সহায়ক (AI Assistant)
-                    </h3>
-                    <p class="text-sm mb-4 text-gray-600">ভর্তি প্রক্রিয়া, ফি বা যেকোনো বিষয়ে প্রশ্ন করুন। এআই আপনাকে ইন্টারনেটের মাধ্যমে উত্তর দেবে।</p>
-
-                    <!-- চ্যাট আউটপুট এরিয়া -->
-                    <div id="chat-output" class="h-40 overflow-y-auto bg-gray-50 p-3 mb-4 rounded-lg text-left border border-gray-200 space-y-3">
-                        <div class="text-sm text-gray-500 text-center">প্রশ্ন করার জন্য প্রস্তুত।</div>
-                    </div>
-
-                    <!-- চ্যাট ইনপুট এরিয়া -->
-                    <div class="flex space-x-2">
-                        <input type="text" id="chat-input" placeholder="আপনার প্রশ্ন লিখুন..." class="flex-grow p-2 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent text-gray-800" onkeypress="if(event.key === 'Enter') sendChatQuery()" />
-                        <button id="chat-send-btn" class="bg-primary text-white font-bold py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-300 flex items-center justify-center" onclick="sendChatQuery()">
-                            <span id="chat-btn-text">পাঠান</span>
-                            <div id="chat-loading" class="spinner hidden ml-2"></div>
-                        </button>
-                    </div>
-                    <div id="chat-error" class="text-red-500 text-sm mt-2 hidden text-left"></div>
-                    <div id="chat-sources" class="text-xs mt-2 text-gray-500 text-left hidden"></div>
-                </div>
             </div>
         </div>
     </section>
@@ -459,7 +438,7 @@
     <!-- ফুটার -->
     <footer class="bg-gray-900 text-gray-400 py-6">
         <div class="max-w-7xl mx-auto px-4 text-center text-sm">
-            <p>&copy; ২০২৫ সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট। সর্বস্বত্ব সংরক্ষিত।</p>
+            <p>&copy; ২০২৫ সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট স্কুল & কলেজ। সর্বস্বত্ব সংরক্ষিত।</p>
         </div>
     </footer>
     
@@ -467,6 +446,7 @@
     <script>
         // --- Gemini API কনস্ট্যান্টস ---
         const API_KEY = ""; // Canvas environment provides API key
+        // Google Search Tool/Grounding বাদ দেওয়া হয়েছে
         const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=" + API_KEY;
         const RETRY_COUNT = 3;
 
@@ -491,7 +471,7 @@
             }
         }
 
-        // --- Feature 1: Course Summary Generation ---
+        // --- Feature 1: Course Summary Generation (Self-Contained LLM Knowledge) ---
 
         const summaryInput = document.getElementById('course-input');
         const summaryButton = document.getElementById('generate-summary-btn');
@@ -514,10 +494,12 @@
             summaryOutput.classList.remove('hidden');
             summaryOutput.innerHTML = '<div class="text-center text-primary">সারসংক্ষেপ তৈরি হচ্ছে, অপেক্ষা করুন...</div>';
 
-            const userPrompt = `"${topic}" এই কোর্সটির একটি সংক্ষিপ্ত, এক প্যারাগ্রাফের সারসংক্ষেপ (Summary) বাংলায় তৈরি করে দাও। এটি শিক্ষাপ্রতিষ্ঠানের ওয়েবসাইটে ব্যবহারের জন্য, তাই ভাষা যেনো তথ্যপূর্ণ, পেশাদার এবং উৎসাহব্যঞ্জক হয়।`;
+            // প্রম্পট: কোনো বাইরের তথ্যের উল্লেখ না করে LLM এর নিজস্ব জ্ঞান থেকে উত্তর চাওয়া
+            const userPrompt = `"${topic}" এই কোর্স/বিষয়টির একটি সংক্ষিপ্ত, এক প্যারাগ্রাফের সারসংক্ষেপ (Summary) বাংলায় তৈরি করে দাও। এটি শিক্ষাপ্রতিষ্ঠানের ওয়েবসাইটে ব্যবহারের জন্য, তাই ভাষা যেনো তথ্যপূর্ণ, পেশাদার এবং উৎসাহব্যঞ্জক হয়। উত্তর দেওয়ার সময় কোনো প্রকার ওয়েব সার্চ বা বাইরের তথ্যের উপর নির্ভর করবে না, শুধু তোমার সাধারণ জ্ঞান ব্যবহার করবে।`;
             
             const payload = {
                 contents: [{ parts: [{ text: userPrompt }] }],
+                // Google Search Tool বাদ দেওয়া হয়েছে
                 systemInstruction: {
                     parts: [{ text: "You are an expert educational content writer, summarizing complex topics into engaging Bengali paragraphs for a student audience. Respond only in Bengali." }]
                 },
@@ -531,7 +513,7 @@
                 });
                 
                 const result = await response.json();
-                const text = result.candidates?.[0]?.content?.parts?.[0]?.text || "সারসংক্ষেপ তৈরি করা যায়নি।";
+                const text = result.candidates?.[0]?.content?.parts?.[0]?.text || "সারসংক্ষেপ তৈরি করা যায়নি। (LLM সংযোগ ত্রুটি)";
                 
                 // Markdown to HTML conversion (simple)
                 const htmlText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
@@ -548,109 +530,6 @@
                 summaryLoading.classList.add('hidden');
             }
         }
-
-        // --- Feature 2: Chat Assistant with Google Search Grounding ---
-
-        const chatInput = document.getElementById('chat-input');
-        const chatSendBtn = document.getElementById('chat-send-btn');
-        const chatBtnText = document.getElementById('chat-btn-text');
-        const chatLoading = document.getElementById('chat-loading');
-        const chatOutput = document.getElementById('chat-output');
-        const chatError = document.getElementById('chat-error');
-        const chatSources = document.getElementById('chat-sources');
-
-        // চ্যাট আউটপুট এ মেসেজ যোগ করার ফাংশন
-        function addMessageToChat(role, text) {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('p-2', 'rounded-lg', 'max-w-[80%]');
-            
-            if (role === 'user') {
-                messageDiv.classList.add('bg-primary', 'text-white', 'ml-auto', 'text-right');
-            } else {
-                messageDiv.classList.add('bg-gray-200', 'text-gray-800', 'mr-auto', 'text-left');
-            }
-            messageDiv.innerHTML = text;
-            chatOutput.appendChild(messageDiv);
-            chatOutput.scrollTop = chatOutput.scrollHeight; // স্ক্রোল টু বটম
-        }
-
-        // চ্যাট প্রসেস করার ফাংশন
-        async function sendChatQuery() {
-            const query = chatInput.value.trim();
-            if (!query) return;
-
-            // UI আপডেট: ব্যবহারকারীর মেসেজ যোগ করা
-            addMessageToChat('user', query);
-            chatInput.value = '';
-            chatError.classList.add('hidden');
-            chatSources.classList.add('hidden');
-
-            // UI আপডেট: লোডিং শুরু
-            chatSendBtn.disabled = true;
-            chatBtnText.textContent = "প্রসেস হচ্ছে...";
-            chatLoading.classList.remove('hidden');
-
-            const systemPrompt = "You are a friendly and professional enrollment assistant for City Information Technology Institute. Answer user queries about admission, courses, fees, and general information. If the query requires current information, use the provided Google Search results for grounding. Respond concisely and professionally in Bengali. If no relevant information is found, politely state that you cannot answer the specific query.";
-            
-            const payload = {
-                contents: [{ parts: [{ text: query }] }],
-                tools: [{ "google_search": {} }], // Google Search grounding সক্ষম করা
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                },
-            };
-
-            try {
-                const response = await fetchWithRetry(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                
-                const result = await response.json();
-                const candidate = result.candidates?.[0];
-                const text = candidate?.content?.parts?.[0]?.text || "দুঃখিত, আমি এই মুহূর্তে উত্তর দিতে পারছি না।";
-                
-                // ১. জেনারেটেড টেক্সট যোগ করা
-                const htmlText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
-                addMessageToChat('assistant', htmlText);
-
-                // ২. সোর্স বা সোর্স অ্যাট্রিবিউশন যোগ করা (যদি থাকে)
-                let sources = [];
-                const groundingMetadata = candidate?.groundingMetadata;
-                if (groundingMetadata && groundingMetadata.groundingAttributions) {
-                    sources = groundingMetadata.groundingAttributions
-                        .map(attribution => ({
-                            uri: attribution.web?.uri,
-                            title: attribution.web?.title,
-                        }))
-                        .filter(source => source.uri && source.title); // Ensure sources are valid
-                }
-
-                if (sources.length > 0) {
-                    const sourceHtml = 'তথ্যসূত্র: ' + sources.map(s => 
-                        `<a href="${s.uri}" target="_blank" class="text-blue-600 hover:underline">${s.title}</a>`
-                    ).join(' | ');
-                    chatSources.innerHTML = sourceHtml;
-                    chatSources.classList.remove('hidden');
-                } else {
-                     chatSources.classList.add('hidden');
-                }
-
-
-            } catch (error) {
-                console.error('Error in chat assistant:', error);
-                chatError.textContent = `ত্রুটি: সংযোগ সমস্যা বা সার্ভার ত্রুটি। অনুগ্রহ করে আবার চেষ্টা করুন। (${error.message})`;
-                chatError.classList.remove('hidden');
-                addMessageToChat('assistant', "দুঃখিত, প্রযুক্তিগত ত্রুটির কারণে উত্তর দেওয়া সম্ভব হয়নি।");
-            } finally {
-                // UI আপডেট: লোডিং শেষ
-                chatSendBtn.disabled = false;
-                chatBtnText.textContent = "পাঠান";
-                chatLoading.classList.add('hidden');
-            }
-        }
-
 
         // --- সাধারণ DOM স্ক্রিপ্ট ---
         document.addEventListener('DOMContentLoaded', () => {
@@ -697,12 +576,6 @@
             courseEnrollLinks.forEach(link => {
                 link.addEventListener('click', smoothScroll);
             });
-
-
-            // চ্যাট আউটপুটে প্রাথমিক বার্তা যোগ করা
-            const initialMessage = "স্বাগতম! আমি সিটি ইন্সটিটিউটের এআই ভর্তি সহায়ক। ভর্তি সংক্রান্ত যেকোনো প্রশ্ন জিজ্ঞেস করুন।";
-            addMessageToChat('assistant', initialMessage);
-
         });
     </script>
 </body>
