@@ -32,7 +32,7 @@
             background-color: #5b4ddf; /* ছবির কাছাকাছি একটি রং */
             min-height: 100vh;
         }
-        /* Loading spinner CSS */
+        /* Loading spinner CSS (এটি এখন অপ্রয়োজনীয়, তবুও রাখা হলো যদি ভবিষ্যতে দরকার হয়) */
         .spinner {
             border: 4px solid rgba(255, 255, 255, 0.3);
             border-top: 4px solid #fff;
@@ -47,6 +47,17 @@
         }
         .chat-spinner {
             border-top: 4px solid #4F46E5;
+        }
+        /* নোটিশ টেবিলের স্টাইল */
+        .notice-table th, .notice-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        .notice-table th {
+            background-color: #4F46E5;
+            color: white;
+            font-weight: 700;
         }
     </style>
     <script>
@@ -64,11 +75,11 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-    <!-- নেভিগেশন বার (Navbar) - ছবির ডিজাইনের মতো রং -->
+    <!-- নেভিগেশন বার (Navbar) -->
     <header class="primary-bg fixed top-0 left-0 right-0 z-50 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <!-- লোগো/অ্যাপের নাম - লোগো ইমেজ সরানো হয়েছে -->
+                <!-- লোগো/অ্যাপের নাম -->
                 <a href="#home" class="flex items-center space-x-2 text-xl font-extrabold text-white">
                     <span>সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট স্কুল & কলেজ</span>
                 </a>
@@ -76,6 +87,7 @@
                 <!-- ডেস্কটপ নেভিগেশন মেনু -->
                 <nav class="hidden md:flex space-x-6 items-center">
                     <a href="#home" class="nav-link text-white text-lg font-medium transition duration-300">হোম</a>
+                    <a href="#notice" class="nav-link text-white text-lg font-medium transition duration-300">নোটিশ</a>
                     <a href="#course" class="nav-link text-white text-lg font-medium transition duration-300">কোর্সসমূহ</a>
                     <a href="#features" class="nav-link text-white text-lg font-medium transition duration-300">বৈশিষ্ট্য</a>
                     <a href="#infrastructure" class="nav-link text-white text-lg font-medium transition duration-300">অবকাঠামো</a>
@@ -95,6 +107,7 @@
         <div id="mobile-menu" class="md:hidden hidden bg-indigo-700 border-t border-indigo-600 shadow-md">
             <div class="pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="#home" class="mobile-nav-link block px-3 py-2 text-base font-medium text-white hover:bg-indigo-600 transition duration-300">হোম</a>
+                <a href="#notice" class="mobile-nav-link block px-3 py-2 text-base font-medium text-white hover:bg-indigo-600 transition duration-300">নোটিশ</a>
                 <a href="#course" class="mobile-nav-link block px-3 py-2 text-base font-medium text-white hover:bg-indigo-600 transition duration-300">কোর্সসমূহ</a>
                 <a href="#features" class="mobile-nav-link block px-3 py-2 text-base font-medium text-white hover:bg-indigo-600 transition duration-300">বৈশিষ্ট্য</a>
                 <a href="#infrastructure" class="mobile-nav-link block px-3 py-2 text-base font-medium text-white hover:bg-indigo-600 transition duration-300">অবকাঠামো</a>
@@ -103,10 +116,9 @@
         </div>
     </header>
 
-    <!-- সেকশন ১: হোম (Home) - ছবির ডিজাইনের মতো বড় হেডার সেকশন -->
+    <!-- সেকশন ১: হোম (Home) -->
     <section id="home" class="min-h-screen flex items-center text-white pt-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
-            <!-- নতুন প্লেসমেন্ট: "সফলতার ১৪ বছরের পথচলা" -->
             <p class="text-lg md:text-xl font-semibold mb-4 text-yellow-300 tracking-wider border border-yellow-300 inline-block px-4 py-1 rounded-full bg-black/10">
                 সফলতার ১৪ বছরের পথচলা
             </p>
@@ -128,29 +140,139 @@
         </div>
     </section>
 
-    <!-- সেকশন ২: কোর্স (Course) -->
+    <!-- সেকশন ২: নোটিশ (Notice) -->
+    <section id="notice" class="section-padding bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-12 border-b-4 border-secondary inline-block pb-1">গুরুত্বপূর্ণ নোটিশ</h2>
+            
+            <div class="bg-white p-6 md:p-10 rounded-xl shadow-2xl border-t-8 border-primary">
+                <h3 class="text-2xl font-extrabold text-primary mb-2">বিজ্ঞপ্তি</h3>
+                <p class="text-sm text-gray-600 mb-4">
+                    **সূত্র:** বাংলাদেশ কারিগরি শিক্ষা বোর্ড, পরীক্ষা নিয়ন্ত্রণ বিভাগ (ভোকেশনাল শাখা), ঢাকা।
+                    <br>**প্রকাশের তারিখ:** ০৭ অক্টোবর, ২০২৫ খ্রিঃ
+                </p>
+                
+                <p class="text-lg text-gray-800 mb-6">
+                    এতদ্বারা সংশ্লিষ্ট সকলের অবগতির জন্য জানানো যাচ্ছে যে, **২০২৫ সালের এসএসসি (ভোকেশনাল) ও দাখিল (ভোকেশনাল) শিক্ষাক্রমের নবম শ্রেণি সমাপনী পরীক্ষা নিম্নোক্ত সময়সূচি অনুযায়ী অনুষ্ঠিত হবে।**
+                </p>
+                
+                <!-- তত্ত্বীয় পরীক্ষার সময়সূচি -->
+                <h4 class="text-xl font-bold text-gray-900 mb-4 bg-gray-100 p-3 rounded-lg border-l-4 border-secondary">১. তত্ত্বীয় পরীক্ষার সময়সূচি (সকাল ১০:০০টা হতে)</h4>
+                <div class="overflow-x-auto mb-8">
+                    <table class="w-full notice-table rounded-lg overflow-hidden">
+                        <thead>
+                            <tr>
+                                <th class="w-1/4">তারিখ ও বার</th>
+                                <th class="w-2/4">বিষয় ও বিষয় কোড</th>
+                                <th class="w-1/4">শিক্ষাক্রম</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="hover:bg-indigo-50 transition duration-200">
+                                <td>**০৬/১১/২০২৫ খ্রিঃ (বৃহস্পতিবার)**</td>
+                                <td>বাংলা-১ (৫১৯১১/৪১৯১১, ১৯১১)</td>
+                                <td>এসএসসি (ভোক) ও দাখিল (ভোক)</td>
+                            </tr>
+                            <tr class="hover:bg-indigo-50 transition duration-200">
+                                <td>**০৯/১১/২০২৫ খ্রিঃ (রবিবার)**</td>
+                                <td>ইংরেজী-১ (৫১৯১২/৪১৯১২, ১৯১২)</td>
+                                <td>এসএসসি (ভোক) ও দাখিল (ভোক)</td>
+                            </tr>
+                            <tr class="hover:bg-indigo-50 transition duration-200">
+                                <td>**১১/১১/২০২৫ খ্রিঃ (মঙ্গলবার)**</td>
+                                <td>গণিত-১ (৫১৯১৩/৪১৯১৩, ১৯১৩)</td>
+                                <td>এসএসসি (ভোক) ও দাখিল (ভোক)</td>
+                            </tr>
+                            <tr class="hover:bg-indigo-50 transition duration-200">
+                                <td>**১৩/১১/২০২৫ খ্রিঃ (বৃহস্পতিবার)**</td>
+                                <td>পদার্থবিজ্ঞান-১ (৫১৯১৫/৪১৯১৫, ১৯১৫)</td>
+                                <td>এসএসসি (ভোক) ও দাখিল (ভোক)</td>
+                            </tr>
+                            <tr class="hover:bg-indigo-50 transition duration-200">
+                                <td>**১৬/১১/২০২৫ খ্রিঃ (রবিবার)**</td>
+                                <td>রসায়ন-১, বাংলাদেশ ও বিশ্ব পরিচয়-১ / হাদীস শরীফ ও ফিকহ-১</td>
+                                <td>এসএসসি (ভোক) ও দাখিল (ভোক)</td>
+                            </tr>
+                            <tr class="hover:bg-indigo-50 transition duration-200">
+                                <td>**১৮/১১/২০২৫ খ্রিঃ (মঙ্গলবার)**</td>
+                                <td>ধর্ম শিক্ষা-১ / কুরআন মাজিদ ও তাজভিদ-১</td>
+                                <td>এসএসসি (ভোক) ও দাখিল (ভোক)</td>
+                            </tr>
+                            <tr class="hover:bg-indigo-50 transition duration-200 bg-yellow-50">
+                                <td>**২০/১১/২০২৫ খ্রিঃ ও ২৩/১১/২০২৫ খ্রিঃ (বৃহঃ ও রবি)**</td>
+                                <td>**ট্রেড-১** (যেমন: আইটি সার্পেটি অ্যান্ড আইওটি বেসিকস-১, জেনারেল ইলেকট্রনিক্স-১ ইত্যাদি)</td>
+                                <td>এসএসসি (ভোক) ও দাখিল (ভোক)</td>
+                            </tr>
+                            <tr class="hover:bg-indigo-50 transition duration-200 bg-yellow-50">
+                                <td>**২৫/১১/২০২৫ খ্রিঃ (মঙ্গলবার)**</td>
+                                <td>**ট্রেড-২** (যেমন: আইটি সার্পেটি অ্যান্ড আইওটি বেসিকস-২, জেনারেল ইলেকট্রনিক্স-২ ইত্যাদি)</td>
+                                <td>এসএসসি (ভোক) ও দাখিল (ভোক)</td>
+                            </tr>
+                            <tr class="hover:bg-indigo-50 transition duration-200">
+                                <td>**২৭/১১/২০২৫ খ্রিঃ (বৃহস্পতিবার)**</td>
+                                <td>উচ্চতর গনিত-১ / কৃষি শিক্ষা-১ / জীব বিজ্ঞান-১</td>
+                                <td>এসএসসি (ভোক) ও দাখিল (ভোক)</td>
+                            </tr>
+                            <tr class="hover:bg-indigo-50 transition duration-200">
+                                <td>**৩০/১১/২০২৫ খ্রিঃ (রবিবার)**</td>
+                                <td>আরবি-১</td>
+                                <td>দাখিল (ভোক)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ব্যবহারিক পরীক্ষার সময়সূচি -->
+                <h4 class="text-xl font-bold text-gray-900 mb-4 bg-gray-100 p-3 rounded-lg border-l-4 border-secondary">২. ব্যবহারিক পরীক্ষার সময়সূচি</h4>
+                <div class="overflow-x-auto mb-8">
+                    <table class="w-full notice-table rounded-lg overflow-hidden">
+                        <thead>
+                            <tr>
+                                <th class="w-1/6">ক্রমিক নং</th>
+                                <th class="w-3/6">বিবরণ</th>
+                                <th class="w-2/6">সময়সীমা</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="hover:bg-indigo-50 transition duration-200">
+                                <td>১.</td>
+                                <td>ব্যবহারিক পরীক্ষা গ্রহণ</td>
+                                <td>**৩০/১১/২০২৫ খ্রিঃ** তারিখ হতে **০৭/১২/২০২৫ খ্রিঃ** পর্যন্ত</td>
+                            </tr>
+                            <tr class="hover:bg-indigo-50 transition duration-200">
+                                <td>২.</td>
+                                <td>বাস্তব প্রশিক্ষণে অংশ গ্রহণ</td>
+                                <td>**০৮/১২/২০২৫ খ্রিঃ** তারিখ হতে **১৯/০১/২০২৬ খ্রিঃ** পর্যন্ত</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- বিশেষ নির্দেশাবলি -->
+                <h4 class="text-xl font-bold text-gray-900 mb-4 bg-gray-100 p-3 rounded-lg border-l-4 border-secondary">৩. বিশেষ নির্দেশাবলি</h4>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 ml-4">
+                    <li>পরীক্ষা কেন্দ্রে প্রবেশ: পরীক্ষার্থীদেরকে পরীক্ষা শুরু হওয়ার **৩০ মিনিট পূর্বে** পরীক্ষা কেন্দ্রে প্রবেশ করতে হবে।</li>
+                    <li>ক্যালকুলেটর ব্যবহার: পরীক্ষার্থীগণ পরীক্ষায় **সাধারণ সাইন্টিফিক (নন প্রোগ্রামবল)** ক্যালকুলেটর ব্যবহার করতে পারবে।</li>
+                    <li>মোবাইল ফোন: কেন্দ্র সচিব ব্যতীত অন্য কেউ পরীক্ষা কেন্দ্রে মোবাইল ফোন ব্যবহার করতে পারবেন না। কেন্দ্র সচিব ক্যামেরা বিহীন সাধারণ মোবাইল ব্যবহার করতে পারবেন।</li>
+                    <li>ব্যবহারিক পরীক্ষা: ব্যবহারিক পরীক্ষা **স্ব স্ব কেন্দ্রে** অনুষ্ঠিত হবে।</li>
+                </ul>
+
+                <div class="text-center mt-8">
+                    <!-- এই বাটনটি এখন সরাসরি #contact সেকশনে স্ক্রোল করবে -->
+                    <a href="#contact" class="inline-block bg-primary text-white font-bold px-6 py-3 rounded-lg shadow-md hover:bg-indigo-700 transition duration-300">
+                        ভর্তি সংক্রান্ত তথ্যের জন্য যোগাযোগ করুন
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- সেকশন ৩: কোর্স (Course) -->
     <section id="course" class="section-padding bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-12 border-b-4 border-primary inline-block pb-1">আমাদের কোর্সসমূহ</h2>
             
-            <!-- কোর্স টপিক এক্সপ্লেইনার (Gemini Feature 1) - শুধু LLM জ্ঞান থেকে উত্তর দেবে -->
-            <div class="bg-primary/10 p-6 rounded-xl shadow-inner mb-12 border border-primary/30">
-                <h3 class="text-2xl font-bold text-primary mb-4 flex items-center">
-                    ✨ এআই কোর্স এক্সপ্লেইনার (LLM জ্ঞানভিত্তিক)
-                </h3>
-                <p class="text-gray-700 mb-4">যে কোনো কোর্সের নাম লিখে 'সারসংক্ষেপ তৈরি করুন' বোতামে ক্লিক করুন। এআই আপনাকে একটি সংক্ষিপ্ত, সাধারণ জ্ঞানভিত্তিক ব্যাখ্যা দেবে।</p>
-                <div class="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3">
-                    <input type="text" id="course-input" placeholder="যেমন: ডেটা সায়েন্স বা কম্পিউটার অপারেশন" class="flex-grow p-3 rounded-lg border-2 border-primary focus:ring-2 focus:ring-primary focus:border-transparent transition duration-300 text-gray-800" />
-                    <button id="generate-summary-btn" class="bg-secondary text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-emerald-500 transition duration-300 flex items-center justify-center" onclick="generateSummary()">
-                        <span id="summary-btn-text">সারসংক্ষেপ তৈরি করুন</span>
-                        <div id="summary-loading" class="spinner chat-spinner hidden ml-2"></div>
-                    </button>
-                </div>
-                <div id="summary-output" class="mt-4 p-4 bg-white border border-gray-300 rounded-lg hidden">
-                    <!-- AI generated summary will appear here -->
-                </div>
-            </div>
-
             <!-- কোর্স কার্ড গ্রিড (2x2 লেআউট) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 
@@ -280,7 +402,7 @@
         </div>
     </section>
 
-    <!-- সেকশন ৩: বৈশিষ্ট্য (Features) - অত্যন্ত বিস্তারিত ও আকর্ষণীয় করা হয়েছে -->
+    <!-- সেকশন ৪: বৈশিষ্ট্য (Features) -->
     <section id="features" class="section-padding bg-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-12 border-b-4 border-secondary inline-block pb-1">আমাদের মূল বৈশিষ্ট্য ও সুবিধা</h2>
@@ -337,7 +459,7 @@
         </div>
     </section>
 
-    <!-- সেকশন ৪: অবকাঠামো (Infrastructure) -->
+    <!-- সেকশন ৫: অবকাঠামো (Infrastructure) -->
     <section id="infrastructure" class="section-padding bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-12 border-b-4 border-primary inline-block pb-1">আমাদের অবকাঠামো</h2>
@@ -379,7 +501,7 @@
     </section>
 
 
-    <!-- সেকশন ৫: যোগাযোগ (Contact) -->
+    <!-- সেকশন ৬: যোগাযোগ (Contact) -->
     <section id="contact" class="section-padding primary-bg text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl md:text-4xl font-extrabold mb-8 border-b-4 border-yellow-400 inline-block pb-1">যোগাযোগ</h2>
@@ -444,93 +566,6 @@
     
     <!-- জাভাস্ক্রিপ্ট (স্ক্রিপ্ট ট্যাগ এর ভেতরে) -->
     <script>
-        // --- Gemini API কনস্ট্যান্টস ---
-        const API_KEY = ""; // Canvas environment provides API key
-        // Google Search Tool/Grounding বাদ দেওয়া হয়েছে
-        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=" + API_KEY;
-        const RETRY_COUNT = 3;
-
-        // --- কমন ইউটিলিটি ফাংশন: এক্সপোনেনশিয়াল ব্যাকঅফ সহ Fetch ---
-        async function fetchWithRetry(url, options, retries = RETRY_COUNT) {
-            for (let i = 0; i < retries; i++) {
-                try {
-                    const response = await fetch(url, options);
-                    if (!response.ok) {
-                        // Throw error if response status is not 2xx
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response;
-                } catch (error) {
-                    if (i < retries - 1) {
-                        const delay = Math.pow(2, i) * 1000;
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                    } else {
-                        throw error;
-                    }
-                }
-            }
-        }
-
-        // --- Feature 1: Course Summary Generation (Self-Contained LLM Knowledge) ---
-
-        const summaryInput = document.getElementById('course-input');
-        const summaryButton = document.getElementById('generate-summary-btn');
-        const summaryBtnText = document.getElementById('summary-btn-text');
-        const summaryLoading = document.getElementById('summary-loading');
-        const summaryOutput = document.getElementById('summary-output');
-
-        async function generateSummary() {
-            const topic = summaryInput.value.trim();
-            if (!topic) {
-                summaryOutput.textContent = "দয়া করে কোর্সের নাম লিখুন।";
-                summaryOutput.classList.remove('hidden');
-                return;
-            }
-
-            // UI আপডেট: লোডিং শুরু
-            summaryButton.disabled = true;
-            summaryBtnText.textContent = "তৈরি হচ্ছে...";
-            summaryLoading.classList.remove('hidden');
-            summaryOutput.classList.remove('hidden');
-            summaryOutput.innerHTML = '<div class="text-center text-primary">সারসংক্ষেপ তৈরি হচ্ছে, অপেক্ষা করুন...</div>';
-
-            // প্রম্পট: কোনো বাইরের তথ্যের উল্লেখ না করে LLM এর নিজস্ব জ্ঞান থেকে উত্তর চাওয়া
-            const userPrompt = `"${topic}" এই কোর্স/বিষয়টির একটি সংক্ষিপ্ত, এক প্যারাগ্রাফের সারসংক্ষেপ (Summary) বাংলায় তৈরি করে দাও। এটি শিক্ষাপ্রতিষ্ঠানের ওয়েবসাইটে ব্যবহারের জন্য, তাই ভাষা যেনো তথ্যপূর্ণ, পেশাদার এবং উৎসাহব্যঞ্জক হয়। উত্তর দেওয়ার সময় কোনো প্রকার ওয়েব সার্চ বা বাইরের তথ্যের উপর নির্ভর করবে না, শুধু তোমার সাধারণ জ্ঞান ব্যবহার করবে।`;
-            
-            const payload = {
-                contents: [{ parts: [{ text: userPrompt }] }],
-                // Google Search Tool বাদ দেওয়া হয়েছে
-                systemInstruction: {
-                    parts: [{ text: "You are an expert educational content writer, summarizing complex topics into engaging Bengali paragraphs for a student audience. Respond only in Bengali." }]
-                },
-            };
-
-            try {
-                const response = await fetchWithRetry(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                
-                const result = await response.json();
-                const text = result.candidates?.[0]?.content?.parts?.[0]?.text || "সারসংক্ষেপ তৈরি করা যায়নি। (LLM সংযোগ ত্রুটি)";
-                
-                // Markdown to HTML conversion (simple)
-                const htmlText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
-
-                summaryOutput.innerHTML = htmlText;
-
-            } catch (error) {
-                console.error('Error generating summary:', error);
-                summaryOutput.innerHTML = `<div class="text-red-600">ত্রুটি: সারসংক্ষেপ তৈরি করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন। (${error.message})</div>`;
-            } finally {
-                // UI আপডেট: লোডিং শেষ
-                summaryButton.disabled = false;
-                summaryBtnText.textContent = "সারসংক্ষেপ তৈরি করুন";
-                summaryLoading.classList.add('hidden');
-            }
-        }
-
         // --- সাধারণ DOM স্ক্রিপ্ট ---
         document.addEventListener('DOMContentLoaded', () => {
             const menuButton = document.getElementById('menu-button');
@@ -574,6 +609,12 @@
             // কোর্সের কার্ডের ভিতরের "ভর্তি চলছে →" লিঙ্কগুলোর জন্য
             const courseEnrollLinks = document.querySelectorAll('#course a[href="#contact"]');
             courseEnrollLinks.forEach(link => {
+                link.addEventListener('click', smoothScroll);
+            });
+            
+            // নতুন নোটিশ সেকশনের জন্য স্ক্রোলিং লজিক
+            const noticeLinks = document.querySelectorAll('a[href="#notice"], #notice a[href="#contact"]'); // নোটিশ সেকশনের ভেতরের বাটনকেও যোগ করা হলো
+            noticeLinks.forEach(link => {
                 link.addEventListener('click', smoothScroll);
             });
         });
