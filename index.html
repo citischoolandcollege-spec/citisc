@@ -146,7 +146,28 @@
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-12 border-b-4 border-secondary inline-block pb-1">গুরুত্বপূর্ণ নোটিশ</h2>
             
             <div class="bg-white p-6 md:p-10 rounded-xl shadow-2xl border-t-8 border-primary">
-                <h3 class="text-2xl font-extrabold text-primary mb-2">বিজ্ঞপ্তি</h3>
+                
+                <!-- START: নতুন HSC রেজাল্ট নোটিশ -->
+                <div class="mb-10 p-6 rounded-xl shadow-lg border-l-4 border-yellow-500 bg-yellow-50">
+                    <h3 class="text-2xl font-extrabold text-red-600 mb-2">জরুরী বিজ্ঞপ্তি: এইচএসসি ফলাফল প্রকাশিত</h3>
+                    <p class="text-sm text-gray-600 mb-4">
+                        **প্রকাশের তারিখ:** ১৬ অক্টোবর, ২০২৫ খ্রিঃ
+                    </p>
+                    <p class="text-lg text-gray-800 mb-4">
+                        এতদ্বারা HSC-2025 এর সকল পরীক্ষার্থীর অবগতির জন্য জানানো যাচ্ছে যে, **উচ্চ মাধ্যমিক সার্টিফিকেট (HSC) পরীক্ষার ফলাফল আজ ১৬ অক্টোবর, ২০২৫ খ্রিঃ তারিখে প্রকাশিত হয়েছে।**
+                    </p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2 ml-4">
+                        <li>শিক্ষার্থীরা **শিক্ষা বোর্ডের অফিসিয়াল ওয়েবসাইট** থেকে তাদের সম্পূর্ণ নম্বরপত্র (Full Marksheets) সহ ফলাফল দেখতে ও ডাউনলোড করতে পারবে।</li>
+                        <li>কলেজের **নোটিশ বোর্ডেও ফলাফল প্রদর্শিত হচ্ছে।**</li>
+                    </ul>
+                    <p class="text-base font-bold text-red-600 mt-4">
+                        সফলভাবে উত্তীর্ণ সকলকে অভিনন্দন। ফলাফল অনুযায়ী ভবিষ্যতের পরিকল্পনা শুরু করার জন্য শুভকামনা রইল।
+                    </p>
+                </div>
+                <!-- END: নতুন HSC রেজাল্ট নোটিশ -->
+
+
+                <h3 class="text-2xl font-extrabold text-primary mb-2 border-t-2 pt-6">বিজ্ঞপ্তি (এসএসসি ভোকেশনাল)</h3>
                 <p class="text-sm text-gray-600 mb-4">
                     **সূত্র:** বাংলাদেশ কারিগরি শিক্ষা বোর্ড, পরীক্ষা নিয়ন্ত্রণ বিভাগ (ভোকেশনাল শাখা), ঢাকা।
                     <br>**প্রকাশের তারিখ:** ০৭ অক্টোবর, ২০২৫ খ্রিঃ
@@ -612,7 +633,7 @@
                 link.addEventListener('click', smoothScroll);
             });
             
-            // নতুন নোটিশ সেকশনের জন্য স্ক্রোলিং লজিক
+            // নোটিশ সেকশনের জন্য স্ক্রোলিং লজিক
             const noticeLinks = document.querySelectorAll('a[href="#notice"], #notice a[href="#contact"]'); // নোটিশ সেকশনের ভেতরের বাটনকেও যোগ করা হলো
             noticeLinks.forEach(link => {
                 link.addEventListener('click', smoothScroll);
