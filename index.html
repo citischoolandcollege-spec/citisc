@@ -4,641 +4,870 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট স্কুল & কলেজ</title>
-    <!-- Tailwind CSS লোড করা হচ্ছে -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ফন্ট সেট করা হচ্ছে: যেহেতু ছবিতে টেক্সট বাংলায়, তাই বালু ডা ২ ব্যবহার করছি */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Baloo+Da+2:wght@400;600;700;800&display=swap');
         body {
-            font-family: 'Baloo Da 2', 'Inter', sans-serif;
-            scroll-behavior: smooth; /* স্মুথ স্ক্রোলিং এর জন্য */
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: #f0f4f8;
+            color: #334155;
         }
-        /* ছবিতে থাকা গাঢ় বেগুনি/নীল রং ব্যবহার করা হয়েছে */
-        .primary-bg {
-            background-color: #4F46E5; /* Indigo-600 */
+        .header-bg {
+            background-color: #1e3a8a; /* Dark Blue */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
         }
-        .secondary-color {
-             color: #34D399; /* Emerald-400 - সাইন আপ বাটনের রঙের কাছাকাছি */
+        .nav-link {
+            transition: color 0.3s, background-color 0.3s;
         }
         .nav-link:hover {
-            opacity: 0.8;
+            color: #fcd34d; /* Amber */
+            background-color: #1e40af; /* Slightly Lighter Dark Blue */
         }
-        .section-padding {
-            padding-top: 6rem; /* ফিক্সড নেভিগেশন বারের নিচে কন্টেন্ট শুরু করার জন্য */
-            padding-bottom: 4rem;
+        .section-card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            transition: transform 0.3s;
         }
-        /* হিরো সেকশনের স্টাইল (ছবির মতো ব্যাকগ্রাউন্ড রং ও উচ্চতা) */
-        #home {
-            background-color: #5b4ddf; /* ছবির কাছাকাছি একটি রং */
-            min-height: 100vh;
+        .section-card:hover {
+            transform: translateY(-5px);
         }
-        /* Loading spinner CSS (এটি এখন অপ্রয়োজনীয়, তবুও রাখা হলো যদি ভবিষ্যতে দরকার হয়) */
-        .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid #fff;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .chat-spinner {
-            border-top: 4px solid #4F46E5;
-        }
-        /* নোটিশ টেবিলের স্টাইল */
-        .notice-table th, .notice-table td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid #E5E7EB;
-        }
-        .notice-table th {
-            background-color: #4F46E5;
+        .btn-primary {
+            background-color: #ef4444; /* Red */
             color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #dc2626; /* Darker Red */
+        }
+        /* Marquee style for the notice bar */
+        .notice-bar {
+            background-color: #FBBF24; /* Amber-400 */
+            color: #1e3a8a; /* Dark Blue */
             font-weight: 700;
+            padding: 0.5rem 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        /* Custom modal styles for result display */
+        .modal {
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal-content {
+            animation: slide-down 0.3s ease-out;
+        }
+        @keyframes slide-down {
+            0% { transform: translateY(-50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        /* Custom styles for accordion/course details */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+        }
+        .accordion-content.active {
+            max-height: 2000px; /* Large enough value to show all content */
+            padding-top: 1rem;
+        }
+        .accordion-header {
+            cursor: pointer;
+        }
+        .accordion-icon {
+            transition: transform 0.3s;
+        }
+        .accordion-header.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+        
+        /* Specific styling for the detailed notice table */
+        #detailedNoticeModal table {
+            border-collapse: collapse;
+        }
+        #detailedNoticeModal th, #detailedNoticeModal td {
+            border: 1px solid #e5e7eb;
+            padding: 0.75rem;
+        }
+
+        /* --- New: Responsive Video Container CSS for 16:9 Aspect Ratio --- */
+        .responsive-video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio (9/16 * 100) */
+            height: 0;
+            overflow: hidden;
+        }
+        .responsive-video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
     </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'primary': '#4F46E5', // Indigo-600
-                        'secondary': '#34D399', // Emerald-400 (Enroll button color)
-                    }
-                }
-            }
-        }
-    </script>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body>
 
-    <!-- নেভিগেশন বার (Navbar) -->
-    <header class="primary-bg fixed top-0 left-0 right-0 z-50 shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <!-- লোগো/অ্যাপের নাম -->
-                <a href="#home" class="flex items-center space-x-2 text-xl font-extrabold text-white">
-                    <span>সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট স্কুল & কলেজ</span>
-                </a>
-                
-                <!-- ডেস্কটপ নেভিগেশন মেনু -->
-                <nav class="hidden md:flex space-x-6 items-center">
-                    <a href="#home" class="nav-link text-white text-lg font-medium transition duration-300">হোম</a>
-                    <a href="#notice" class="nav-link text-white text-lg font-medium transition duration-300">নোটিশ</a>
-                    <a href="#course" class="nav-link text-white text-lg font-medium transition duration-300">কোর্সসমূহ</a>
-                    <a href="#features" class="nav-link text-white text-lg font-medium transition duration-300">বৈশিষ্ট্য</a>
-                    <a href="#infrastructure" class="nav-link text-white text-lg font-medium transition duration-300">অবকাঠামো</a>
-                    <a href="#contact" class="nav-link text-white text-lg font-medium transition duration-300">যোগাযোগ</a>
-                </nav>
+    <!-- Urgent Notice Bar -->
+    <div class="notice-bar">
+        <marquee behavior="scroll" direction="left">
+            জরুরী বিজ্ঞপ্তি: এসএসসি (ভোকেশনাল) নবম শ্রেণি সমাপনী পরীক্ষার সময়সূচি প্রকাশিত হয়েছে। বিস্তারিত জানতে নোটিশ বোর্ড দেখুন।
+        </marquee>
+    </div>
 
-                <!-- মোবাইল মেনু বোতাম (MD এর নিচে) -->
-                <div class="md:hidden">
-                    <button id="menu-button" class="text-white hover:opacity-80 focus:outline-none p-2 rounded-lg transition duration-300">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                    </button>
-                </div>
+    <!-- Header & Navigation -->
+    <header class="header-bg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+            
+            <div class="flex items-center space-x-4">
+                <!-- Header Title -->
+                <h1 class="text-xl md:text-2xl font-bold text-white tracking-wider">
+                    সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট স্কুল & কলেজ
+                </h1>
             </div>
+            
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex space-x-4">
+                <!-- হোম (Home) -->
+                <a href="#" class="nav-link text-white px-3 py-2 rounded-md font-medium">হোম</a>
+                <!-- নোটিশ (Notice) -->
+                <a href="#notice" class="nav-link text-white px-3 py-2 rounded-md font-medium">নোটিশ</a>
+                <!-- কোর্সসমূহ (Courses) -->
+                <a href="#courses" class="nav-link text-white px-3 py-2 rounded-md font-medium">কোর্সসমূহ</a>
+                <!-- বৈশিষ্ট্য (Features) -->
+                <a href="#features" class="nav-link text-white px-3 py-2 rounded-md font-medium">বৈশিষ্ট্য</a>
+                <!-- অবকাঠামো (Infrastructure) -->
+                <a href="#infrastructure" class="nav-link text-white px-3 py-2 rounded-md font-medium">অবকাঠামো</a>
+                <!-- ভিডিও (Video) -->
+                <a href="#video" class="nav-link text-white px-3 py-2 rounded-md font-medium">ভিডিও</a>
+                <!-- যোগাযোগ (Contact) -->
+                <a href="#contact" class="nav-link text-white px-3 py-2 rounded-md font-medium">যোগাযোগ</a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
         </div>
-        
-        <!-- মোবাইল মেনু ড্রপডাউন -->
-        <div id="mobile-menu" class="md:hidden hidden bg-indigo-700 border-t border-indigo-600 shadow-md">
-            <div class="pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#home" class="mobile-nav-link block px-3 py-2 text-base font-medium text-white hover:bg-indigo-600 transition duration-300">হোম</a>
-                <a href="#notice" class="mobile-nav-link block px-3 py-2 text-base font-medium text-white hover:bg-indigo-600 transition duration-300">নোটিশ</a>
-                <a href="#course" class="mobile-nav-link block px-3 py-2 text-base font-medium text-white hover:bg-indigo-600 transition duration-300">কোর্সসমূহ</a>
-                <a href="#features" class="mobile-nav-link block px-3 py-2 text-base font-medium text-white hover:bg-indigo-600 transition duration-300">বৈশিষ্ট্য</a>
-                <a href="#infrastructure" class="mobile-nav-link block px-3 py-2 text-base font-medium text-white hover:bg-indigo-600 transition duration-300">অবকাঠামো</a>
-                <a href="#contact" class="mobile-nav-link block px-3 py-2 text-base font-medium text-white hover:bg-indigo-600 transition duration-300">যোগাযোগ</a>
-            </div>
-        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <nav id="mobile-menu" class="md:hidden hidden pb-3 space-y-1 px-2 sm:px-3 text-center">
+            <a href="#" class="nav-link text-white block px-3 py-2 rounded-md font-medium">হোম</a>
+            <a href="#notice" class="nav-link text-white block px-3 py-2 rounded-md font-medium">নোটিশ</a>
+            <a href="#courses" class="nav-link text-white block px-3 py-2 rounded-md font-medium">কোর্সসমূহ</a>
+            <a href="#features" class="nav-link text-white block px-3 py-2 rounded-md font-medium">বৈশিষ্ট্য</a>
+            <a href="#infrastructure" class="nav-link text-white block px-3 py-2 rounded-md font-medium">অবকাঠামো</a>
+            <a href="#video" class="nav-link text-white block px-3 py-2 rounded-md font-medium">ভিডিও</a>
+            <a href="#contact" class="nav-link text-white block px-3 py-2 rounded-md font-medium">যোগাযোগ</a>
+        </nav>
     </header>
 
-    <!-- সেকশন ১: হোম (Home) -->
-    <section id="home" class="min-h-screen flex items-center text-white pt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
-            <p class="text-lg md:text-xl font-semibold mb-4 text-yellow-300 tracking-wider border border-yellow-300 inline-block px-4 py-1 rounded-full bg-black/10">
+    <!-- Hero Section (ID: home) -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <section id="home" class="bg-white p-6 md:p-16 rounded-xl text-center mb-12 shadow-xl border-t-8 border-red-500">
+            <!-- 1. Tagline -->
+            <p class="text-lg md:text-xl font-bold text-red-600 mb-2">
                 সফলতার ১৪ বছরের পথচলা
             </p>
             
-            <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-4">
+            <!-- 2. Main Title -->
+            <h2 class="text-4xl md:text-6xl font-extrabold text-[#1e3a8a] mb-6 leading-snug">
                 সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট স্কুল & কলেজ
-            </h1>
+            </h2>
             
-            <p class="text-xl md:text-2xl text-indigo-100 mb-8 max-w-4xl mx-auto">
+            <!-- 3. Subtitle -->
+            <p class="text-xl md:text-2xl text-gray-700 mb-10 max-w-4xl mx-auto font-medium">
                 টেকনোলজি নির্ভর উজ্জ্বল ভবিষ্যতের পথে আপনার প্রথম পদক্ষেপ।
             </p>
-            <!-- ছবির মতো ভর্তি বাটন - এটি #contact এ পয়েন্ট করা আছে -->
-            <a href="#contact" class="hero-enroll-btn inline-block bg-yellow-400 text-gray-900 text-xl font-extrabold px-10 py-4 rounded-lg shadow-2xl hover:bg-yellow-300 transition duration-300 transform hover:scale-105">
+
+            <!-- 4. CTA Heading -->
+            <p class="text-2xl md:text-3xl font-extrabold text-red-500 mb-2 animate-pulse">
                 আসন্ন শিক্ষাবর্ষে ভর্তি চলছে
-            </a>
-            <p class="text-base text-indigo-200 mt-6">
-                **SSC ভোকেশনাল**, **HSC BMT**, ডিপ্লোমা ইঞ্জিনিয়ারিং ও এগ্রিকালচারে ভর্তি চলছে
             </p>
-        </div>
-    </section>
-
-    <!-- সেকশন ২: নোটিশ (Notice) -->
-    <section id="notice" class="section-padding bg-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-12 border-b-4 border-secondary inline-block pb-1">গুরুত্বপূর্ণ নোটিশ</h2>
             
-            <div class="bg-white p-6 md:p-10 rounded-xl shadow-2xl border-t-8 border-primary">
-                
-                <!-- START: নতুন HSC রেজাল্ট নোটিশ -->
-                <div class="mb-10 p-6 rounded-xl shadow-lg border-l-4 border-yellow-500 bg-yellow-50">
-                    <h3 class="text-2xl font-extrabold text-red-600 mb-2">জরুরী বিজ্ঞপ্তি: এইচএসসি ফলাফল প্রকাশিত</h3>
-                    <p class="text-sm text-gray-600 mb-4">
-                        **প্রকাশের তারিখ:** ১৬ অক্টোবর, ২০২৫ খ্রিঃ
-                    </p>
-                    <p class="text-lg text-gray-800 mb-4">
-                        এতদ্বারা HSC-2025 এর সকল পরীক্ষার্থীর অবগতির জন্য জানানো যাচ্ছে যে, **উচ্চ মাধ্যমিক সার্টিফিকেট (HSC) পরীক্ষার ফলাফল আজ ১৬ অক্টোবর, ২০২৫ খ্রিঃ তারিখে প্রকাশিত হয়েছে।**
-                    </p>
-                    <ul class="list-disc list-inside text-gray-700 space-y-2 ml-4">
-                        <li>শিক্ষার্থীরা **শিক্ষা বোর্ডের অফিসিয়াল ওয়েবসাইট** থেকে তাদের সম্পূর্ণ নম্বরপত্র (Full Marksheets) সহ ফলাফল দেখতে ও ডাউনলোড করতে পারবে।</li>
-                        <li>কলেজের **নোটিশ বোর্ডেও ফলাফল প্রদর্শিত হচ্ছে।**</li>
-                    </ul>
-                    <p class="text-base font-bold text-red-600 mt-4">
-                        সফলভাবে উত্তীর্ণ সকলকে অভিনন্দন। ফলাফল অনুযায়ী ভবিষ্যতের পরিকল্পনা শুরু করার জন্য শুভকামনা রইল।
-                    </p>
-                </div>
-                <!-- END: নতুন HSC রেজাল্ট নোটিশ -->
-
-
-                <h3 class="text-2xl font-extrabold text-primary mb-2 border-t-2 pt-6">বিজ্ঞপ্তি (এসএসসি ভোকেশনাল)</h3>
-                <p class="text-sm text-gray-600 mb-4">
-                    **সূত্র:** বাংলাদেশ কারিগরি শিক্ষা বোর্ড, পরীক্ষা নিয়ন্ত্রণ বিভাগ (ভোকেশনাল শাখা), ঢাকা।
-                    <br>**প্রকাশের তারিখ:** ০৭ অক্টোবর, ২০২৫ খ্রিঃ
-                </p>
-                
-                <p class="text-lg text-gray-800 mb-6">
-                    এতদ্বারা সংশ্লিষ্ট সকলের অবগতির জন্য জানানো যাচ্ছে যে, **২০২৫ সালের এসএসসি (ভোকেশনাল) ও দাখিল (ভোকেশনাল) শিক্ষাক্রমের নবম শ্রেণি সমাপনী পরীক্ষা নিম্নোক্ত সময়সূচি অনুযায়ী অনুষ্ঠিত হবে।**
-                </p>
-                
-                <!-- তত্ত্বীয় পরীক্ষার সময়সূচি -->
-                <h4 class="text-xl font-bold text-gray-900 mb-4 bg-gray-100 p-3 rounded-lg border-l-4 border-secondary">১. তত্ত্বীয় পরীক্ষার সময়সূচি (সকাল ১০:০০টা হতে)</h4>
-                <div class="overflow-x-auto mb-8">
-                    <table class="w-full notice-table rounded-lg overflow-hidden">
-                        <thead>
-                            <tr>
-                                <th class="w-1/4">তারিখ ও বার</th>
-                                <th class="w-2/4">বিষয় ও বিষয় কোড</th>
-                                <th class="w-1/4">শিক্ষাক্রম</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="hover:bg-indigo-50 transition duration-200">
-                                <td>**০৬/১১/২০২৫ খ্রিঃ (বৃহস্পতিবার)**</td>
-                                <td>বাংলা-১ (৫১৯১১/৪১৯১১, ১৯১১)</td>
-                                <td>এসএসসি (ভোক) ও দাখিল (ভোক)</td>
-                            </tr>
-                            <tr class="hover:bg-indigo-50 transition duration-200">
-                                <td>**০৯/১১/২০২৫ খ্রিঃ (রবিবার)**</td>
-                                <td>ইংরেজী-১ (৫১৯১২/৪১৯১২, ১৯১২)</td>
-                                <td>এসএসসি (ভোক) ও দাখিল (ভোক)</td>
-                            </tr>
-                            <tr class="hover:bg-indigo-50 transition duration-200">
-                                <td>**১১/১১/২০২৫ খ্রিঃ (মঙ্গলবার)**</td>
-                                <td>গণিত-১ (৫১৯১৩/৪১৯১৩, ১৯১৩)</td>
-                                <td>এসএসসি (ভোক) ও দাখিল (ভোক)</td>
-                            </tr>
-                            <tr class="hover:bg-indigo-50 transition duration-200">
-                                <td>**১৩/১১/২০২৫ খ্রিঃ (বৃহস্পতিবার)**</td>
-                                <td>পদার্থবিজ্ঞান-১ (৫১৯১৫/৪১৯১৫, ১৯১৫)</td>
-                                <td>এসএসসি (ভোক) ও দাখিল (ভোক)</td>
-                            </tr>
-                            <tr class="hover:bg-indigo-50 transition duration-200">
-                                <td>**১৬/১১/২০২৫ খ্রিঃ (রবিবার)**</td>
-                                <td>রসায়ন-১, বাংলাদেশ ও বিশ্ব পরিচয়-১ / হাদীস শরীফ ও ফিকহ-১</td>
-                                <td>এসএসসি (ভোক) ও দাখিল (ভোক)</td>
-                            </tr>
-                            <tr class="hover:bg-indigo-50 transition duration-200">
-                                <td>**১৮/১১/২০২৫ খ্রিঃ (মঙ্গলবার)**</td>
-                                <td>ধর্ম শিক্ষা-১ / কুরআন মাজিদ ও তাজভিদ-১</td>
-                                <td>এসএসসি (ভোক) ও দাখিল (ভোক)</td>
-                            </tr>
-                            <tr class="hover:bg-indigo-50 transition duration-200 bg-yellow-50">
-                                <td>**২০/১১/২০২৫ খ্রিঃ ও ২৩/১১/২০২৫ খ্রিঃ (বৃহঃ ও রবি)**</td>
-                                <td>**ট্রেড-১** (যেমন: আইটি সার্পেটি অ্যান্ড আইওটি বেসিকস-১, জেনারেল ইলেকট্রনিক্স-১ ইত্যাদি)</td>
-                                <td>এসএসসি (ভোক) ও দাখিল (ভোক)</td>
-                            </tr>
-                            <tr class="hover:bg-indigo-50 transition duration-200 bg-yellow-50">
-                                <td>**২৫/১১/২০২৫ খ্রিঃ (মঙ্গলবার)**</td>
-                                <td>**ট্রেড-২** (যেমন: আইটি সার্পেটি অ্যান্ড আইওটি বেসিকস-২, জেনারেল ইলেকট্রনিক্স-২ ইত্যাদি)</td>
-                                <td>এসএসসি (ভোক) ও দাখিল (ভোক)</td>
-                            </tr>
-                            <tr class="hover:bg-indigo-50 transition duration-200">
-                                <td>**২৭/১১/২০২৫ খ্রিঃ (বৃহস্পতিবার)**</td>
-                                <td>উচ্চতর গনিত-১ / কৃষি শিক্ষা-১ / জীব বিজ্ঞান-১</td>
-                                <td>এসএসসি (ভোক) ও দাখিল (ভোক)</td>
-                            </tr>
-                            <tr class="hover:bg-indigo-50 transition duration-200">
-                                <td>**৩০/১১/২০২৫ খ্রিঃ (রবিবার)**</td>
-                                <td>আরবি-১</td>
-                                <td>দাখিল (ভোক)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- ব্যবহারিক পরীক্ষার সময়সূচি -->
-                <h4 class="text-xl font-bold text-gray-900 mb-4 bg-gray-100 p-3 rounded-lg border-l-4 border-secondary">২. ব্যবহারিক পরীক্ষার সময়সূচি</h4>
-                <div class="overflow-x-auto mb-8">
-                    <table class="w-full notice-table rounded-lg overflow-hidden">
-                        <thead>
-                            <tr>
-                                <th class="w-1/6">ক্রমিক নং</th>
-                                <th class="w-3/6">বিবরণ</th>
-                                <th class="w-2/6">সময়সীমা</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="hover:bg-indigo-50 transition duration-200">
-                                <td>১.</td>
-                                <td>ব্যবহারিক পরীক্ষা গ্রহণ</td>
-                                <td>**৩০/১১/২০২৫ খ্রিঃ** তারিখ হতে **০৭/১২/২০২৫ খ্রিঃ** পর্যন্ত</td>
-                            </tr>
-                            <tr class="hover:bg-indigo-50 transition duration-200">
-                                <td>২.</td>
-                                <td>বাস্তব প্রশিক্ষণে অংশ গ্রহণ</td>
-                                <td>**০৮/১২/২০২৫ খ্রিঃ** তারিখ হতে **১৯/০১/২০২৬ খ্রিঃ** পর্যন্ত</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <!-- বিশেষ নির্দেশাবলি -->
-                <h4 class="text-xl font-bold text-gray-900 mb-4 bg-gray-100 p-3 rounded-lg border-l-4 border-secondary">৩. বিশেষ নির্দেশাবলি</h4>
-                <ul class="list-disc list-inside text-gray-700 space-y-2 ml-4">
-                    <li>পরীক্ষা কেন্দ্রে প্রবেশ: পরীক্ষার্থীদেরকে পরীক্ষা শুরু হওয়ার **৩০ মিনিট পূর্বে** পরীক্ষা কেন্দ্রে প্রবেশ করতে হবে।</li>
-                    <li>ক্যালকুলেটর ব্যবহার: পরীক্ষার্থীগণ পরীক্ষায় **সাধারণ সাইন্টিফিক (নন প্রোগ্রামবল)** ক্যালকুলেটর ব্যবহার করতে পারবে।</li>
-                    <li>মোবাইল ফোন: কেন্দ্র সচিব ব্যতীত অন্য কেউ পরীক্ষা কেন্দ্রে মোবাইল ফোন ব্যবহার করতে পারবেন না। কেন্দ্র সচিব ক্যামেরা বিহীন সাধারণ মোবাইল ব্যবহার করতে পারবেন।</li>
-                    <li>ব্যবহারিক পরীক্ষা: ব্যবহারিক পরীক্ষা **স্ব স্ব কেন্দ্রে** অনুষ্ঠিত হবে।</li>
+            <!-- 5. CTA Course List (Background removed as requested) -->
+            <p class="text-xl md:text-2xl text-[#1e3a8a] mb-8 font-bold">
+                <span>SSC ভোকেশনাল</span>, <span>HSC BMT</span>, ডিপ্লোমা ইঞ্জিনিয়ারিং ও এগ্রিকালচারে ভর্তি চলছে
+            </p>
+            
+            <!-- CTA Button -->
+            <a href="#courses" class="btn-primary inline-block text-xl px-8 py-3 shadow-lg hover:shadow-xl transform hover:scale-105">
+                কোর্সসমূহ দেখুন
+            </a>
+        </section>
+        
+        <!-- Notice Section -->
+        <section id="notice" class="mb-12">
+            <h3 class="text-3xl font-bold text-center text-[#1e3a8a] mb-8 border-b-2 border-red-500 pb-2">নোটিশ বোর্ড</h3>
+            <div class="section-card">
+                <h4 class="text-xl font-semibold text-gray-700 mb-3 border-b pb-2">সর্বশেষ বিজ্ঞপ্তি</h4>
+                <ul class="space-y-3">
+                    <li id="ssc-notice-link" class="p-3 bg-red-50 rounded-md flex justify-between items-center hover:bg-red-100 transition duration-300 cursor-pointer">
+                        <span class="text-gray-800 font-medium">এসএসসি (ভোকেশনাল) নবম শ্রেণি সমাপনী পরীক্ষার সময়সূচি ২০২৫</span>
+                        <span class="text-sm text-red-600 font-bold">নতুন!</span>
+                    </li>
                 </ul>
-
-                <div class="text-center mt-8">
-                    <!-- এই বাটনটি এখন সরাসরি #contact সেকশনে স্ক্রোল করবে -->
-                    <a href="#contact" class="inline-block bg-primary text-white font-bold px-6 py-3 rounded-lg shadow-md hover:bg-indigo-700 transition duration-300">
-                        ভর্তি সংক্রান্ত তথ্যের জন্য যোগাযোগ করুন
-                    </a>
+                <div class="text-center mt-4">
+                     <a href="#" class="text-[#1e3a8a] hover:text-red-500 font-semibold inline-block mt-3">সকল নোটিশ দেখুন →</a>
                 </div>
             </div>
-
-        </div>
-    </section>
-
-    <!-- সেকশন ৩: কোর্স (Course) -->
-    <section id="course" class="section-padding bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-12 border-b-4 border-primary inline-block pb-1">আমাদের কোর্সসমূহ</h2>
+        </section>
+        
+        <!-- Courses Section -->
+        <section id="courses" class="mb-12">
+            <h3 class="text-3xl font-bold text-center text-[#1e3a8a] mb-8 border-b-2 border-red-500 pb-2">কোর্সসমূহ</h3>
             
-            <!-- কোর্স কার্ড গ্রিড (2x2 লেআউট) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                
-                <!-- কার্ড ১: SSC ভোকেশনাল -->
-                <div class="bg-gray-100 p-6 rounded-xl shadow-lg border border-gray-200 border-l-4 border-primary">
-                    <h3 class="text-2xl font-bold text-primary mb-3">এস.এস.সি ভোকেশনাল (৯ম-১০ম শ্রেণি)</h3>
-                    
-                    <p class="text-gray-700 mb-3 font-semibold">ট্রেডসমূহ:</p>
-                    <ul class="text-gray-700 mb-4 list-disc list-inside space-y-1 ml-4">
-                        <li>আইটি সাপোর্ট অ্যান্ড আইওটি বেসিকস</li>
-                        <li>জেনারেল ইলেকট্রনিক্স</li>
-                        <li>পোল্ট্রি রিয়ারিং অ্যান্ড ফার্মিং</li>
-                        <li>অ্যাপারেল ম্যানুফ্যাকচারিং বেসিকস</li>
-                    </ul>
+            <div class="section-card p-6 md:p-8">
+                <h4 class="text-2xl font-extrabold text-red-500 mb-2">আমাদের কারিগরি শিক্ষা প্রোগ্রাম</h4>
+                <p class="text-lg text-gray-700 mb-8 max-w-3xl mx-auto">
+                    আমাদের প্রতিষ্ঠান আপনার ক্যারিয়ার লক্ষ্য অর্জনের জন্য মাধ্যমিক স্তর থেকে শুরু করে ডিপ্লোমা স্তর পর্যন্ত বহুমুখী কারিগরি শিক্ষা প্রোগ্রাম অফার করে।
+                </p>
 
-                    <!-- ক্লাস ৯ এর বিস্তারিত বিষয় (Expandable) -->
-                    <details class="bg-white p-3 rounded-lg shadow-inner mb-3 border border-gray-300">
-                        <summary class="font-bold text-lg cursor-pointer text-indigo-700 hover:text-indigo-900 transition duration-200">
-                            ক্লাস ৯ (৯ম শ্রেণি) - বিস্তারিত বিষয়
-                        </summary>
-                        <div class="pt-2 text-sm text-gray-700 space-y-2">
-                            <p class="font-bold border-b pb-1 mt-2">আবশ্যিক বিষয়:</p>
-                            <ul class="list-disc list-inside ml-4 space-y-1">
-                                <li>৫১৯১১: বাংলা-১</li>
-                                <li>৫১৯১২: ইংলিশ-১</li>
-                                <li>৫১৯১৩: গণিত-১</li>
-                                <li>৫১৯১৪: বাংলাদেশ ও বিশ্বপরিচয়-১</li>
-                                <li>৫১৯১৫: পদার্থবিজ্ঞান-১</li>
-                                <li>৫১৯১৬: রসায়ন বিজ্ঞান-১</li>
-                                
-                                <li>৫১৯১৭: ইঞ্জিনিয়ারিং ড্রইং</li>
-                                <li>৫১৯১৮: তথ্য ও যোগাযোগ প্রযুক্তি / কম্পিউটার অ্যাপ্লিকেশন-১</li>
-                            </ul>
-                            
-                            <p class="font-bold border-b pb-1 mt-4">ঐচ্ছিক ও ট্রেড বিষয়:</p>
-                            <ul class="list-disc list-inside ml-4 space-y-1">
-                                <li>৫১৭১১-৫১৭১৪: যেকোনো একটি ধর্ম শিক্ষা (ইসলাম/হিন্দু/খ্রিষ্ট/বৌদ্ধ)</li>
-                                <li>৫১৮১১-৫১৮১৩: যেকোনো একটি ঐচ্ছিক বিষয় (উচ্চতর গণিত/কৃষিশিক্ষা/জীববিজ্ঞান-১)</li>
-                                <li>৫৮৮১১/৫৬২১১/৫৮০১১/৫৮১১১: যেকোনো একটি ট্রেড (প্রথম পত্র)</li>
-                            </ul>
+                <!-- Course Accordion Container -->
+                <div class="space-y-4">
+
+                    <!-- 1. SSC Vocation (Accordion) -->
+                    <div class="border border-red-300 rounded-xl overflow-hidden bg-red-50">
+                        <div id="header-ssc" class="accordion-header flex justify-between items-center p-4 md:p-6 bg-red-100 hover:bg-red-200 transition duration-300">
+                            <h5 class="text-xl md:text-2xl font-bold text-[#1e3a8a] flex items-center space-x-3">
+                                <span class="text-3xl">🛠️</span>
+                                <span>এস.এস.সি ভোকেশনাল (৯ম-১০ম শ্রেণি)</span>
+                            </h5>
+                            <svg class="w-6 h-6 text-[#1e3a8a] accordion-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </div>
-                    </details>
+                        <div id="content-ssc" class="accordion-content bg-white p-4 md:p-6 border-t border-red-200">
+                            <p class="mb-4 text-gray-700 font-medium">কারিগরি শিক্ষা বোর্ডের অধীনে ২ বছর মেয়াদী কোর্স। এই কোর্সে প্রযুক্তিগত দক্ষতা অর্জন করে সরাসরি কর্মজীবনে প্রবেশ অথবা উচ্চতর শিক্ষায় (ডিপ্লোমা) ভর্তির সুযোগ রয়েছে।</p>
 
-                    <!-- ক্লাস ১০ এর বিস্তারিত বিষয় (Expandable) -->
-                    <details class="bg-white p-3 rounded-lg shadow-inner border border-gray-300">
-                        <summary class="font-bold text-lg cursor-pointer text-indigo-700 hover:text-indigo-900 transition duration-200">
-                            ক্লাস ১০ (১০ম শ্রেণি) - বিস্তারিত বিষয়
-                        </summary>
-                         <div class="pt-2 text-sm text-gray-700 space-y-2">
-                            <p class="font-bold border-b pb-1 mt-2">আবশ্যিক বিষয়:</p>
-                            <ul class="list-disc list-inside ml-4 space-y-1">
-                                <li>৫১৯২১: বাংলা-২</li>
-                                <li>৫১৯২২: ইংলিশ-২</li>
-                                <li>৫১৯২৩: গণিত-২</li>
-                                <li>৫১৯২৪: বাংলাদেশ ও বিশ্বপরিচয়-২</li>
-                                <li>৫১৯২৫: পদার্থবিজ্ঞান-২</li>
-                                <li>৫১৯২৬: রসায়ন বিজ্ঞান-২</li>
-                                <li>৫১৯২৭: আত্মকর্মসংস্থান ও ব্যবসায় উদ্যোগ</li>
-                                <li>৫১৯২৮: তথ্য ও যোগাযোগ প্রযুক্তি / কম্পিউটার অ্যাপ্লিকেশন-২</li>
-                            </ul>
+                            <!-- Trades -->
+                            <div class="mb-6">
+                                <p class="text-lg font-bold text-red-500 mb-2">ট্রেডসমূহ:</p>
+                                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-800 list-disc list-inside ml-4">
+                                    <li>আইটি সাপোর্ট অ্যান্ড আইওটি বেসিকস</li>
+                                    <li>জেনারেল ইলেকট্রনিক্স</li>
+                                    <li>পোল্ট্রি রিয়ারিং অ্যান্ড ফার্মিং</li>
+                                    <li>অ্যাপারেল ম্যানুফ্যাকচারিং বেসিকস</li>
+                                </ul>
+                            </div>
+
+                            <!-- Class 9 Details -->
+                            <div class="mb-6 border-t pt-4">
+                                <p class="text-xl font-bold text-[#1e3a8a] mb-3">ক্লাস ৯ (৯ম শ্রেণি) - বিস্তারিত বিষয় ও কোড:</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="font-semibold text-gray-700 mb-2">আবশ্যিক বিষয়:</p>
+                                        <ul class="text-sm text-gray-600 space-y-1 list-disc list-inside ml-4">
+                                            <li><span class="font-bold">৫১৯১১:</span> বাংলা-১</li>
+                                            <li><span class="font-bold">৫১৯১২:</span> ইংলিশ-১</li>
+                                            <li><span class="font-bold">৫১৯১৩:</span> গণিত-১</li>
+                                            <li><span class="font-bold">৫১৯১৪:</span> বাংলাদেশ ও বিশ্বপরিচয়-১</li>
+                                            <li><span class="font-bold">৫১৯১৫:</span> পদার্থবিজ্ঞান-১</li>
+                                            <li><span class="font-bold">৫১৯১৬:</span> রসায়ন বিজ্ঞান-১</li>
+                                            <li><span class="font-bold">৫১৯১৭:</span> ইঞ্জিনিয়ারিং ড্রইং</li>
+                                            <li><span class="font-bold">৫১৯১৮:</span> তথ্য ও যোগাযোগ প্রযুক্তি / কম্পিউটার অ্যাপ্লিকেশন-১</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-gray-700 mb-2">ঐচ্ছিক ও ট্রেড বিষয়:</p>
+                                        <ul class="text-sm text-gray-600 space-y-1 list-disc list-inside ml-4">
+                                            <li><span class="font-bold">৫১৭১১-৫১৭১৪:</span> যেকোনো একটি ধর্ম শিক্ষা (ঐচ্ছিক)</li>
+                                            <li><span class="font-bold">৫১৮১১-৫১৮১৩:</span> যেকোনো একটি ঐচ্ছিক বিষয় (উচ্চতর গণিত/কৃষিশিক্ষা/জীববিজ্ঞান-১)</li>
+                                            <li><span class="font-bold">৫৮৮১১/৫৬২১১/৫৮০১১/৫৮১১১:</span> যেকোনো একটি ট্রেড (প্রথম পত্র)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                             
-                            <p class="font-bold border-b pb-1 mt-4">ঐচ্ছিক ও ট্রেড বিষয়:</p>
-                            <ul class="list-disc list-inside ml-4 space-y-1">
-                                <li>৫১৭২১-৫১৭২৪: যেকোনো একটি ধর্ম শিক্ষা (ইসলাম/হিন্দু/খ্রিষ্ট/বৌদ্ধ)</li>
-                                <li>৫১৮২১-৫১৮২৩: যেকোনো একটি ঐচ্ছিক বিষয় (উচ্চতর গণিত/কৃষিশিক্ষা/জীববিজ্ঞান-২)</li>
-                                <li>৫৮৮২১/৫৬২২১/৫৮০২১/৫৮১২১: যেকোনো একটি ট্রেড (দ্বিতীয় পত্র)</li>
-                            </ul>
+                            <!-- Class 10 Details -->
+                            <div class="mb-6 border-t pt-4">
+                                <p class="text-xl font-bold text-[#1e3a8a] mb-3">ক্লাস ১০ (১০ম শ্রেণি) - বিস্তারিত বিষয় ও কোড:</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="font-semibold text-gray-700 mb-2">আবশ্যিক বিষয়:</p>
+                                        <ul class="text-sm text-gray-600 space-y-1 list-disc list-inside ml-4">
+                                            <li><span class="font-bold">৫১৯২১:</span> বাংলা-২</li>
+                                            <li><span class="font-bold">৫১৯২২:</span> ইংলিশ-২</li>
+                                            <li><span class="font-bold">৫১৯২৩:</span> গণিত-২</li>
+                                            <li><span class="font-bold">৫১৯২৪:</span> বাংলাদেশ ও বিশ্বপরিচয়-২</li>
+                                            <li><span class="font-bold">৫১৯২৫:</span> পদার্থবিজ্ঞান-২</li>
+                                            <li><span class="font-bold">৫১৯২৬:</span> রসায়ন বিজ্ঞান-২</li>
+                                            <li><span class="font-bold">৫১৯২৭:</span> আত্মকর্মসংস্থান ও ব্যবসায় উদ্যোগ</li>
+                                            <li><span class="font-bold">৫১৯২৮:</span> তথ্য ও যোগাযোগ প্রযুক্তি / কম্পিউটার অ্যাপ্লিকেশন-২</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-gray-700 mb-2">ঐচ্ছিক ও ট্রেড বিষয়:</p>
+                                        <ul class="text-sm text-gray-600 space-y-1 list-disc list-inside ml-4">
+                                            <li><span class="font-bold">৫১৭২১-৫১৭২৪:</span> যেকোনো একটি ধর্ম শিক্ষা (ঐচ্ছিক)</li>
+                                            <li><span class="font-bold">৫১৮২১-৫১৮২৩:</span> যেকোনো একটি ঐচ্ছিক বিষয় (উচ্চতর গণিত/কৃষিশিক্ষা/জীববিজ্ঞান-২)</li>
+                                            <li><span class="font-bold">৫৮৮২১/৫৬২২১/৫৮০২১/৫৮১২১:</span> যেকোনো একটি ট্রেড (দ্বিতীয় পত্র)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <a href="#contact" class="btn-primary inline-block text-base mt-4 px-5 py-2">ভর্তি চলছে →</a>
                         </div>
-                    </details>
-                    
-                    <!-- এই লিঙ্কটি নিশ্চিত করা হলো -->
-                    <a href="#contact" class="secondary-color font-medium hover:text-emerald-600 transition duration-300 mt-4 block">ভর্তি চলছে →</a>
-                </div>
+                    </div>
 
-                <!-- কার্ড ২: HSC BMT (Business Management and Technology) -->
-                <div class="bg-gray-100 p-6 rounded-xl shadow-lg border border-gray-200 border-l-4 border-secondary">
-                    <h3 class="text-2xl font-bold text-primary mb-3">এইচ.এস.সি (বি.এম.টি)</h3>
-                    <p class="text-gray-700 mb-4">এসএসসি পাশের পর ২ বছর মেয়াদী এই কোর্সে প্রযুক্তি ও ব্যবস্থাপনার সমন্বয়ে উজ্জ্বল ক্যারিয়ারের সুযোগ রয়েছে।</p>
-                    
-                    <!-- HSC BMT বিষয়গুলো যোগ করা হয়েছে -->
-                    <details class="bg-white p-3 rounded-lg shadow-inner mb-3 border border-gray-300">
-                        <summary class="font-bold text-lg cursor-pointer text-indigo-700 hover:text-indigo-900 transition duration-200">
-                            বিষয়সমূহের তালিকা
-                        </summary>
-                        <div class="pt-2 text-sm text-gray-700 space-y-2">
-                            <ul class="list-disc list-inside ml-4 space-y-1">
+                    <!-- 2. HSC BMT (Accordion) -->
+                    <div class="border border-blue-300 rounded-xl overflow-hidden bg-blue-50">
+                        <div id="header-hsc" class="accordion-header flex justify-between items-center p-4 md:p-6 bg-blue-100 hover:bg-blue-200 transition duration-300">
+                            <h5 class="text-xl md:text-2xl font-bold text-[#1e3a8a] flex items-center space-x-3">
+                                <span class="text-3xl">🎓</span>
+                                <span>এইচ.এস.সি (বি.এম.টি) - বিজনেস ম্যানেজমেন্ট অ্যান্ড টেকনোলজি</span>
+                            </h5>
+                            <svg class="w-6 h-6 text-[#1e3a8a] accordion-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                        <div id="content-hsc" class="accordion-content bg-white p-4 md:p-6 border-t border-blue-200">
+                            <p class="mb-4 text-gray-700 font-medium">এসএসসি পাশের পর ২ বছর মেয়াদী এই কোর্সে প্রযুক্তি ও ব্যবস্থাপনার সমন্বয়ে উজ্জ্বল ক্যারিয়ারের সুযোগ রয়েছে। এটি সাধারণ এইচএসসির সমতুল্য এবং বিশ্ববিদ্যালয় ভর্তির সুযোগ রয়েছে।</p>
+                            
+                            <p class="text-lg font-bold text-blue-500 mb-2">বিষয়সমূহের তালিকা:</p>
+                            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-800 list-disc list-inside ml-4">
                                 <li>কম্পিউটার টেকনোলজি</li>
-                                <li>টেকনিক্যাল সায়েন্স (Technical Science)</li>
+                                <li>টেকনিক্যাল সায়েন্স (Technical Science)</li>
                                 <li>ই-বিজনেস (E-Business)</li>
                                 <li>অ্যাকাউন্টিং (Accounting)</li>
                                 <li>এন্টারপ্রেনরশিপ/উদ্যোগ (Entrepreneurship)</li>
                                 <li>হিউম্যান রিসোর্স টেকনোলজি (পূর্বে ছিল)</li>
                             </ul>
+                            <a href="#contact" class="btn-primary inline-block text-base mt-4 px-5 py-2">ভর্তি চলছে →</a>
                         </div>
-                    </details>
-                    
-                    <!-- এই লিঙ্কটি নিশ্চিত করা হলো -->
-                    <a href="#contact" class="secondary-color font-medium hover:text-emerald-600 transition duration-300">ভর্তি চলছে →</a>
-                </div>
+                    </div>
 
-                <!-- কার্ড ৩: Diploma Engineering -->
-                <div class="bg-gray-100 p-6 rounded-xl shadow-lg border border-gray-200 border-l-4 border-primary">
-                    <h3 class="text-2xl font-bold text-primary mb-3">ডিপ্লোমা ইন ইঞ্জিনিয়ারিং</h3>
-                    <p class="text-gray-700 mb-4">চার বছর মেয়াদী এই কোর্সে তাত্ত্বিক জ্ঞান ও ব্যবহারিক দক্ষতা অর্জন করে সরাসরি ইঞ্জিনিয়ারিং ক্যারিয়ার শুরু করুন।</p>
-                    <ul class="text-gray-700 mb-4 list-disc list-inside space-y-1">
-                        <li>ইলেকট্রিক্যাল টেকনোলজি</li>
-                        <li>সিভিল টেকনোলজি</li>
-                    </ul>
-                    
-                    <!-- এই লিঙ্কটি নিশ্চিত করা হলো -->
-                    <a href="#contact" class="secondary-color font-medium hover:text-emerald-600 transition duration-300">ভর্তি চলছে →</a>
-                </div>
+                    <!-- 3. Diploma in Engineering (Accordion) -->
+                    <div class="border border-green-300 rounded-xl overflow-hidden bg-green-50">
+                        <div id="header-eng" class="accordion-header flex justify-between items-center p-4 md:p-6 bg-green-100 hover:bg-green-200 transition duration-300">
+                            <h5 class="text-xl md:text-2xl font-bold text-[#1e3a8a] flex items-center space-x-3">
+                                <span class="text-3xl">👷</span>
+                                <span>ডিপ্লোমা ইন ইঞ্জিনিয়ারিং</span>
+                            </h5>
+                            <svg class="w-6 h-6 text-[#1e3a8a] accordion-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                        <div id="content-eng" class="accordion-content bg-white p-4 md:p-6 border-t border-green-200">
+                            <p class="mb-4 text-gray-700 font-medium">চার বছর মেয়াদী এই কোর্সে তাত্ত্বিক জ্ঞান ও ব্যবহারিক দক্ষতা অর্জন করে সরাসরি ইঞ্জিনিয়ারিং ক্যারিয়ার শুরু করুন। এটি BTEB-এর অধীনে পরিচালিত হয়।</p>
+                            
+                            <p class="text-lg font-bold text-green-500 mb-2">টেকনোলজি:</p>
+                            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-800 list-disc list-inside ml-4">
+                                <li>ইলেকট্রিক্যাল টেকনোলজি</li>
+                                <li>সিভিল টেকনোলজি</li>
+                            </ul>
+                            <a href="#contact" class="btn-primary inline-block text-base mt-4 px-5 py-2">ভর্তি চলছে →</a>
+                        </div>
+                    </div>
 
-                <!-- কার্ড ৪: Diploma Agriculture -->
-                <div class="bg-gray-100 p-6 rounded-xl shadow-lg border border-gray-200 border-l-4 border-secondary">
-                    <h3 class="text-2xl font-bold text-primary mb-3">ডিপ্লোমা ইন এগ্রিকালচার</h3>
-                    <p class="text-gray-700 mb-4">কৃষিভিত্তিক আধুনিক প্রযুক্তির জ্ঞান লাভ করে দেশের খাদ্য নিরাপত্তা ও কৃষি উন্নয়নে অবদান রাখুন।</p>
-                    <ul class="text-gray-700 mb-4 list-disc list-inside space-y-1">
-                        <li>কৃষি টেকনোলজি</li>
-                        <li>ফিসারিজ টেকনোলজি</li>
-                    </ul>
-                    
-                    <!-- এই লিঙ্কটি নিশ্চিত করা হলো -->
-                    <a href="#contact" class="secondary-color font-medium hover:text-emerald-600 transition duration-300">ভর্তি চলছে →</a>
-                </div>
-            </div>
-        </div>
-    </section>
+                    <!-- 4. Diploma in Agriculture (Accordion) -->
+                    <div class="border border-yellow-300 rounded-xl overflow-hidden bg-yellow-50">
+                        <div id="header-agri" class="accordion-header flex justify-between items-center p-4 md:p-6 bg-yellow-100 hover:bg-yellow-200 transition duration-300">
+                            <h5 class="text-xl md:text-2xl font-bold text-[#1e3a8a] flex items-center space-x-3">
+                                <span class="text-3xl">🌾</span>
+                                <span>ডিপ্লোমা ইন এগ্রিকালচার</span>
+                            </h5>
+                            <svg class="w-6 h-6 text-[#1e3a8a] accordion-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                        <div id="content-agri" class="accordion-content bg-white p-4 md:p-6 border-t border-yellow-200">
+                            <p class="mb-4 text-gray-700 font-medium">কৃষিভিত্তিক আধুনিক প্রযুক্তির জ্ঞান লাভ করে দেশের খাদ্য নিরাপত্তা ও কৃষি উন্নয়নে অবদান রাখুন। এই কোর্স সম্পন্ন করে কৃষি ক্ষেত্রে সরাসরি কর্মসংস্থান সম্ভব।</p>
+                            
+                            <p class="text-lg font-bold text-yellow-500 mb-2">টেকনোলজি:</p>
+                            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-800 list-disc list-inside ml-4">
+                                <li>কৃষি টেকনোলজি</li>
+                                <li>ফিসারিজ টেকনোলজি</li>
+                            </ul>
+                            <a href="#contact" class="btn-primary inline-block text-base mt-4 px-5 py-2">ভর্তি চলছে →</a>
+                        </div>
+                    </div>
 
-    <!-- সেকশন ৪: বৈশিষ্ট্য (Features) -->
-    <section id="features" class="section-padding bg-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-12 border-b-4 border-secondary inline-block pb-1">আমাদের মূল বৈশিষ্ট্য ও সুবিধা</h2>
-            
-            <p class="text-xl text-gray-700 mb-8 max-w-4xl mx-auto text-center">
-                এসএসসি ভোকেশনাল থেকে ডিপ্লোমা পর্যন্ত প্রতিটি স্তরে সফলতার জন্য আমাদের রয়েছে সুসংগঠিত শিক্ষাব্যবস্থা।
-            </p>
-
-            <!-- গ্রিড লেআউট পরিবর্তন করা হয়েছে: 4 থেকে 3 কলামে, যাতে প্রতিটি কার্ডে বেশি টেক্সট ধরে -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                
-                <!-- Feature 1: Practical & Labs (Expanded) -->
-                <div class="text-center p-6 rounded-xl bg-white shadow-xl border-t-8 border-primary transform hover:scale-105 transition duration-300">
-                    <span class="text-5xl mb-3 block">🔬</span>
-                    <h3 class="text-2xl font-bold text-primary mb-2">আধুনিক ল্যাব ও ব্যবহারিক প্রশিক্ষণ</h3>
-                    <p class="text-gray-700">তাত্ত্বিক ক্লাসের পাশাপাশি **নিয়মিত ও কঠোর ব্যবহারিক ক্লাস** পরিচালনা করা হয়। আমাদের ল্যাবগুলো ইন্ডাস্ট্রি-স্ট্যান্ডার্ড যন্ত্রপাতিতে সুসজ্জিত, যা শিক্ষার্থীদের হাতে-কলমে দক্ষতা অর্জনে সাহায্য করে।</p>
-                </div>
-                
-                <!-- Feature 2: Pass Guarantee & GPA (Expanded) -->
-                <div class="text-center p-6 rounded-xl bg-white shadow-xl border-t-8 border-primary transform hover:scale-105 transition duration-300">
-                    <span class="text-5xl mb-3 block">🏆</span>
-                    <h3 class="text-2xl font-bold text-primary mb-2">১০০% পাশের নিশ্চয়তা</h3>
-                    <p class="text-gray-700">প্রত্যেক শিক্ষার্থীর প্রতি **ব্যক্তিগত মনোযোগ** ও দুর্বলদের জন্য বিশেষ পরিচর্যার মাধ্যমে বোর্ডের চূড়ান্ত পরীক্ষায় সর্বোচ্চ ফলাফল (GPA 5 সহ) নিশ্চিত করা হয়।</p>
-                </div>
-
-                <!-- Feature 3: Experienced Faculty (New) -->
-                <div class="text-center p-6 rounded-xl bg-white shadow-xl border-t-8 border-primary transform hover:scale-105 transition duration-300">
-                    <span class="text-5xl mb-3 block">👨‍🎓</span>
-                    <h3 class="text-2xl font-bold text-primary mb-2">অভিজ্ঞ ও দক্ষ শিক্ষক মন্ডলী</h3>
-                    <p class="text-gray-700">দীর্ঘদিনের অভিজ্ঞতা এবং **শিল্প-সংশ্লিষ্ট জ্ঞান** সম্পন্ন শিক্ষক দ্বারা ক্লাস পরিচালনা করা হয়। তারা শুধু পড়ান না, বরং শিক্ষার্থীদেরকে ভবিষ্যতের চ্যালেঞ্জ মোকাবেলায় প্রস্তুত করেন।</p>
-                </div>
-
-                <!-- Feature 4: No Private Tutoring (Expanded) -->
-                <div class="text-center p-6 rounded-xl bg-white shadow-xl border-t-8 border-secondary transform hover:scale-105 transition duration-300">
-                    <span class="text-5xl mb-3 block">📚</span>
-                    <h3 class="text-2xl font-bold text-primary mb-2">সম্পূর্ণ টিউশনমুক্ত পরিবেশ</h3>
-                    <p class="text-gray-700">আমাদের **ক্লাস-কেন্দ্রিক পাঠদান পদ্ধতি** এতটাই কার্যকর যে শিক্ষার্থীদের বাইরের কোনো প্রাইভেট টিউটরের উপর নির্ভর করতে হয় না। অতিরিক্ত ক্লাসের মাধ্যমে দুর্বলতা দূর করা হয়।</p>
-                </div>
-
-                <!-- Feature 5: Career Guidance & Placement (New) -->
-                <div class="text-center p-6 rounded-xl bg-white shadow-xl border-t-8 border-secondary transform hover:scale-105 transition duration-300">
-                    <span class="text-5xl mb-3 block">🛠️</span>
-                    <h3 class="text-2xl font-bold text-primary mb-2">ক্যারিয়ার ও জব প্লেসমেন্ট</h3>
-                    <p class="text-gray-700">কোর্স চলাকালীন **ইন্টার্নশিপের সুযোগ** এবং সফলতার সাথে পাস করার পর আমাদের প্রাক্তন শিক্ষার্থীদের নেটওয়ার্কের মাধ্যমে চাকুরি পেতে সহায়তা করা হয়।</p>
-                </div>
-
-                <!-- Feature 6: Job Holders Class (Expanded) -->
-                <div class="text-center p-6 rounded-xl bg-white shadow-xl border-t-8 border-secondary transform hover:scale-105 transition duration-300">
-                    <span class="text-5xl mb-3 block">💼</span>
-                    <h3 class="text-2xl font-bold text-primary mb-2">চাকরিজীবীদের জন্য বিশেষ ব্যবস্থা</h3>
-                    <p class="text-gray-700">যারা বর্তমানে চাকরি করছেন, তাদের জন্য **ছুটির দিনে (শুক্র/শনি)** বিশেষ ক্লাস ও পরীক্ষার ব্যবস্থা রয়েছে। এতে কাজের পাশাপাশি শিক্ষাজীবন চালিয়ে যাওয়া সম্ভব হয়।</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- সেকশন ৫: অবকাঠামো (Infrastructure) -->
-    <section id="infrastructure" class="section-padding bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-12 border-b-4 border-primary inline-block pb-1">আমাদের অবকাঠামো</h2>
-            
-            <p class="text-xl text-gray-700 mb-8">শিক্ষার্থীদের সেরা শিক্ষার পরিবেশ নিশ্চিত করতে আমাদের রয়েছে আধুনিক সুযোগ-সুবিধা:</p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Features Section -->
+        <section id="features" class="mb-12">
+            <h3 class="text-3xl font-bold text-center text-[#1e3a8a] mb-8 border-b-2 border-red-500 pb-2">বৈশিষ্ট্য</h3>
+            <div class="section-card p-6 md:p-8">
+                <h4 class="text-2xl font-extrabold text-red-500 mb-2">আমাদের মূল বৈশিষ্ট্য ও সুবিধা</h4>
+                <p class="text-lg text-gray-700 mb-8 max-w-3xl mx-auto">
+                    এসএসসি ভোকেশনাল থেকে ডিপ্লোমা পর্যন্ত প্রতিটি স্তরে সফলতার জন্য আমাদের রয়েছে সুসংগঠিত শিক্ষাব্যবস্থা।
+                </p>
                 
-                <!-- Feature 1: Classrooms -->
-                <div class="text-center p-5 rounded-xl bg-gray-50 shadow-md border border-gray-200 hover:bg-primary/10 transition duration-300">
-                    <span class="text-3xl text-primary">🏫</span>
-                    <h3 class="text-2xl font-bold text-gray-900 mt-2 mb-1">৮টি আধুনিক ক্লাসরুম</h3>
-                    <p class="text-gray-600 text-sm">পর্যাপ্ত আলো ও বাতাসের ব্যবস্থা সহ প্রশস্ত ক্লাসরুম।</p>
-                </div>
-                
-                <!-- Feature 2: Headteacher's Room -->
-                <div class="text-center p-5 rounded-xl bg-gray-50 shadow-md border border-gray-200 hover:bg-primary/10 transition duration-300">
-                    <span class="text-3xl text-primary">👨‍💼</span>
-                    <h3 class="text-2xl font-bold text-gray-900 mt-2 mb-1">১টি প্রধান শিক্ষকের কক্ষ</h3>
-                    <p class="text-gray-600 text-sm">শিক্ষক ও প্রশাসনিক কাজের জন্য ডেডিকেটেড কক্ষ।</p>
-                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <!-- 1. আধুনিক ল্যাব ও ব্যবহারিক প্রশিক্ষণ -->
+                    <div class="flex space-x-4 p-4 rounded-lg bg-red-50 border-l-4 border-red-500">
+                        <div class="text-3xl text-red-500 flex-shrink-0">🔬</div>
+                        <div>
+                            <p class="text-xl font-bold text-[#1e3a8a] mb-1">আধুনিক ল্যাব ও ব্যবহারিক প্রশিক্ষণ</p>
+                            <p class="text-gray-600 text-base">
+                                তাত্ত্বিক ক্লাসের পাশাপাশি **নিয়মিত ও কঠোর ব্যবহারিক ক্লাস** পরিচালনা করা হয়। আমাদের ল্যাবগুলো ইন্ডাস্ট্রি-স্ট্যান্ডার্ড যন্ত্রপাতিতে সুসজ্জিত, যা শিক্ষার্থীদের হাতে-কলমে দক্ষতা অর্জনে সাহায্য করে।
+                            </p>
+                        </div>
+                    </div>
 
-                <!-- Feature 3: Teacher's Room -->
-                <div class="text-center p-5 rounded-xl bg-gray-50 shadow-md border border-gray-200 hover:bg-primary/10 transition duration-300">
-                    <span class="text-3xl text-primary">🧑‍🏫</span>
-                    <h3 class="text-2xl font-bold text-gray-900 mt-2 mb-1">১টি শিক্ষক কক্ষ</h3>
-                    <p class="text-gray-600 text-sm">শিক্ষকদের প্রস্তুতি এবং যোগাযোগের জন্য বিশেষ ব্যবস্থা।</p>
-                </div>
+                    <!-- 2. ১০০% পাশের নিশ্চয়তা -->
+                    <div class="flex space-x-4 p-4 rounded-lg bg-green-50 border-l-4 border-green-500">
+                        <div class="text-3xl text-green-500 flex-shrink-0">🏆</div>
+                        <div>
+                            <p class="text-xl font-bold text-[#1e3a8a] mb-1">১০০% পাশের নিশ্চয়তা</p>
+                            <p class="text-gray-600 text-base">
+                                প্রত্যেক শিক্ষার্থীর প্রতি **ব্যক্তিগত মনোযোগ** ও দুর্বলদের জন্য বিশেষ পরিচর্যার মাধ্যমে বোর্ডের চূড়ান্ত পরীক্ষায় সর্বোচ্চ ফলাফল (GPA 5 সহ) নিশ্চিত করা হয়।
+                            </p>
+                        </div>
+                    </div>
 
-                <!-- Feature 4: Washroom Facilities -->
-                <div class="text-center p-5 rounded-xl bg-gray-50 shadow-md border border-gray-200 hover:bg-primary/10 transition duration-300">
-                    <span class="text-3xl text-primary">🚻</span>
-                    <h3 class="text-2xl font-bold text-gray-900 mt-2 mb-1">পরিষ্কার পরিচ্ছন্ন ওয়াশরুম</h3>
-                    <p class="text-gray-600 text-sm">শিক্ষার্থী ও শিক্ষক উভয়ের জন্য স্বাস্থ্যকর ওয়াশরুম সুবিধা।</p>
-                </div>
+                    <!-- 3. অভিজ্ঞ ও দক্ষ শিক্ষক মন্ডলী -->
+                    <div class="flex space-x-4 p-4 rounded-lg bg-blue-50 border-l-4 border-blue-500">
+                        <div class="text-3xl text-blue-500 flex-shrink-0">👨‍🎓</div>
+                        <div>
+                            <p class="text-xl font-bold text-[#1e3a8a] mb-1">অভিজ্ঞ ও দক্ষ শিক্ষক মন্ডলী</p>
+                            <p class="text-gray-600 text-base">
+                                দীর্ঘদিনের অভিজ্ঞতা এবং **শিল্প-সংশ্লিষ্ট জ্ঞান** সম্পন্ন শিক্ষক দ্বারা ক্লাস পরিচালনা করা হয়। তারা শুধু পড়ান না, বরং শিক্ষার্থীদেরকে ভবিষ্যতের চ্যালেঞ্জ মোকাবেলায় প্রস্তুত করেন।
+                            </p>
+                        </div>
+                    </div>
 
+                    <!-- 4. সম্পূর্ণ টিউশনমুক্ত পরিবেশ -->
+                    <div class="flex space-x-4 p-4 rounded-lg bg-yellow-50 border-l-4 border-yellow-500">
+                        <div class="text-3xl text-yellow-500 flex-shrink-0">📚</div>
+                        <div>
+                            <p class="text-xl font-bold text-[#1e3a8a] mb-1">সম্পূর্ণ টিউশনমুক্ত পরিবেশ</p>
+                            <p class="text-gray-600 text-base">
+                                আমাদের **ক্লাস-কেন্দ্রিক পাঠদান পদ্ধতি** এতটাই কার্যকর যে শিক্ষার্থীদের বাইরের কোনো প্রাইভেট টিউটরের উপর নির্ভর করতে হয় না। অতিরিক্ত ক্লাসের মাধ্যমে দুর্বলতা দূর করা হয়।
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 5. ক্যারিয়ার ও জব প্লেসমেন্ট -->
+                    <div class="flex space-x-4 p-4 rounded-lg bg-purple-50 border-l-4 border-purple-500">
+                        <div class="text-3xl text-purple-500 flex-shrink-0">🛠️</div>
+                        <div>
+                            <p class="text-xl font-bold text-[#1e3a8a] mb-1">ক্যারিয়ার ও জব প্লেসমেন্ট</p>
+                            <p class="text-gray-600 text-base">
+                                কোর্স চলাকালীন **ইন্টার্নশিপের সুযোগ** এবং সফলতার সাথে পাস করার পর আমাদের প্রাক্তন শিক্ষার্থীদের নেটওয়ার্কের মাধ্যমে চাকুরি পেতে সহায়তা করা হয়।
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 6. চাকরিজীবীদের জন্য বিশেষ ব্যবস্থা -->
+                    <div class="flex space-x-4 p-4 rounded-lg bg-pink-50 border-l-4 border-pink-500">
+                        <div class="text-3xl text-pink-500 flex-shrink-0">💼</div>
+                        <div>
+                            <p class="text-xl font-bold text-[#1e3a8a] mb-1">চাকরিজীবীদের জন্য বিশেষ ব্যবস্থা</p>
+                            <p class="text-gray-600 text-base">
+                                যারা বর্তমানে চাকরি করছেন, তাদের জন্য **ছুটির দিনে (শুক্র/শনি)** বিশেষ ক্লাস ও পরীক্ষার ব্যবস্থা রয়েছে। এতে কাজের পাশাপাশি শিক্ষাজীবন চালিয়ে যাওয়া সম্ভব হয়।
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+        
+        <!-- Infrastructure Section -->
+        <section id="infrastructure" class="mb-12">
+            <h3 class="text-3xl font-bold text-center text-[#1e3a8a] mb-8 border-b-2 border-red-500 pb-2">অবকাঠামো</h3>
+            <div class="section-card">
+                 <h4 class="text-2xl font-semibold text-red-500 mb-4">শিক্ষার্থীদের সেরা শিক্ষার পরিবেশ নিশ্চিত করতে আমাদের রয়েছে আধুনিক সুযোগ-সুবিধা:</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-gray-700 text-lg">
+                    
+                    <!-- Classrooms -->
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="text-3xl text-[#1e3a8a] mb-2">🏫</div>
+                        <p class="font-bold">৮টি আধুনিক ক্লাসরুম</p>
+                        <p class="text-sm">পর্যাপ্ত আলো ও বাতাসের ব্যবস্থা সহ প্রশস্ত ক্লাসরুম।</p>
+                    </div>
+
+                    <!-- Headmaster's Room -->
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="text-3xl text-[#1e3a8a] mb-2">👨‍💼</div>
+                        <p class="font-bold">১টি প্রধান শিক্ষকের কক্ষ</p>
+                        <p class="text-sm">শিক্ষক ও প্রশাসনিক কাজের জন্য ডেডিকেটেড কক্ষ।</p>
+                    </div>
+
+                    <!-- Teacher's Room -->
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="text-3xl text-[#1e3a8a] mb-2">🧑‍🏫</div>
+                        <p class="font-bold">১টি শিক্ষক কক্ষ</p>
+                        <p class="text-sm">শিক্ষকদের প্রস্তুতি এবং যোগাযোগের জন্য বিশেষ ব্যবস্থা।</p>
+                    </div>
+                    
+                    <!-- Computer Lab -->
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="text-3xl text-[#1e3a8a] mb-2">💻</div>
+                        <p class="font-bold">কম্পিউটার ল্যাব</p>
+                        <p class="text-sm">আধুনিক কনফিগারেশনের কম্পিউটার সহ শীতাতপ নিয়ন্ত্রিত ল্যাব।</p>
+                    </div>
+                    
+                    <!-- Science Lab -->
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="text-3xl text-[#1e3a8a] mb-2">🧪</div>
+                        <p class="font-bold">বিজ্ঞান ল্যাব</p>
+                        <p class="text-sm">পদার্থ, রসায়ন ও জীববিজ্ঞান পরীক্ষার জন্য প্রয়োজনীয় উপকরণ।</p>
+                    </div>
+
+                    <!-- Washroom -->
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="text-3xl text-[#1e3a8a] mb-2">🚻</div>
+                        <p class="font-bold">পরিষ্কার পরিচ্ছন্ন ওয়াশরুম</p>
+                        <p class="text-sm">শিক্ষার্থী ও শিক্ষক উভয়ের জন্য স্বাস্থ্যকর ওয়াশরুম সুবিধা।</p>
+                    </div>
+                    
+                    <!-- Library -->
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="text-3xl text-[#1e3a8a] mb-2">📚</div>
+                        <p class="font-bold">সমৃদ্ধ লাইব্রেরি</p>
+                        <p class="text-sm">বিভিন্ন লেখকের বই এবং একাডেমিক সহায়ক সামগ্রীর বিশাল সংগ্রহ।</p>
+                    </div>
+                    
+                    <!-- Playground -->
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="text-3xl text-[#1e3a8a] mb-2">⚽</div>
+                        <p class="font-bold">খেলার মাঠ</p>
+                        <p class="text-sm">শিক্ষার্থীদের শারীরিক ও মানসিক বিকাশের জন্য পর্যাপ্ত খোলা জায়গা।</p>
+                    </div>
 
 
-    <!-- সেকশন ৬: যোগাযোগ (Contact) -->
-    <section id="contact" class="section-padding primary-bg text-white">
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Section -->
+        <section id="video" class="mb-12">
+            <h3 class="text-3xl font-bold text-center text-[#1e3a8a] mb-8 border-b-2 border-red-500 pb-2">আমাদের কার্যক্রমের ভিডিও</h3>
+            <div class="section-card p-6 md:p-10">
+                <h4 class="text-2xl font-semibold text-red-500 mb-4">আমাদের ক্যাম্পাস ও সাফল্যের কিছু ঝলক</h4>
+                <p class="text-lg text-gray-700 mb-8 max-w-3xl mx-auto">
+                    ভিডিওটি প্লে করে আমাদের ক্লাসরুম, ল্যাব এবং শিক্ষার্থীদের সফলতার গল্প দেখুন।
+                </p>
+
+                <!-- Responsive Video Container (16:9 Aspect Ratio) -->
+                <div class="responsive-video-container bg-gray-200 rounded-xl overflow-hidden shadow-2xl border-4 border-red-300">
+                    <!-- Iframe for YouTube or other video service -->
+                    <iframe 
+                        src="https://www.youtube.com/embed/V_TuD4YSegc?si=blY9uoFNHEPSt5rO" 
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen
+                        class="w-full h-full"
+                    ></iframe>
+                </div>
+                
+                <p class="text-sm text-gray-500 mt-4 text-center">
+                    **নোট:** এটি এখন আপনার দেওয়া সঠিক ভিডিও লিঙ্ক ব্যবহার করছে।
+                </p>
+            </div>
+        </section>
+        <!-- End Video Section -->
+        
+        <!-- Contact Section -->
+        <section id="contact" class="mb-12">
+            <h3 class="text-3xl font-bold text-center text-[#1e3a8a] mb-8 border-b-2 border-red-500 pb-2">যোগাযোগ</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="section-card">
+                    <h4 class="text-xl font-semibold text-gray-700 mb-3">ঠিকানা ও তথ্য</h4>
+                    
+                    <!-- Address -->
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        🏫 **ঠিকানা:** <span class="font-medium block">হাউস নং: ৪৩৫, ব্লক: সি, ওয়ার্ড নং: ০১</span>
+                        <span class="block">শ্রীপুর ১৭৪০, শ্রীপুর পৌরসভা,</span>
+                        <span class="block">শ্রীপুর, গাজীপুর।</span>
+                    </p>
+                    
+                    <!-- Phones -->
+                    <div class="mb-2">
+                        <span class="font-medium block text-gray-700">📞 ফোন (অফিস): </span>
+                        <a href="tel:+8801710077332" class="text-[#1e3a8a] hover:text-red-500 font-bold ml-2">+৮৮ ০১৭১০-০৭৭৩৩২</a>
+                    </div>
+                    <div class="mb-2">
+                        <span class="font-medium block text-gray-700">📞 ফোন (অন্যান্য): </span>
+                        <a href="tel:+8801718077873" class="text-[#1e3a8a] hover:text-red-500 font-bold ml-2">+৮৮ ০১৭১৮-০৭৭৮৭৩</a>
+                    </div>
+                    
+                    <!-- Email -->
+                    <div class="mb-2">
+                        <span class="font-medium block text-gray-700">📧 ইমেইল: </span>
+                        <a href="mailto:citi.schoolandcollege@gmail.com" class="text-[#1e3a8a] hover:text-red-500 font-bold ml-2">citi.schoolandcollege@gmail.com</a>
+                    </div>
+
+                    <!-- Facebook Link -->
+                    <div class="mb-2">
+                        <span class="font-medium block text-gray-700">📘 ফেসবুক পেজ: </span>
+                        <a href="https://www.facebook.com/city.information.technology" target="_blank" class="text-[#1e3a8a] hover:text-red-500 font-bold ml-2 underline">আমাদের পেজে যান (ক্লিক করুন)</a>
+                    </div>
+
+                    <!-- UPDATED: Website Link -->
+                    <p class="text-gray-600 mt-4">
+                        🌐 **ওয়েবসাইট:** <a href="https://citisc.netlify.app/" target="_blank" class="text-[#1e3a8a] hover:text-red-500 font-bold underline">https://citisc.netlify.app/</a> 
+                        (বর্তমানে আপনি এই সাইটের ডিজাইন দেখছেন)
+                    </p>
+                    
+                </div>
+                
+                <div class="section-card">
+                    <h4 class="text-xl font-semibold text-gray-700 mb-3">আমাদের অবস্থান (Google Maps)</h4>
+                    <!-- Link to Google Map -->
+                    <a href="https://maps.app.goo.gl/ugaCoeC6uhFW1J2V7" target="_blank" class="block">
+                        <div class="bg-gray-100 h-48 rounded-lg flex items-center justify-center text-gray-500 text-center border-4 border-dashed border-red-300 hover:bg-red-50 transition duration-300">
+                            <span class="font-bold text-lg text-red-500">ম্যাপে আমাদের অবস্থান দেখুন (ক্লিক করুন)</span>
+                        </div>
+                    </a>
+                    <p class="text-sm text-gray-500 mt-2">নতুন উইন্ডোতে ম্যাপ লিঙ্কটি খুলবে।</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="header-bg text-white py-6 mt-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl md:text-4xl font-extrabold mb-8 border-b-4 border-yellow-400 inline-block pb-1">যোগাযোগ</h2>
-            <p class="text-xl mb-6">ভর্তি বা অন্য কোনো তথ্যের জন্য সরাসরি আমাদের সাথে কথা বলুন।</p>
-            
-            <div class="max-w-3xl mx-auto bg-indigo-700 p-6 md:p-8 rounded-xl shadow-2xl">
-                
-                <!-- প্রতিষ্ঠানের ঠিকানা -->
-                <div class="mb-8 text-left p-4 bg-indigo-800 rounded-lg shadow-inner">
-                    <h3 class="text-xl font-bold text-yellow-400 mb-2">আমাদের ঠিকানা:</h3>
-                    <p class="text-indigo-100">হাউস নং: ৪৩৫, ব্লক: সি, ওয়ার্ড নং: ০১</p>
-                    <p class="text-indigo-100">শ্রীপুর ১৭৪০, শ্রীপুর পৌরসভা,</p>
-                    <p class="text-indigo-100">শ্রীপুর, গাজীপুর।</p>
-                </div>
-
-                <!-- যোগাযোগ নাম্বার, ইমেল এবং সোশ্যাল মিডিয়া -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <!-- ফোন নাম্বার ১ -->
-                    <div class="flex justify-center items-center space-x-2 bg-indigo-800 p-3 rounded-lg shadow-md">
-                        <span class="text-yellow-400 text-xl">📞</span>
-                        <a href="tel:+8801710077332" class="text-white hover:text-yellow-400 text-lg font-bold transition duration-300">
-                            +৮৮ ০১৭১০-০৭৭৩৩২
-                        </a>
-                    </div>
-                    
-                    <!-- ফোন নাম্বার ২ -->
-                    <div class="flex justify-center items-center space-x-2 bg-indigo-800 p-3 rounded-lg shadow-md">
-                        <span class="text-yellow-400 text-xl">📞</span>
-                        <a href="tel:+8801918077873" class="text-white hover:text-yellow-400 text-lg font-bold transition duration-300">
-                            +৮৮ ০১৭১৮-০৭৭৮৭৩
-                        </a>
-                    </div>
-
-                    <!-- ইমেল ঠিকানা যোগ করা হয়েছে -->
-                    <div class="md:col-span-2 flex justify-center items-center space-x-3 bg-indigo-800 p-3 rounded-lg shadow-md">
-                        <span class="text-yellow-400 text-xl">📧</span>
-                        <a href="mailto:citi.schoolandcollege@gmail.com" class="text-white hover:text-yellow-400 text-lg font-bold transition duration-300">
-                            citi.schoolandcollege@gmail.com
-                        </a>
-                    </div>
-                    
-                    <!-- ফেসবুক লিংক -->
-                    <div class="md:col-span-2 flex justify-center items-center space-x-3 bg-indigo-800 p-3 rounded-lg shadow-md">
-                        <!-- Facebook Icon (Inline SVG) -->
-                        <svg class="w-6 h-6 text-yellow-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 10h-2v4h2v-4zM16 8h-6v8h6v-8zM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 5.163-4.041 9.38-9.041 9.924V14h3.64l.542-4h-4.182V7.5c0-1.12.336-1.884 1.944-1.884H15V4c-.312 0-1.36-.098-2.617-.098-2.73 0-4.595 1.76-4.595 4.888V10H6v4h2.535v5.924C7.041 21.38 2 17.163 2 12z"></path></svg>
-
-                        <a href="https://www.facebook.com/city.information.technology" target="_blank" class="text-white hover:text-yellow-400 text-lg font-bold transition duration-300">
-                            Facebook Page
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ফুটার -->
-    <footer class="bg-gray-900 text-gray-400 py-6">
-        <div class="max-w-7xl mx-auto px-4 text-center text-sm">
+            <!-- Footer Text -->
             <p>&copy; ২০২৫ সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট স্কুল & কলেজ। সর্বস্বত্ব সংরক্ষিত।</p>
+            <p class="mt-2 text-sm">
+                **ঠিকানা:** হাউস নং: ৪৩৫, ব্লক: সি, ওয়ার্ড নং: ০১, শ্রীপুর, গাজীপুর।
+            </p>
         </div>
     </footer>
-    
-    <!-- জাভাস্ক্রিপ্ট (স্ক্রিপ্ট ট্যাগ এর ভেতরে) -->
-    <script>
-        // --- সাধারণ DOM স্ক্রিপ্ট ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const menuButton = document.getElementById('menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-            const desktopNavLinks = document.querySelectorAll('.nav-link');
-            const heroButton = document.querySelector('.hero-enroll-btn'); // হিরো বাটন
 
-            // মেনু টগল ফাংশন
-            menuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
+    <!-- Modal for Detailed SSC Vocational Notice (Large, Scrollable) -->
+    <div id="detailedNoticeModal" class="modal fixed inset-0 flex items-center justify-center z-[100] hidden p-4 sm:p-8">
+        <div class="modal-content bg-white p-6 md:p-8 rounded-xl shadow-2xl max-w-4xl w-full mx-auto border-t-8 border-red-500 overflow-y-auto max-h-[90vh]">
+            <div id="detailedNoticeBody" class="text-left text-gray-800">
+                <!-- Content inserted by JS -->
+            </div>
+            <button id="closeDetailedModalBtn" class="btn-primary px-5 py-2 text-lg mt-6">বন্ধ করুন</button>
+        </div>
+    </div>
 
-            // সব নেভিগেশন লিংক এবং হিরো বাটন এর জন্য স্মুথ স্ক্রোলিং লজিক
-            const smoothScroll = (e) => {
-                e.preventDefault();
-                const targetId = e.currentTarget.getAttribute('href');
-                document.querySelector(targetId).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            };
 
-            // মোবাইল লিংকসের জন্য
-            mobileNavLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    mobileMenu.classList.add('hidden');
-                    smoothScroll(e);
-                });
-            });
-
-            // ডেস্কটপ লিংকসের জন্য
-            desktopNavLinks.forEach(link => {
-                link.addEventListener('click', smoothScroll);
-            });
+    <script type="text/javascript">
+        // --- SSC VOCATIONAL NOTICE CONTENT (Templated HTML for easy insertion) ---
+        const sscVocationalNoticeHTML = `
+            <h2 class="text-3xl font-extrabold text-[#1e3a8a] mb-2 border-b-2 border-red-500 pb-1">
+                বিজ্ঞপ্তি (এসএসসি ভোকেশনাল ও দাখিল ভোকেশনাল)
+            </h2>
+            <p class="text-sm text-gray-600 mb-4">
+                <strong>সূত্র:</strong> বাংলাদেশ কারিগরি শিক্ষা বোর্ড, পরীক্ষা নিয়ন্ত্রণ বিভাগ (ভোকেশনাল শাখা), ঢাকা।
+                <br>
+                <strong>প্রকাশের তারিখ:</strong> ০৭ অক্টোবর, ২০২৫ খ্রিঃ
+            </p>
             
-            // হিরো সেকশনের "ভর্তি চলছে" বাটন এর জন্য
-            if (heroButton) {
-                heroButton.addEventListener('click', smoothScroll);
+            <p class="text-lg text-gray-700 mb-6 font-medium">
+                এতদ্বারা সংশ্লিষ্ট সকলের অবগতির জন্য জানানো যাচ্ছে যে, **২০২৫ সালের এসএসসি (ভোকেশনাল) ও দাখিল (ভোকেশনাল) শিক্ষাক্রমের নবম শ্রেণি সমাপনী পরীক্ষা নিম্নোক্ত সময়সূচি অনুযায়ী অনুষ্ঠিত হবে।**
+            </p>
+
+            <h3 class="text-2xl font-bold text-red-500 mb-3 mt-6">
+                ১. তত্ত্বীয় পরীক্ষার সময়সূচি (সকাল ১০:০০টা হতে)
+            </h3>
+            <div class="overflow-x-auto shadow-md rounded-lg mb-6">
+                <table class="w-full text-sm text-left text-gray-700">
+                    <thead class="text-xs text-white uppercase bg-red-600">
+                        <tr>
+                            <th scope="col" class="px-3 py-3 md:px-6">তারিখ ও বার</th>
+                            <th scope="col" class="px-3 py-3 md:px-6">বিষয় ও বিষয় কোড</th>
+                            <th scope="col" class="px-3 py-3 md:px-6">শিক্ষাক্রম</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-white border-b hover:bg-red-50">
+                            <td class="px-3 py-4 md:px-6 font-medium whitespace-nowrap">০৬/১১/২০২৫ খ্রিঃ (বৃহস্পতিবার)</td>
+                            <td class="px-3 py-4 md:px-6">বাংলা-১ (৫১৯১১/৪১৯১১, ১৯১১)</td>
+                            <td class="px-3 py-4 md:px-6">এসএসসি (ভোক) ও দাখিল (ভোক)</td>
+                        </tr>
+                        <tr class="bg-gray-50 border-b hover:bg-gray-100">
+                            <td class="px-3 py-4 md:px-6 font-medium whitespace-nowrap">০৯/১১/২০২৫ খ্রিঃ (রবিবার)</td>
+                            <td class="px-3 py-4 md:px-6">ইংরেজী-১ (৫১৯১২/৪১৯১২, ১৯১২)</td>
+                            <td class="px-3 py-4 md:px-6">এসএসসি (ভোক) ও দাখিল (ভোক)</td>
+                        </tr>
+                        <tr class="bg-white border-b hover:bg-red-50">
+                            <td class="px-3 py-4 md:px-6 font-medium whitespace-nowrap">১১/১১/২০২৫ খ্রিঃ (মঙ্গলবার)</td>
+                            <td class="px-3 py-4 md:px-6">গণিত-১ (৫১৯১৩/৪১৯১৩, ১৯১৩)</td>
+                            <td class="px-3 py-4 md:px-6">এসএসসি (ভোক) ও দাখিল (ভোক)</td>
+                        </tr>
+                        <tr class="bg-gray-50 border-b hover:bg-gray-100">
+                            <td class="px-3 py-4 md:px-6 font-medium whitespace-nowrap">১৩/১১/২০২৫ খ্রিঃ (বৃহস্পতিবার)</td>
+                            <td class="px-3 py-4 md:px-6">পদার্থবিজ্ঞান-১ (৫১৯১৫/৪১৯১৫, ১৯১৫)</td>
+                            <td class="px-3 py-4 md:px-6">এসএসসি (ভোক) ও দাখিল (ভোক)</td>
+                        </tr>
+                        <tr class="bg-white border-b hover:bg-red-50">
+                            <td class="px-3 py-4 md:px-6 font-medium whitespace-nowrap">১৬/১১/২০২৫ খ্রিঃ (রবিবার)</td>
+                            <td class="px-3 py-4 md:px-6">রসায়ন-১, বাংলাদেশ ও বিশ্ব পরিচয়-১ / হাদীস শরীফ ও ফিকহ-১</td>
+                            <td class="px-3 py-4 md:px-6">এসএসসি (ভোক) ও দাখিল (ভোক)</td>
+                        </tr>
+                        <tr class="bg-gray-50 border-b hover:bg-gray-100">
+                            <td class="px-3 py-4 md:px-6 font-medium whitespace-nowrap">১৮/১১/২০২৫ খ্রিঃ (মঙ্গলবার)</td>
+                            <td class="px-3 py-4 md:px-6">ধর্ম শিক্ষা-১ / কুরআন মাজিদ ও তাজভিদ-১</td>
+                            <td class="px-3 py-4 md:px-6">এসএসসি (ভোক) ও দাখিল (ভোক)</td>
+                        </tr>
+                        <tr class="bg-white border-b hover:bg-red-50 font-bold text-red-600">
+                            <td class="px-3 py-4 md:px-6 whitespace-nowrap">২০/১১/২০২৫ খ্রিঃ ও ২৩/১১/২০২৫ খ্রিঃ (বৃহঃ ও রবি)</td>
+                            <td class="px-3 py-4 md:px-6">ট্রেড-১ (যেমন: আইটি সার্পেটি অ্যান্ড আইওটি বেসিকস-১, জেনারেল ইলেকট্রনিক্স-১ ইত্যাদি)</td>
+                            <td class="px-3 py-4 md:px-6">এসএসসি (ভোক) ও দাখিল (ভোক)</td>
+                        </tr>
+                        <tr class="bg-gray-50 border-b hover:bg-gray-100 font-bold text-red-600">
+                            <td class="px-3 py-4 md:px-6 whitespace-nowrap">২৫/১১/২০২৫ খ্রিঃ (মঙ্গলবার)</td>
+                            <td class="px-3 py-4 md:px-6">ট্রেড-২ (যেমন: আইটি সার্পেটি অ্যান্ড আইওটি বেসিকস-২, জেনারেল ইলেকট্রনিক্স-২ ইত্যাদি)</td>
+                            <td class="px-3 py-4 md:px-6">এসএসসি (ভোক) ও দাখিল (ভোক)</td>
+                        </tr>
+                        <tr class="bg-white border-b hover:bg-red-50">
+                            <td class="px-3 py-4 md:px-6 font-medium whitespace-nowrap">২৭/১১/২০২৫ খ্রিঃ (বৃহস্পতিবার)</td>
+                            <td class="px-3 py-4 md:px-6">উচ্চতর গনিত-১ / কৃষি শিক্ষা-১ / জীব বিজ্ঞান-১</td>
+                            <td class="px-3 py-4 md:px-6">এসএসসি (ভোক) ও দাখিল (ভোক)</td>
+                        </tr>
+                        <tr class="bg-gray-50 hover:bg-gray-100">
+                            <td class="px-3 py-4 md:px-6 font-medium whitespace-nowrap">৩০/১১/২০২৫ খ্রিঃ (রবিবার)</td>
+                            <td class="px-3 py-4 md:px-6">আরবি-১</td>
+                            <td class="px-3 py-4 md:px-6">দাখিল (ভোক)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-red-500 mb-3 mt-6">
+                ২. ব্যবহারিক পরীক্ষার সময়সূচি
+            </h3>
+            <div class="overflow-x-auto shadow-md rounded-lg mb-6">
+                <table class="w-full text-sm text-left text-gray-700">
+                    <thead class="text-xs text-white uppercase bg-red-600">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">ক্রমিক নং</th>
+                            <th scope="col" class="px-6 py-3">বিবরণ</th>
+                            <th scope="col" class="px-6 py-3">সময়সীমা</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-white border-b hover:bg-red-50">
+                            <td class="px-6 py-4 font-medium whitespace-nowrap">১.</td>
+                            <td class="px-6 py-4">ব্যবহারিক পরীক্ষা গ্রহণ</td>
+                            <td class="px-6 py-4 font-bold text-red-600">৩০/১১/২০২৫ খ্রিঃ তারিখ হতে ০৭/১২/২০২৫ খ্রিঃ পর্যন্ত</td>
+                        </tr>
+                        <tr class="bg-gray-50 hover:bg-gray-100">
+                            <td class="px-6 py-4 font-medium whitespace-nowrap">২.</td>
+                            <td class="px-6 py-4">বাস্তব প্রশিক্ষণে অংশ গ্রহণ</td>
+                            <td class="px-6 py-4 font-bold text-red-600">০৮/১২/২০২৫ খ্রিঃ তারিখ হতে ১৯/০১/২০২৬ খ্রিঃ পর্যন্ত</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-red-500 mb-3 mt-6">
+                ৩. বিশেষ নির্দেশাবলি
+            </h3>
+            <ul class="list-disc list-outside space-y-3 ml-5 text-gray-700">
+                <li>
+                    <strong>পরীক্ষা কেন্দ্রে প্রবেশ:</strong> পরীক্ষার্থীদেরকে পরীক্ষা শুরু হওয়ার **৩০ মিনিট পূর্বে** পরীক্ষা কেন্দ্রে প্রবেশ করতে হবে।
+                </li>
+                <li>
+                    <strong>ক্যালকুলেটর ব্যবহার:</strong> পরীক্ষার্থীগণ পরীক্ষায় **সাধারণ সাইন্টিফিক (নন প্রোগ্রামবল)** ক্যালকুলেটর ব্যবহার করতে পারবে।
+                </li>
+                <li>
+                    <strong>মোবাইল ফোন:</strong> কেন্দ্র সচিব ব্যতীত অন্য কেউ পরীক্ষা কেন্দ্রে মোবাইল ফোন ব্যবহার করতে পারবেন না। কেন্দ্র সচিব ক্যামেরা বিহীন সাধারণ মোবাইল ব্যবহার করতে পারবেন।
+                </li>
+                <li>
+                    <strong>ব্যবহারিক পরীক্ষা:</strong> ব্যবহারিক পরীক্ষা **স্ব স্ব কেন্দ্রে** অনুষ্ঠিত হবে।
+                </li>
+            </ul>
+            
+            <p class="mt-8 text-center text-xl font-bold text-[#1e3a8a] border-t pt-4">
+                ভর্তি সংক্রান্ত তথ্যের জন্য যোগাযোগ করুন
+            </p>
+        `;
+
+        // --- Detailed Notice Modal Logic ---
+        const detailedNoticeModal = document.getElementById('detailedNoticeModal');
+        const detailedNoticeBody = document.getElementById('detailedNoticeBody');
+        const closeDetailedModalBtn = document.getElementById('closeDetailedModalBtn');
+        const sscNoticeLink = document.getElementById('ssc-notice-link');
+
+        function showDetailedNoticeModal() {
+            detailedNoticeBody.innerHTML = sscVocationalNoticeHTML;
+            detailedNoticeModal.classList.remove('hidden');
+        }
+
+        function closeDetailedNoticeModal() {
+            detailedNoticeModal.classList.add('hidden');
+        }
+
+        sscNoticeLink.addEventListener('click', showDetailedNoticeModal);
+        closeDetailedModalBtn.addEventListener('click', closeDetailedNoticeModal);
+        detailedNoticeModal.addEventListener('click', (e) => {
+            if (e.target === detailedNoticeModal) {
+                closeDetailedNoticeModal();
             }
-            
-            // কোর্সের কার্ডের ভিতরের "ভর্তি চলছে →" লিঙ্কগুলোর জন্য
-            const courseEnrollLinks = document.querySelectorAll('#course a[href="#contact"]');
-            courseEnrollLinks.forEach(link => {
-                link.addEventListener('click', smoothScroll);
-            });
-            
-            // নোটিশ সেকশনের জন্য স্ক্রোলিং লজিক
-            const noticeLinks = document.querySelectorAll('a[href="#notice"], #notice a[href="#contact"]'); // নোটিশ সেকশনের ভেতরের বাটনকেও যোগ করা হলো
-            noticeLinks.forEach(link => {
-                link.addEventListener('click', smoothScroll);
+        });
+
+
+        // --- General Navigation & Mobile Menu ---
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+        
+        // Function to smoothly scroll to sections
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href').substring(1);
+                
+                let targetElement = null;
+
+                if (targetId === 'courses') {
+                    targetElement = document.getElementById('courses');
+                } else if (targetId === 'features') {
+                    targetElement = document.getElementById('features');
+                } else if (targetId === 'infrastructure') {
+                    targetElement = document.getElementById('infrastructure');
+                } else if (targetId === 'video') { 
+                    targetElement = document.getElementById('video');
+                } else if (targetId === 'contact') {
+                    targetElement = document.getElementById('contact');
+                } else if (targetId === 'notice') {
+                    targetElement = document.getElementById('notice');
+                } else if (targetId === '') { // Home link
+                    targetElement = document.getElementById('home');
+                }
+
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+                
+                // Close mobile menu after clicking a link
+                document.getElementById('mobile-menu').classList.add('hidden');
             });
         });
+        
+        // --- Accordion Logic for Courses ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const contentId = header.id.replace('header-', 'content-');
+                    const content = document.getElementById(contentId);
+                    
+                    // Close all other open accordions
+                    document.querySelectorAll('.accordion-content').forEach(c => {
+                        if (c !== content) {
+                            c.classList.remove('active');
+                            document.getElementById(c.id.replace('content-', 'header-')).classList.remove('active');
+                        }
+                    });
+
+                    // Toggle the clicked accordion
+                    content.classList.toggle('active');
+                    header.classList.toggle('active');
+                });
+            });
+        });
+
     </script>
 </body>
 </html>
