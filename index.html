@@ -11,6 +11,7 @@
             font-family: 'Hind Siliguri', sans-serif;
             background-color: #f0f4f8;
             color: #334155;
+            scroll-behavior: smooth; /* স্মুথ স্ক্রোলিং এর জন্য */
         }
         .header-bg {
             background-color: #1e3a8a; /* Dark Blue */
@@ -31,7 +32,7 @@
             transition: transform 0.3s;
         }
         .section-card:hover {
-            /* transform: translateY(-5px); /* Disabled hover transform for a more stable layout */
+            transform: translateY(-5px);
         }
         .btn-primary {
             background-color: #ef4444; /* Red */
@@ -89,10 +90,12 @@
         /* Specific styling for the detailed notice table */
         #detailedNoticeModal table {
             border-collapse: collapse;
+            width: 100%;
         }
         #detailedNoticeModal th, #detailedNoticeModal td {
             border: 1px solid #e5e7eb;
             padding: 0.75rem;
+            text-align: left;
         }
         
         /* Custom styles for the video container to maintain aspect ratio (16:9) */
@@ -114,8 +117,8 @@
             width: 100%;
             height: 100%;
         }
-        /* Custom styling for the AI Advisor Chat */
-        #chat-window {
+         /* Custom styling for the AI Advisor Chat */
+         #chat-window {
             max-height: 400px;
             overflow-y: auto;
         }
@@ -147,50 +150,57 @@
         }
     </style>
 </head>
-<body>
+<body class="antialiased">
 
-    <!-- Urgent Notice Bar --><div class="notice-bar">
+    <!-- Urgent Notice Bar -->
+    <div class="notice-bar">
         <marquee behavior="scroll" direction="left">
             জরুরী বিজ্ঞপ্তি: এসএসসি (ভোকেশনাল) নবম শ্রেণি সমাপনী পরীক্ষার সময়সূচি প্রকাশিত হয়েছে। বিস্তারিত জানতে নোটিশ বোর্ড দেখুন।
         </marquee>
     </div>
 
-    <!-- Header & Navigation --><header class="header-bg sticky top-0 z-50">
+    <!-- Header & Navigation -->
+    <header class="header-bg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
             
             <div class="flex items-center space-x-3">
                 
-                <!-- Logo Image --><img 
+                <!-- Logo Image (Updated with User's URL) -->
+                <img 
                     src="https://i.ibb.co.com/hJ2kV3Ct/Screenshot-2025-10-06-173431.png" 
                     alt="সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট লোগো" 
                     class="w-12 h-12 rounded-full border-2 border-white flex-shrink-0 object-cover"
                     onerror="this.src='https://placehold.co/60x60/fcd34d/1e3a8a?text=CITI+SC'"
                 >
 
-                <!-- Header Title --><h1 class="text-xl md:text-2xl font-bold text-white tracking-wider">
+                <!-- Header Title -->
+                <h1 class="text-xl md:text-2xl font-bold text-white tracking-wider">
                     সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট স্কুল & কলেজ
                 </h1>
             </div>
             
-            <!-- Desktop Nav --><nav class="hidden md:flex space-x-4">
-                <a href="#" class="nav-link text-white px-3 py-2 rounded-md font-medium">হোম</a>
+            <!-- Desktop Nav (AI Advisor link added) -->
+            <nav class="hidden md:flex space-x-4">
+                <a href="#home" class="nav-link text-white px-3 py-2 rounded-md font-medium">হোম</a>
                 <a href="#founder" class="nav-link text-white px-3 py-2 rounded-md font-medium">প্রতিষ্ঠাতার বাণী</a>
                 <a href="#notice" class="nav-link text-white px-3 py-2 rounded-md font-medium">নোটিশ</a>
                 <a href="#courses" class="nav-link text-white px-3 py-2 rounded-md font-medium">কোর্সসমূহ</a>
                 <a href="#video" class="nav-link text-white px-3 py-2 rounded-md font-medium">ভিডিও</a>
                 <a href="#features" class="nav-link text-white px-3 py-2 rounded-md font-medium">বৈশিষ্ট্য</a>
-               
+                <a href="#advisor" class="nav-link text-white px-3 py-2 rounded-md font-medium">AI পরামর্শদাতা ✨</a>
                 <a href="#infrastructure" class="nav-link text-white px-3 py-2 rounded-md font-medium">অবকাঠামো</a>
                 <a href="#contact" class="nav-link text-white px-3 py-2 rounded-md font-medium">যোগাযোগ</a>
             </nav>
 
-            <!-- Mobile Menu Button --><button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
             </button>
         </div>
 
-        <!-- Mobile Menu --><nav id="mobile-menu" class="md:hidden hidden pb-3 space-y-1 px-2 sm:px-3 text-center">
-            <a href="#" class="nav-link text-white block px-3 py-2 rounded-md font-medium">হোম</a>
+        <!-- Mobile Menu (AI Advisor link added) -->
+        <nav id="mobile-menu" class="md:hidden hidden pb-3 space-y-1 px-2 sm:px-3 text-center">
+            <a href="#home" class="nav-link text-white block px-3 py-2 rounded-md font-medium">হোম</a>
             <a href="#founder" class="nav-link text-white block px-3 py-2 rounded-md font-medium">প্রতিষ্ঠাতার বাণী</a>
             <a href="#notice" class="nav-link text-white block px-3 py-2 rounded-md font-medium">নোটিশ</a>
             <a href="#courses" class="nav-link text-white block px-3 py-2 rounded-md font-medium">কোর্সসমূহ</a>
@@ -202,64 +212,82 @@
         </nav>
     </header>
 
-    <!-- Hero Section (ID: home) --><main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <!-- Hero Section (ID: home) -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <section id="home" class="bg-white p-6 md:p-16 rounded-xl text-center mb-12 shadow-xl border-t-8 border-red-500">
-            <!-- 1. Tagline --><p class="text-lg md:text-xl font-bold text-red-600 mb-2">
+            <!-- 1. Tagline -->
+            <p class="text-lg md:text-xl font-bold text-red-600 mb-2">
                 সফলতার ১৪ বছরের পথচলা
             </p>
             
-            <!-- 2. Main Title --><h2 class="text-4xl md:text-6xl font-extrabold text-[#1e3a8a] mb-6 leading-snug">
+            <!-- 2. Main Title -->
+            <h2 class="text-4xl md:text-6xl font-extrabold text-[#1e3a8a] mb-6 leading-snug">
                 সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট স্কুল & কলেজ
             </h2>
             
-            <!-- 3. Subtitle --><p class="text-xl md:text-2xl text-gray-700 mb-10 max-w-4xl mx-auto font-medium">
+            <!-- 3. Subtitle -->
+            <p class="text-xl md:text-2xl text-gray-700 mb-10 max-w-4xl mx-auto font-medium">
                 টেকনোলজি নির্ভর উজ্জ্বল ভবিষ্যতের পথে আপনার প্রথম পদক্ষেপ।
             </p>
 
-            <!-- 4. CTA Heading --><p class="text-2xl md:text-3xl font-extrabold text-red-500 mb-2 animate-pulse">
+            <!-- 4. CTA Heading -->
+            <p class="text-2xl md:text-3xl font-extrabold text-red-500 mb-2 animate-pulse">
                 আসন্ন শিক্ষাবর্ষে ভর্তি চলছে
             </p>
             
-            <!-- 5. CTA Course List --><p class="text-xl md:text-2xl text-[#1e3a8a] mb-8 font-bold">
+            <!-- 5. CTA Course List -->
+            <p class="text-xl md:text-2xl text-[#1e3a8a] mb-8 font-bold">
                 <span>SSC ভোকেশনাল</span>, <span>HSC BMT</span>, ডিপ্লোমা ইঞ্জিনিয়ারিং ও এগ্রিকালচারে ভর্তি চলছে
             </p>
             
-            <!-- CTA Button --><a href="#courses" class="btn-primary inline-block text-xl px-8 py-3 shadow-lg hover:shadow-xl transform hover:scale-105">
+            <!-- CTA Button -->
+            <a href="#courses" class="btn-primary inline-block text-xl px-8 py-3 shadow-lg hover:shadow-xl transform hover:scale-105">
                 কোর্সসমূহ দেখুন
             </a>
         </section>
         
-        <!-- NEW: Founder's Message Section (ID: founder) --><section id="founder" class="mb-12">
+        <!-- Founder's Message Section (ID: founder) -->
+        <section id="founder" class="mb-12">
             <h3 class="text-3xl font-bold text-center text-[#1e3a8a] mb-8 border-b-2 border-red-500 pb-2">প্রতিষ্ঠাতার বাণী</h3>
             <div class="section-card p-6 md:p-10 bg-blue-50 border-t-4 border-[#1e3a8a]">
                 <div class="flex flex-col md:flex-row items-center md:space-x-8">
                     
-                    <!-- Founder Image/Placeholder (UPDATED WITH USER'S IMAGE) --><div class="flex-shrink-0 mb-6 md:mb-0 text-center">
+                    <!-- Founder Image -->
+                    <div class="flex-shrink-0 mb-6 md:mb-0 text-center">
                         <img 
                             src="https://i.ibb.co.com/mFHzpSv3/29214190-1748650778534064-201156464050438144-n.jpg" 
                             alt="প্রতিষ্ঠাতা ও চেয়ারম্যান" 
                             class="w-36 h-36 rounded-full mx-auto border-4 border-white shadow-lg object-cover"
                             onerror="this.src='https://placehold.co/150x150/1e3a8a/ffffff?text=Founder+Photo'"
                         >
-                        <p class="mt-3 text-xl font-bold text-[#1e3a8a]">মোঃমাহফুজ আহমেদ</p>
-                        <p class="text-sm text-red-500">প্রতিষ্ঠাতা ও চেয়ারম্যান</p>
+                        <p class="mt-3 text-xl font-bold text-[#1e3a8a]">মোঃ মাহফুজ আহমেদ</p>
+                        <p class="text-sm text-red-500 font-bold">প্রতিষ্ঠাতা ও চেয়ারম্যান</p>
                     </div>
 
-                    
+                    <!-- Message Text -->
+                    <div class="flex-1 text-center md:text-left">
+                        <!-- NEW TTS Button (Gemini Integration 3) -->
+                        <div class="mb-4 flex justify-center md:justify-start">
+                             <button id="tts-founder-btn" class="btn-primary flex items-center bg-red-600 hover:bg-red-700 text-white px-4 py-2 text-sm rounded-full shadow-md transition duration-200">
+                                <!-- Speaker Icon SVG -->
+                                <svg id="tts-icon" class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414L6 10.586 4.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                <span id="tts-status">প্রতিষ্ঠাতার বাণী শুনুন ✨</span>
+                             </button>
+                        </div>
                         <p id="founder-message-text" class="text-xl italic text-gray-700 mb-4 leading-relaxed font-medium">
                             "প্রিয় শিক্ষার্থীবৃন্দ ও অভিভাবকবৃন্দ,
                             একটি দক্ষ ও প্রযুক্তিনির্ভর জাতি গঠনে সিটি আই.টি. ইন্সটিটিউট এর পথচলা শুরু হয়েছিল। আমরা বিশ্বাস করি, কেবল গতানুগতিক শিক্ষা নয়, **হাতে-কলমে কারিগরি দক্ষতা অর্জনই পারে বর্তমান বিশ্বের চ্যালেঞ্জ মোকাবিলা করতে।** আমাদের প্রতিষ্ঠানে রয়েছে অভিজ্ঞ শিক্ষক মন্ডলী এবং আধুনিক ল্যাব সুবিধা। আমাদের মূল লক্ষ্য—প্রত্যেক শিক্ষার্থীকে সুশৃঙ্খল এবং কর্মমুখী শিক্ষা দিয়ে সফল ক্যারিয়ারের জন্য প্রস্তুত করা। আসুন, আমরা একসাথে একটি উজ্জ্বল ও টেকসই ভবিষ্যৎ নির্মাণ করি।"
                         </p>
                         <p class="text-right text-gray-600 font-bold mt-4">
-                            — মোঃমাহফুজ আহমেদ
-                                  
+                            — মোঃ মাহফুজ আহমেদ
                         </p>
                     </div>
                 </div>
             </div>
         </section>
         
-        <!-- Notice Section --><section id="notice" class="mb-12">
+        <!-- Notice Section -->
+        <section id="notice" class="mb-12">
             <h3 class="text-3xl font-bold text-center text-[#1e3a8a] mb-8 border-b-2 border-red-500 pb-2">নোটিশ বোর্ড</h3>
             <div class="section-card">
                 <h4 class="text-xl font-semibold text-gray-700 mb-3 border-b pb-2">সর্বশেষ বিজ্ঞপ্তি</h4>
@@ -275,7 +303,8 @@
             </div>
         </section>
         
-        <!-- Courses Section --><section id="courses" class="mb-12">
+        <!-- Courses Section -->
+        <section id="courses" class="mb-12">
             <h3 class="text-3xl font-bold text-center text-[#1e3a8a] mb-8 border-b-2 border-red-500 pb-2">কোর্সসমূহ</h3>
             
             <div class="section-card p-6 md:p-8">
@@ -284,9 +313,11 @@
                     আমাদের প্রতিষ্ঠান আপনার ক্যারিয়ার লক্ষ্য অর্জনের জন্য মাধ্যমিক স্তর থেকে শুরু করে ডিপ্লোমা স্তর পর্যন্ত বহুমুখী কারিগরি শিক্ষা প্রোগ্রাম অফার করে।
                 </p>
 
-                <!-- Course Accordion Container --><div class="space-y-4">
+                <!-- Course Accordion Container -->
+                <div class="space-y-4">
 
-                    <!-- 1. SSC Vocation (Accordion) --><div class="border border-red-300 rounded-xl overflow-hidden bg-red-50">
+                    <!-- 1. SSC Vocation (Accordion) -->
+                    <div class="border border-red-300 rounded-xl overflow-hidden bg-red-50">
                         <div id="header-ssc" class="accordion-header flex justify-between items-center p-4 md:p-6 bg-red-100 hover:bg-red-200 transition duration-300">
                             <h5 class="text-xl md:text-2xl font-bold text-[#1e3a8a] flex items-center space-x-3">
                                 <span class="text-3xl">🛠️</span>
@@ -297,19 +328,19 @@
                         <div id="content-ssc" class="accordion-content bg-white p-4 md:p-6 border-t border-red-200">
                             <p class="mb-4 text-gray-700 font-medium">কারিগরি শিক্ষা বোর্ডের অধীনে ২ বছর মেয়াদী কোর্স। এই কোর্সে প্রযুক্তিগত দক্ষতা অর্জন করে সরাসরি কর্মজীবনে প্রবেশ অথবা উচ্চতর শিক্ষায় (ডিপ্লোমা) ভর্তির সুযোগ রয়েছে।</p>
 
-                            <!-- Trades --><div class="mb-6">
+                            <!-- Trades -->
+                            <div class="mb-6">
                                 <p class="text-lg font-bold text-red-500 mb-2">ট্রেডসমূহ:</p>
                                 <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-800 list-disc list-inside ml-4">
                                     <li>আইটি সাপোর্ট অ্যান্ড আইওটি বেসিকস</li>
                                     <li>জেনারেল ইলেকট্রনিক্স</li>
                                     <li>পোল্ট্রি রিয়ারিং অ্যান্ড ফার্মিং</li>
                                     <li>অ্যাপারেল ম্যানুফ্যাকচারিং বেসিকস</li>
-                                    <li>ড্রেস মেকিং অ্যান্ড টেইলরিং</li>
-                                    <li>জেনারেল মেকানিক্স</li>
                                 </ul>
                             </div>
 
-                            <!-- Class 9 Details --><div class="mb-6 border-t pt-4">
+                            <!-- Class 9 Details -->
+                            <div class="mb-6 border-t pt-4">
                                 <p class="text-xl font-bold text-[#1e3a8a] mb-3">ক্লাস ৯ (৯ম শ্রেণি) - বিস্তারিত বিষয় ও কোড:</p>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
@@ -330,13 +361,14 @@
                                         <ul class="text-sm text-gray-600 space-y-1 list-disc list-inside ml-4">
                                             <li><span class="font-bold">৫১৭১১-৫১৭১৪:</span> যেকোনো একটি ধর্ম শিক্ষা (ঐচ্ছিক)</li>
                                             <li><span class="font-bold">৫১৮১১-৫১৮১৩:</span> যেকোনো একটি ঐচ্ছিক বিষয় (উচ্চতর গণিত/কৃষিশিক্ষা/জীববিজ্ঞান-১)</li>
-                                            <li><span class="font-bold">৫৮৮১১/৫৬২১১/৫৮০১১/৫৮১১১/৫৩১২১/৫৩১০১:</span> যেকোনো একটি ট্রেড (প্রথম পত্র)</li>
+                                            <li><span class="font-bold">৫৮৮১১/৫৬২১১/৫৮০১১/৫৮১১১:</span> যেকোনো একটি ট্রেড (প্রথম পত্র)</li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                             
-                            <!-- Class 10 Details --><div class="mb-6 border-t pt-4">
+                            <!-- Class 10 Details -->
+                            <div class="mb-6 border-t pt-4">
                                 <p class="text-xl font-bold text-[#1e3a8a] mb-3">ক্লাস ১০ (১০ম শ্রেণি) - বিস্তারিত বিষয় ও কোড:</p>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
@@ -357,7 +389,7 @@
                                         <ul class="text-sm text-gray-600 space-y-1 list-disc list-inside ml-4">
                                             <li><span class="font-bold">৫১৭২১-৫১৭২৪:</span> যেকোনো একটি ধর্ম শিক্ষা (ঐচ্ছিক)</li>
                                             <li><span class="font-bold">৫১৮২১-৫১৮২৩:</span> যেকোনো একটি ঐচ্ছিক বিষয় (উচ্চতর গণিত/কৃষিশিক্ষা/জীববিজ্ঞান-২)</li>
-                                            <li><span class="font-bold">৫৮৮২১/৫৬২২১/৫৮০২১/৫৮১২১/৫৩১২৯/৫৩১০৯:</span> যেকোনো একটি ট্রেড (দ্বিতীয় পত্র)</li>
+                                            <li><span class="font-bold">৫৮৮২১/৫৬২২১/৫৮০২১/৫৮১২১:</span> যেকোনো একটি ট্রেড (দ্বিতীয় পত্র)</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -367,7 +399,8 @@
                         </div>
                     </div>
 
-                    <!-- 2. HSC BMT (Accordion) --><div class="border border-blue-300 rounded-xl overflow-hidden bg-blue-50">
+                    <!-- 2. HSC BMT (Accordion) -->
+                    <div class="border border-blue-300 rounded-xl overflow-hidden bg-blue-50">
                         <div id="header-hsc" class="accordion-header flex justify-between items-center p-4 md:p-6 bg-blue-100 hover:bg-blue-200 transition duration-300">
                             <h5 class="text-xl md:text-2xl font-bold text-[#1e3a8a] flex items-center space-x-3">
                                 <span class="text-3xl">🎓</span>
@@ -391,7 +424,8 @@
                         </div>
                     </div>
 
-                    <!-- 3. Diploma in Engineering (Accordion) --><div class="border border-green-300 rounded-xl overflow-hidden bg-green-50">
+                    <!-- 3. Diploma in Engineering (Accordion) -->
+                    <div class="border border-green-300 rounded-xl overflow-hidden bg-green-50">
                         <div id="header-eng" class="accordion-header flex justify-between items-center p-4 md:p-6 bg-green-100 hover:bg-green-200 transition duration-300">
                             <h5 class="text-xl md:text-2xl font-bold text-[#1e3a8a] flex items-center space-x-3">
                                 <span class="text-3xl">👷</span>
@@ -411,7 +445,8 @@
                         </div>
                     </div>
 
-                    <!-- 4. Diploma in Agriculture (Accordion) --><div class="border border-yellow-300 rounded-xl overflow-hidden bg-yellow-50">
+                    <!-- 4. Diploma in Agriculture (Accordion) -->
+                    <div class="border border-yellow-300 rounded-xl overflow-hidden bg-yellow-50">
                         <div id="header-agri" class="accordion-header flex justify-between items-center p-4 md:p-6 bg-yellow-100 hover:bg-yellow-200 transition duration-300">
                             <h5 class="text-xl md:text-2xl font-bold text-[#1e3a8a] flex items-center space-x-3">
                                 <span class="text-3xl">🌾</span>
@@ -435,12 +470,14 @@
             </div>
         </section>
         
-        <!-- Video Section (RETAINED) --><section id="video" class="mb-12">
+        <!-- Video Section (RETAINED) -->
+        <section id="video" class="mb-12">
             <h3 class="text-3xl font-bold text-center text-[#1e3a8a] mb-8 border-b-2 border-red-500 pb-2">আমাদের একটি ভিডিও</h3>
             <div class="section-card p-6 md:p-8">
                 <h4 class="text-2xl font-extrabold text-red-500 mb-6 text-center">প্রতিষ্ঠান ও ল্যাব পরিদর্শনের ঝলক</h4>
                 
-                <!-- Responsive Video Container --><div class="video-container shadow-xl border-4 border-red-200">
+                <!-- Responsive Video Container -->
+                <div class="video-container shadow-xl border-4 border-red-200">
                     <iframe 
                         src="https://www.youtube.com/embed/V_TuD4YSegc?si=VIQN8T3xya7ottaJ" 
                         title="YouTube video player" 
@@ -458,7 +495,8 @@
         </section>
 
 
-        <!-- Features Section (RETAINED) --><section id="features" class="mb-12">
+        <!-- Features Section (RETAINED) -->
+        <section id="features" class="mb-12">
             <h3 class="text-3xl font-bold text-center text-[#1e3a8a] mb-8 border-b-2 border-red-500 pb-2">বৈশিষ্ট্য</h3>
             <div class="section-card p-6 md:p-8">
                 <h4 class="text-2xl font-extrabold text-red-500 mb-2">আমাদের মূল বৈশিষ্ট্য ও সুবিধা</h4>
@@ -468,7 +506,8 @@
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     
-                    <!-- 1. আধুনিক ল্যাব ও ব্যবহারিক প্রশিক্ষণ --><div class="flex space-x-4 p-4 rounded-lg bg-red-50 border-l-4 border-red-500">
+                    <!-- 1. আধুনিক ল্যাব ও ব্যবহারিক প্রশিক্ষণ -->
+                    <div class="flex space-x-4 p-4 rounded-lg bg-red-50 border-l-4 border-red-500">
                         <div class="text-3xl text-red-500 flex-shrink-0">🔬</div>
                         <div>
                             <p class="text-xl font-bold text-[#1e3a8a] mb-1">আধুনিক ল্যাব ও ব্যবহারিক প্রশিক্ষণ</p>
@@ -478,7 +517,8 @@
                         </div>
                     </div>
 
-                    <!-- 2. ১০০% পাশের নিশ্চয়তা --><div class="flex space-x-4 p-4 rounded-lg bg-green-50 border-l-4 border-green-500">
+                    <!-- 2. ১০০% পাশের নিশ্চয়তা -->
+                    <div class="flex space-x-4 p-4 rounded-lg bg-green-50 border-l-4 border-green-500">
                         <div class="text-3xl text-green-500 flex-shrink-0">🏆</div>
                         <div>
                             <p class="text-xl font-bold text-[#1e3a8a] mb-1">১০০% পাশের নিশ্চয়তা</p>
@@ -488,7 +528,8 @@
                         </div>
                     </div>
 
-                    <!-- 3. অভিজ্ঞ ও দক্ষ শিক্ষক মন্ডলী --><div class="flex space-x-4 p-4 rounded-lg bg-blue-50 border-l-4 border-blue-500">
+                    <!-- 3. অভিজ্ঞ ও দক্ষ শিক্ষক মন্ডলী -->
+                    <div class="flex space-x-4 p-4 rounded-lg bg-blue-50 border-l-4 border-blue-500">
                         <div class="text-3xl text-blue-500 flex-shrink-0">👨‍🎓</div>
                         <div>
                             <p class="text-xl font-bold text-[#1e3a8a] mb-1">অভিজ্ঞ ও দক্ষ শিক্ষক মন্ডলী</p>
@@ -498,7 +539,8 @@
                         </div>
                     </div>
 
-                    <!-- 4. সম্পূর্ণ টিউশনমুক্ত পরিবেশ --><div class="flex space-x-4 p-4 rounded-lg bg-yellow-50 border-l-4 border-yellow-500">
+                    <!-- 4. সম্পূর্ণ টিউশনমুক্ত পরিবেশ -->
+                    <div class="flex space-x-4 p-4 rounded-lg bg-yellow-50 border-l-4 border-yellow-500">
                         <div class="text-3xl text-yellow-500 flex-shrink-0">📚</div>
                         <div>
                             <p class="text-xl font-bold text-[#1e3a8a] mb-1">সম্পূর্ণ টিউশনমুক্ত পরিবেশ</p>
@@ -508,7 +550,8 @@
                         </div>
                     </div>
 
-                    <!-- 5. ক্যারিয়ার ও জব প্লেসমেন্ট --><div class="flex space-x-4 p-4 rounded-lg bg-purple-50 border-l-4 border-purple-500">
+                    <!-- 5. ক্যারিয়ার ও জব প্লেসমেন্ট -->
+                    <div class="flex space-x-4 p-4 rounded-lg bg-purple-50 border-l-4 border-purple-500">
                         <div class="text-3xl text-purple-500 flex-shrink-0">🛠️</div>
                         <div>
                             <p class="text-xl font-bold text-[#1e3a8a] mb-1">ক্যারিয়ার ও জব প্লেসমেন্ট</p>
@@ -518,7 +561,8 @@
                         </div>
                     </div>
 
-                    <!-- 6. চাকরিজীবীদের জন্য বিশেষ ব্যবস্থা --><div class="flex space-x-4 p-4 rounded-lg bg-pink-50 border-l-4 border-pink-500">
+                    <!-- 6. চাকরিজীবীদের জন্য বিশেষ ব্যবস্থা -->
+                    <div class="flex space-x-4 p-4 rounded-lg bg-pink-50 border-l-4 border-pink-500">
                         <div class="text-3xl text-pink-500 flex-shrink-0">💼</div>
                         <div>
                             <p class="text-xl font-bold text-[#1e3a8a] mb-1">চাকরিজীবীদের জন্য বিশেষ ব্যবস্থা</p>
@@ -531,7 +575,8 @@
             </div>
         </section>
         
-        <!-- NEW SECTION: AI Course Advisor (Gemini Integration 1) --><section id="advisor" class="mb-12">
+        <!-- NEW SECTION: AI Course Advisor (Gemini Integration 1) -->
+        <section id="advisor" class="mb-12">
             <h3 class="text-3xl font-bold text-center text-[#1e3a8a] mb-8 border-b-2 border-red-500 pb-2">
                 ✨ কোর্স পরামর্শদাতা (AI Advisor)
             </h3>
@@ -540,14 +585,16 @@
                     ভর্তি সংক্রান্ত বা যেকোনো টেকনিক্যাল কোর্স সম্পর্কে জানতে নিচে আপনার প্রশ্ন লিখুন। আমাদের AI পরামর্শদাতা তাৎক্ষণিকভাবে উত্তর দেবে।
                 </p>
 
-                <!-- Chat Window --><div id="chat-window" class="flex flex-col space-y-4 p-4 border border-pink-200 rounded-xl bg-white shadow-inner mb-6">
+                <!-- Chat Window -->
+                <div id="chat-window" class="flex flex-col space-y-4 p-4 border border-pink-200 rounded-xl bg-white shadow-inner mb-6">
                     <div class="ai-message p-3 shadow text-gray-800">
                         <p class="font-semibold text-pink-700">AI পরামর্শদাতা:</p>
                         <p class="mt-1">সিটি আইটি ইন্সটিটিউটের কোর্স, ভর্তি প্রক্রিয়া, বা যেকোনো ক্যারিয়ার সম্পর্কিত প্রশ্ন জিজ্ঞাসা করুন।</p>
                     </div>
                 </div>
 
-                <!-- Input Area --><div class="flex space-x-3">
+                <!-- Input Area -->
+                <div class="flex space-x-3">
                     <input type="text" id="advisor-input" placeholder="আপনার প্রশ্ন এখানে লিখুন (যেমন: ডিপ্লোমা ইন সিভিল ইঞ্জিনিয়ারিং এর ভবিষ্যত কেমন?)" 
                         class="flex-1 p-3 border border-pink-300 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition duration-200">
                     <button id="send-advisor-btn" class="btn-primary flex items-center bg-pink-600 hover:bg-pink-700">
@@ -560,55 +607,64 @@
         </section>
 
 
-        <!-- Infrastructure Section (RETAINED) --><section id="infrastructure" class="mb-12">
+        <!-- Infrastructure Section (RETAINED) -->
+        <section id="infrastructure" class="mb-12">
             <h3 class="text-3xl font-bold text-center text-[#1e3a8a] mb-8 border-b-2 border-red-500 pb-2">অবকাঠামো</h3>
             <div class="section-card">
                  <h4 class="text-2xl font-semibold text-red-500 mb-4">শিক্ষার্থীদের সেরা শিক্ষার পরিবেশ নিশ্চিত করতে আমাদের রয়েছে আধুনিক সুযোগ-সুবিধা:</h4>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-gray-700 text-lg">
                     
-                    <!-- Classrooms --><div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <!-- Classrooms -->
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
                         <div class="text-3xl text-[#1e3a8a] mb-2">🏫</div>
                         <p class="font-bold">৮টি আধুনিক ক্লাসরুম</p>
                         <p class="text-sm">পর্যাপ্ত আলো ও বাতাসের ব্যবস্থা সহ প্রশস্ত ক্লাসরুম।</p>
                     </div>
 
-                    <!-- Headmaster's Room --><div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <!-- Headmaster's Room -->
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
                         <div class="text-3xl text-[#1e3a8a] mb-2">👨‍💼</div>
                         <p class="font-bold">১টি প্রধান শিক্ষকের কক্ষ</p>
                         <p class="text-sm">শিক্ষক ও প্রশাসনিক কাজের জন্য ডেডিকেটেড কক্ষ।</p>
                     </div>
 
-                    <!-- Teacher's Room --><div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <!-- Teacher's Room -->
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
                         <div class="text-3xl text-[#1e3a8a] mb-2">🧑‍🏫</div>
                         <p class="font-bold">১টি শিক্ষক কক্ষ</p>
                         <p class="text-sm">শিক্ষকদের প্রস্তুতি এবং যোগাযোগের জন্য বিশেষ ব্যবস্থা।</p>
                     </div>
                     
-                    <!-- Computer Lab --><div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <!-- Computer Lab -->
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
                         <div class="text-3xl text-[#1e3a8a] mb-2">💻</div>
                         <p class="font-bold">কম্পিউটার ল্যাব</p>
                         <p class="text-sm">আধুনিক কনফিগারেশনের কম্পিউটার সহ শীতাতপ নিয়ন্ত্রিত ল্যাব।</p>
                     </div>
                     
-                    <!-- Science Lab --><div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <!-- Science Lab -->
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
                         <div class="text-3xl text-[#1e3a8a] mb-2">🧪</div>
                         <p class="font-bold">বিজ্ঞান ল্যাব</p>
                         <p class="text-sm">পদার্থ, রসায়ন ও জীববিজ্ঞান পরীক্ষার জন্য প্রয়োজনীয় উপকরণ।</p>
                     </div>
 
-                    <!-- Washroom --><div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <!-- Washroom -->
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
                         <div class="text-3xl text-[#1e3a8a] mb-2">🚻</div>
                         <p class="font-bold">পরিষ্কার পরিচ্ছন্ন ওয়াশরুম</p>
                         <p class="text-sm">শিক্ষার্থী ও শিক্ষক উভয়ের জন্য স্বাস্থ্যকর ওয়াশরুম সুবিধা।</p>
                     </div>
                     
-                    <!-- Library --><div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <!-- Library -->
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
                         <div class="text-3xl text-[#1e3a8a] mb-2">📚</div>
                         <p class="font-bold">সমৃদ্ধ লাইব্রেরি</p>
                         <p class="text-sm">বিভিন্ন লেখকের বই এবং একাডেমিক সহায়ক সামগ্রীর বিশাল সংগ্রহ।</p>
                     </div>
                     
-                    <!-- Playground --><div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <!-- Playground -->
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
                         <div class="text-3xl text-[#1e3a8a] mb-2">⚽</div>
                         <p class="font-bold">খেলার মাঠ</p>
                         <p class="text-sm">শিক্ষার্থীদের শারীরিক ও মানসিক বিকাশের জন্য পর্যাপ্ত খোলা জায়গা।</p>
@@ -619,38 +675,44 @@
             </div>
         </section>
         
-        <!-- Contact Section (RETAINED) --><section id="contact" class="mb-12">
+        <!-- Contact Section (RETAINED) -->
+        <section id="contact" class="mb-12">
             <h3 class="text-3xl font-bold text-center text-[#1e3a8a] mb-8 border-b-2 border-red-500 pb-2">যোগাযোগ</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="section-card">
                     <h4 class="text-xl font-semibold text-gray-700 mb-3">ঠিকানা ও তথ্য</h4>
                     
-                    <!-- Address --><p class="text-gray-600 mb-4 leading-relaxed">
+                    <!-- Address -->
+                    <p class="text-gray-600 mb-4 leading-relaxed">
                         🏫 **ঠিকানা:** <span class="font-medium block">হাউস নং: ৪৩৫, ব্লক: সি, ওয়ার্ড নং: ০১</span>
                         <span class="block">শ্রীপুর ১৭৪০, শ্রীপুর পৌরসভা,</span>
                         <span class="block">শ্রীপুর, গাজীপুর।</span>
                     </p>
                     
-                    <!-- Phones --><div class="mb-2">
+                    <!-- Phones -->
+                    <div class="mb-2">
                         <span class="font-medium block text-gray-700">📞 ফোন (অফিস): </span>
                         <a href="tel:+8801710077332" class="text-[#1e3a8a] hover:text-red-500 font-bold ml-2">+৮৮ ০১৭১০-০৭৭৩৩২</a>
                     </div>
                     <div class="mb-2">
                         <span class="font-medium block text-gray-700">📞 ফোন (অন্যান্য): </span>
-                        <a href="tel:+8801718077873" class="text-[#1e3a8a] hover:text-red-500 font-bold ml-2">+৮৮ ০১৭১৮-০৭৭৮৭৩</a>
+                        <a href="tel:+8801918077873" class="text-[#1e3a8a] hover:text-red-500 font-bold ml-2">+৮৮ ০১৯১৮-০৭৭৮৭৩</a>
                     </div>
                     
-                    <!-- Email --><div class="mb-2">
+                    <!-- Email -->
+                    <div class="mb-2">
                         <span class="font-medium block text-gray-700">📧 ইমেইল: </span>
                         <a href="mailto:citi.schoolandcollege@gmail.com" class="text-[#1e3a8a] hover:text-red-500 font-bold ml-2">citi.schoolandcollege@gmail.com</a>
                     </div>
 
-                    <!-- Facebook Link --><div class="mb-2">
+                    <!-- Facebook Link -->
+                    <div class="mb-2">
                         <span class="font-medium block text-gray-700">📘 ফেসবুক পেজ: </span>
                         <a href="https://www.facebook.com/city.information.technology" target="_blank" class="text-[#1e3a8a] hover:text-red-500 font-bold ml-2 underline">আমাদের পেজে যান (ক্লিক করুন)</a>
                     </div>
 
-                    <!-- UPDATED: Website Link --><p class="text-gray-600 mt-4">
+                    <!-- UPDATED: Website Link -->
+                    <p class="text-gray-600 mt-4">
                         🌐 **ওয়েবসাইট:** <a href="https://citisc.netlify.app/" target="_blank" class="text-[#1e3a8a] hover:text-red-500 font-bold underline">https://citisc.netlify.app/</a> 
                         (বর্তমানে আপনি এই সাইটের ডিজাইন দেখছেন)
                     </p>
@@ -659,7 +721,8 @@
                 
                 <div class="section-card">
                     <h4 class="text-xl font-semibold text-gray-700 mb-3">আমাদের অবস্থান (Google Maps)</h4>
-                    <!-- Link to Google Map --><a href="https://maps.app.goo.gl/ugaCoeC6uhFW1J2V7" target="_blank" class="block">
+                    <!-- Link to Google Map -->
+                    <a href="https://maps.app.goo.gl/ugaCoeC6uhFW1J2V7" target="_blank" class="block">
                         <div class="bg-gray-100 h-48 rounded-lg flex items-center justify-center text-gray-500 text-center border-4 border-dashed border-red-300 hover:bg-red-50 transition duration-300">
                             <span class="font-bold text-lg text-red-500">ম্যাপে আমাদের অবস্থান দেখুন (ক্লিক করুন)</span>
                         </div>
@@ -671,26 +734,31 @@
 
     </main>
 
-    <!-- Footer --><footer class="header-bg text-white py-6 mt-12">
+    <!-- Footer -->
+    <footer class="header-bg text-white py-6 mt-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <!-- Footer Text --><p>&copy; ২০২৫ সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট স্কুল & কলেজ। সর্বস্বত্ব সংরক্ষিত।</p>
+            <!-- Footer Text -->
+            <p>&copy; ২০২৫ সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট স্কুল & কলেজ। সর্বস্বত্ব সংরক্ষিত।</p>
             <p class="mt-2 text-sm">
                 **ঠিকানা:** হাউস নং: ৪৩৫, ব্লক: সি, ওয়ার্ড নং: ০১, শ্রীপুর, গাজীপুর।
             </p>
         </div>
     </footer>
 
-    <!-- Modal for Detailed SSC Vocational Notice (Large, Scrollable) --><div id="detailedNoticeModal" class="modal fixed inset-0 flex items-center justify-center z-[100] hidden p-4 sm:p-8">
+    <!-- Modal for Detailed SSC Vocational Notice (Large, Scrollable) -->
+    <div id="detailedNoticeModal" class="modal fixed inset-0 flex items-center justify-center z-[100] hidden p-4 sm:p-8">
         <div class="modal-content bg-white p-6 md:p-8 rounded-xl shadow-2xl max-w-4xl w-full mx-auto border-t-8 border-red-500 overflow-y-auto max-h-[90vh]">
             <div class="flex justify-between items-start mb-4 border-b pb-4">
                 <h2 class="text-3xl font-extrabold text-[#1e3a8a] flex-1">বিজ্ঞপ্তি ও সময়সূচি</h2>
-                <!-- NEW: Summarizer Button (Gemini Integration 2) --><button id="summarizeNoticeBtn" class="ml-4 btn-primary flex items-center bg-yellow-500 hover:bg-yellow-600 text-gray-900 px-4 py-2 rounded-full font-bold">
+                <!-- NEW: Summarizer Button (Gemini Integration 2) -->
+                <button id="summarizeNoticeBtn" class="ml-4 btn-primary flex items-center bg-yellow-500 hover:bg-yellow-600 text-gray-900 px-4 py-2 rounded-full font-bold">
                     ✨ নোটিশ সারাংশ
                 </button>
             </div>
 
             <div id="detailedNoticeBody" class="text-left text-gray-800">
-                <!-- Content inserted by JS --></div>
+                <!-- Content inserted by JS -->
+            </div>
             
             <div id="summary-output" class="mt-6 p-4 bg-pink-100 rounded-lg hidden">
                 <p class="font-bold text-pink-700 mb-2">✨ সারাংশ:</p>
@@ -862,7 +930,7 @@
                             <td class="px-3 py-4 md:px-6">এসএসসি (ভোক) ও দাখিল (ভোক)</td>
                         </tr>
                         <tr class="bg-gray-50 border-b hover:bg-gray-100">
-                            <td class="px-3 py-4 md:px-6 font-medium whitespace-nowrap">০৯/১১/২০২৫ খ্রিঃ (রবি রবিবার)</td>
+                            <td class="px-3 py-4 md:px-6 font-medium whitespace-nowrap">০৯/১১/২০২৫ খ্রিঃ (রবিবার)</td>
                             <td class="px-3 py-4 md:px-6">ইংরেজী-১ (৫১৯১২/৪১৯১২, ১৯১২)</td>
                             <td class="px-3 py-4 md:px-6">এসএসসি (ভোক) ও দাখিল (ভোক)</td>
                         </tr>
@@ -902,7 +970,7 @@
                             <td class="px-3 py-4 md:px-6">এসএসসি (ভোক) ও দাখিল (ভোক)</td>
                         </tr>
                         <tr class="bg-gray-50 hover:bg-gray-100">
-                            <td class="px-3 py-4 md:px-6 font-medium whitespace-nowrap">৩০/১১/২০২৫ খ্রিঃ (রবি রবিবার)</td>
+                            <td class="px-3 py-4 md:px-6 font-medium whitespace-nowrap">৩০/১১/২০২৫ খ্রিঃ (রবিবার)</td>
                             <td class="px-3 py-4 md:px-6">আরবি-১</td>
                             <td class="px-3 py-4 md:px-6">দাখিল (ভোক)</td>
                         </tr>
@@ -1079,7 +1147,32 @@
             chatWindow.appendChild(loadingDiv);
             chatWindow.scrollTop = chatWindow.scrollHeight;
 
-          
+            const systemPrompt = `আপনি একজন অভিজ্ঞ ও তথ্যবহুল শিক্ষা এবং ক্যারিয়ার পরামর্শদাতা। আপনার কাজ হলো ব্যবহারকারীকে সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট স্কুল ও কলেজের বিভিন্ন কারিগরি কোর্স (যেমন SSC Vocational, HSC BMT, Diploma in Engineering/Agriculture) এবং কর্মজীবনের সুযোগ সম্পর্কে নিরপেক্ষ ও সঠিক তথ্য দিয়ে সহায়তা করা। উত্তর বাংলায় দিন। প্রয়োজনে Google Search ব্যবহার করুন।`;
+
+            const payload = {
+                contents: [{ parts: [{ text: query }] }],
+                tools: [{ "google_search": {} }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+            };
+
+            try {
+                const response = await callGemMst(payload, GEMINI_MODEL);
+                document.getElementById('loading-message').remove(); // Remove loading message
+                if (response.type === 'text') {
+                    displayMessage(response.text, false, response.sources); // Display AI response
+                } else {
+                    throw new Error("Unexpected response type for Q&A.");
+                }
+            } catch (error) {
+                const loadingMsg = document.getElementById('loading-message');
+                if (loadingMsg) loadingMsg.remove();
+                advisorError.textContent = 'API থেকে উত্তর আনা সম্ভব হয়নি। অনুগ্রহ করে আবার চেষ্টা করুন।';
+                advisorError.classList.remove('hidden');
+                console.error("Q&A Error:", error);
+            } finally {
+                sendAdvisorBtn.disabled = false;
+            }
+        }
         
         sendAdvisorBtn.addEventListener('click', handleAdvisorQuery);
         advisorInput.addEventListener('keypress', (e) => {
@@ -1089,7 +1182,102 @@
         });
 
 
-    
+        // --- GEMINI INTEGRATION 3: FOUNDER'S MESSAGE TTS ---
+        const ttsFounderBtn = document.getElementById('tts-founder-btn');
+        const ttsStatus = document.getElementById('tts-status');
+        const founderMessageText = document.getElementById('founder-message-text').innerText;
+        const ttsIcon = document.getElementById('tts-icon');
+        let audio = null; // Audio element reference
+
+        // Pre-processing the text to make it suitable for TTS API (e.g., removing extra formatting)
+        const cleanMessage = founderMessageText.replace(/প্রিয় শিক্ষার্থীবৃন্দ ও অভিভাবকবৃন্দ,|— মোঃ মাহফুজ আহমেদ/g, '').replace(/\*\*/g, '').trim();
+
+        ttsFounderBtn.addEventListener('click', async () => {
+            if (ttsFounderBtn.disabled) return;
+            
+            // If audio is currently playing, stop and reset
+            if (audio && !audio.paused) {
+                audio.pause();
+                audio.currentTime = 0;
+                ttsStatus.textContent = 'প্রতিষ্ঠাতার বাণী শুনুন ✨';
+                ttsIcon.innerHTML = `<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414L6 10.586 4.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>`;
+                return;
+            }
+
+            // Start TTS process
+            ttsFounderBtn.disabled = true;
+            ttsStatus.textContent = 'অডিও তৈরি হচ্ছে...';
+            ttsIcon.innerHTML = `<svg class="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`; // Spinner icon
+
+            const ttsPayload = {
+                contents: [{
+                    parts: [{ text: cleanMessage }]
+                }],
+                generationConfig: {
+                    responseModalities: ["AUDIO"],
+                    speechConfig: {
+                        voiceConfig: {
+                            prebuiltVoiceConfig: { voiceName: "Charon" } // Charon is Informative
+                        }
+                    }
+                },
+                model: "gemini-2.5-flash-preview-tts"
+            };
+
+            try {
+                const response = await callGeminiAPI(ttsPayload, "gemini-2.5-flash-preview-tts", 3);
+
+                if (response.type === 'audio' && response.audioData.data) {
+                    const audioData = response.audioData.data;
+                    const mimeType = response.audioData.mimeType; // Should be audio/L16;rate=16000
+
+                    const sampleRateMatch = mimeType.match(/rate=(\d+)/);
+                    const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1], 10) : 16000;
+
+                    const pcmData = base64ToArrayBuffer(audioData);
+                    // The API returns signed PCM16 audio data.
+                    const pcm16 = new Int16Array(pcmData);
+                    const wavBlob = pcmToWav(pcm16, sampleRate);
+                    const audioUrl = URL.createObjectURL(wavBlob);
+
+                    if (audio) {
+                        audio.pause();
+                        URL.revokeObjectURL(audio.src);
+                    }
+                    audio = new Audio(audioUrl);
+                    
+                    audio.onended = () => {
+                        ttsStatus.textContent = 'আবার শুনুন';
+                        ttsIcon.innerHTML = `<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414L6 10.586 4.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>`;
+                        ttsFounderBtn.disabled = false;
+                    };
+                    
+                    audio.onplay = () => {
+                        ttsStatus.textContent = 'থামান (চলছে...)';
+                        ttsIcon.innerHTML = `<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 8a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1zm1 5a1 1 0 100 2h2a1 1 0 100-2H9z" clip-rule="evenodd"></path>`; // Pause icon
+                    };
+                    
+                    audio.play().catch(e => {
+                        console.error("Audio playback failed:", e);
+                        ttsStatus.textContent = 'প্লেব্যাক ব্যর্থ 🔇';
+                        ttsIcon.innerHTML = `<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414L6 10.586 4.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>`;
+                    });
+
+                } else {
+                    throw new Error("TTS response missing audio data.");
+                }
+
+            } catch (error) {
+                console.error("TTS Generation Error:", error);
+                ttsStatus.textContent = 'অডিও তৈরি করা যায়নি ❌';
+                ttsIcon.innerHTML = `<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414L6 10.586 4.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>`;
+            } finally {
+                if (audio && audio.paused) {
+                     ttsFounderBtn.disabled = false;
+                }
+            }
+        });
+
 
         // --- UI & General Logic ---
         document.getElementById('mobile-menu-button').addEventListener('click', function() {
@@ -1126,3 +1314,4 @@
     </script>
 </body>
 </html>
+
