@@ -94,15 +94,20 @@
             border: 1px solid #e5e7eb;
             padding: 0.75rem;
         }
-
-        /* --- New: Responsive Video Container CSS for 16:9 Aspect Ratio --- */
-        .responsive-video-container {
+        
+        /* Custom styles for the video container to maintain aspect ratio (16:9) */
+        .video-container {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio (9/16 * 100) */
+            width: 100%;
+            max-width: 800px; /* Limit width for desktop viewing comfort */
+            margin-left: auto;
+            margin-right: auto;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
             height: 0;
             overflow: hidden;
+            border-radius: 0.75rem; /* rounded-xl equivalent */
         }
-        .responsive-video-container iframe {
+        .video-container iframe {
             position: absolute;
             top: 0;
             left: 0;
@@ -124,14 +129,23 @@
     <header class="header-bg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
             
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-3">
+                
+                <!-- Logo Image (Updated with User's URL) -->
+                <img 
+                    src="https://i.ibb.co.com/hJ2kV3Ct/Screenshot-2025-10-06-173431.png" 
+                    alt="সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট লোগো" 
+                    class="w-12 h-12 rounded-full border-2 border-white flex-shrink-0 object-cover"
+                    onerror="this.src='https://placehold.co/60x60/fcd34d/1e3a8a?text=CITI+SC'"
+                >
+
                 <!-- Header Title -->
                 <h1 class="text-xl md:text-2xl font-bold text-white tracking-wider">
                     সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট স্কুল & কলেজ
                 </h1>
             </div>
             
-            <!-- Desktop Nav -->
+            <!-- Desktop Nav (Video link re-added) -->
             <nav class="hidden md:flex space-x-4">
                 <!-- হোম (Home) -->
                 <a href="#" class="nav-link text-white px-3 py-2 rounded-md font-medium">হোম</a>
@@ -139,12 +153,12 @@
                 <a href="#notice" class="nav-link text-white px-3 py-2 rounded-md font-medium">নোটিশ</a>
                 <!-- কোর্সসমূহ (Courses) -->
                 <a href="#courses" class="nav-link text-white px-3 py-2 rounded-md font-medium">কোর্সসমূহ</a>
+                <!-- ভিডিও (Video) -->
+                <a href="#video" class="nav-link text-white px-3 py-2 rounded-md font-medium">ভিডিও</a>
                 <!-- বৈশিষ্ট্য (Features) -->
                 <a href="#features" class="nav-link text-white px-3 py-2 rounded-md font-medium">বৈশিষ্ট্য</a>
                 <!-- অবকাঠামো (Infrastructure) -->
                 <a href="#infrastructure" class="nav-link text-white px-3 py-2 rounded-md font-medium">অবকাঠামো</a>
-                <!-- ভিডিও (Video) -->
-                <a href="#video" class="nav-link text-white px-3 py-2 rounded-md font-medium">ভিডিও</a>
                 <!-- যোগাযোগ (Contact) -->
                 <a href="#contact" class="nav-link text-white px-3 py-2 rounded-md font-medium">যোগাযোগ</a>
             </nav>
@@ -155,14 +169,14 @@
             </button>
         </div>
 
-        <!-- Mobile Menu (Hidden by default) -->
+        <!-- Mobile Menu (Hidden by default, Video link re-added) -->
         <nav id="mobile-menu" class="md:hidden hidden pb-3 space-y-1 px-2 sm:px-3 text-center">
             <a href="#" class="nav-link text-white block px-3 py-2 rounded-md font-medium">হোম</a>
             <a href="#notice" class="nav-link text-white block px-3 py-2 rounded-md font-medium">নোটিশ</a>
             <a href="#courses" class="nav-link text-white block px-3 py-2 rounded-md font-medium">কোর্সসমূহ</a>
+            <a href="#video" class="nav-link text-white block px-3 py-2 rounded-md font-medium">ভিডিও</a>
             <a href="#features" class="nav-link text-white block px-3 py-2 rounded-md font-medium">বৈশিষ্ট্য</a>
             <a href="#infrastructure" class="nav-link text-white block px-3 py-2 rounded-md font-medium">অবকাঠামো</a>
-            <a href="#video" class="nav-link text-white block px-3 py-2 rounded-md font-medium">ভিডিও</a>
             <a href="#contact" class="nav-link text-white block px-3 py-2 rounded-md font-medium">যোগাযোগ</a>
         </nav>
     </header>
@@ -190,7 +204,7 @@
                 আসন্ন শিক্ষাবর্ষে ভর্তি চলছে
             </p>
             
-            <!-- 5. CTA Course List (Background removed as requested) -->
+            <!-- 5. CTA Course List -->
             <p class="text-xl md:text-2xl text-[#1e3a8a] mb-8 font-bold">
                 <span>SSC ভোকেশনাল</span>, <span>HSC BMT</span>, ডিপ্লোমা ইঞ্জিনিয়ারিং ও এগ্রিকালচারে ভর্তি চলছে
             </p>
@@ -384,6 +398,30 @@
                 </div>
             </div>
         </section>
+        
+        <!-- Video Section (NEWLY RE-ADDED) -->
+        <section id="video" class="mb-12">
+            <h3 class="text-3xl font-bold text-center text-[#1e3a8a] mb-8 border-b-2 border-red-500 pb-2">আমাদের একটি ভিডিও</h3>
+            <div class="section-card p-6 md:p-8">
+                <h4 class="text-2xl font-extrabold text-red-500 mb-6 text-center">প্রতিষ্ঠান ও ল্যাব পরিদর্শনের ঝলক</h4>
+                
+                <!-- Responsive Video Container -->
+                <div class="video-container shadow-xl border-4 border-red-200">
+                    <iframe 
+                        src="https://www.youtube.com/embed/V_TuD4YSegc?si=VIQN8T3xya7ottaJ" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                
+                <p class="text-center text-gray-600 mt-4 text-base">
+                    আমাদের ক্যাম্পাস ও ল্যাবরেটরিগুলো দেখুন। আধুনিক পরিবেশে হাতে-কলমে শিক্ষার ব্যবস্থা।
+                </p>
+            </div>
+        </section>
 
 
         <!-- Features Section -->
@@ -533,35 +571,6 @@
                 </div>
             </div>
         </section>
-
-        <!-- Video Section -->
-        <section id="video" class="mb-12">
-            <h3 class="text-3xl font-bold text-center text-[#1e3a8a] mb-8 border-b-2 border-red-500 pb-2">আমাদের কার্যক্রমের ভিডিও</h3>
-            <div class="section-card p-6 md:p-10">
-                <h4 class="text-2xl font-semibold text-red-500 mb-4">আমাদের ক্যাম্পাস ও সাফল্যের কিছু ঝলক</h4>
-                <p class="text-lg text-gray-700 mb-8 max-w-3xl mx-auto">
-                    ভিডিওটি প্লে করে আমাদের ক্লাসরুম, ল্যাব এবং শিক্ষার্থীদের সফলতার গল্প দেখুন।
-                </p>
-
-                <!-- Responsive Video Container (16:9 Aspect Ratio) -->
-                <div class="responsive-video-container bg-gray-200 rounded-xl overflow-hidden shadow-2xl border-4 border-red-300">
-                    <!-- Iframe for YouTube or other video service -->
-                    <iframe 
-                        src="https://www.youtube.com/embed/V_TuD4YSegc?si=blY9uoFNHEPSt5rO" 
-                        title="YouTube video player"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        allowfullscreen
-                        class="w-full h-full"
-                    ></iframe>
-                </div>
-                
-                <p class="text-sm text-gray-500 mt-4 text-center">
-                    **নোট:** এটি এখন আপনার দেওয়া সঠিক ভিডিও লিঙ্ক ব্যবহার করছে।
-                </p>
-            </div>
-        </section>
-        <!-- End Video Section -->
         
         <!-- Contact Section -->
         <section id="contact" class="mb-12">
@@ -819,12 +828,12 @@
 
                 if (targetId === 'courses') {
                     targetElement = document.getElementById('courses');
+                } else if (targetId === 'video') {
+                    targetElement = document.getElementById('video');
                 } else if (targetId === 'features') {
                     targetElement = document.getElementById('features');
                 } else if (targetId === 'infrastructure') {
                     targetElement = document.getElementById('infrastructure');
-                } else if (targetId === 'video') { 
-                    targetElement = document.getElementById('video');
                 } else if (targetId === 'contact') {
                     targetElement = document.getElementById('contact');
                 } else if (targetId === 'notice') {
