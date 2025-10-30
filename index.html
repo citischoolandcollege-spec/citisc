@@ -179,7 +179,7 @@
                 <a href="#courses" class="nav-link text-white px-3 py-2 rounded-md font-medium">কোর্সসমূহ</a>
                 <a href="#video" class="nav-link text-white px-3 py-2 rounded-md font-medium">ভিডিও</a>
                 <a href="#features" class="nav-link text-white px-3 py-2 rounded-md font-medium">বৈশিষ্ট্য</a>
-                <a href="#advisor" class="nav-link text-white px-3 py-2 rounded-md font-medium">AI পরামর্শদাতা ✨</a>
+               
                 <a href="#infrastructure" class="nav-link text-white px-3 py-2 rounded-md font-medium">অবকাঠামো</a>
                 <a href="#contact" class="nav-link text-white px-3 py-2 rounded-md font-medium">যোগাযোগ</a>
             </nav>
@@ -245,13 +245,7 @@
                         <p class="text-sm text-red-500">প্রতিষ্ঠাতা ও চেয়ারম্যান</p>
                     </div>
 
-                    <!-- Message Text --><div class="flex-1 text-center md:text-left">
-                        <!-- NEW TTS Button (Gemini Integration 3) --><div class="mb-4 flex justify-center md:justify-start">
-                             <button id="tts-founder-btn" class="btn-primary flex items-center bg-red-600 hover:bg-red-700 text-white px-4 py-2 text-sm rounded-full shadow-md transition duration-200">
-                                <!-- Speaker Icon SVG --><svg id="tts-icon" class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path></svg>
-                                <span id="tts-status">প্রতিষ্ঠাতার বাণী শুনুন ✨</span>
-                             </button>
-                        </div>
+                    
                         <p id="founder-message-text" class="text-xl italic text-gray-700 mb-4 leading-relaxed font-medium">
                             "প্রিয় শিক্ষার্থীবৃন্দ ও অভিভাবকবৃন্দ,
                             একটি দক্ষ ও প্রযুক্তিনির্ভর জাতি গঠনে সিটি আই.টি. ইন্সটিটিউট এর পথচলা শুরু হয়েছিল। আমরা বিশ্বাস করি, কেবল গতানুগতিক শিক্ষা নয়, **হাতে-কলমে কারিগরি দক্ষতা অর্জনই পারে বর্তমান বিশ্বের চ্যালেঞ্জ মোকাবিলা করতে।** আমাদের প্রতিষ্ঠানে রয়েছে অভিজ্ঞ শিক্ষক মন্ডলী এবং আধুনিক ল্যাব সুবিধা। আমাদের মূল লক্ষ্য—প্রত্যেক শিক্ষার্থীকে সুশৃঙ্খল এবং কর্মমুখী শিক্ষা দিয়ে সফল ক্যারিয়ারের জন্য প্রস্তুত করা। আসুন, আমরা একসাথে একটি উজ্জ্বল ও টেকসই ভবিষ্যৎ নির্মাণ করি।"
@@ -1085,32 +1079,7 @@
             chatWindow.appendChild(loadingDiv);
             chatWindow.scrollTop = chatWindow.scrollHeight;
 
-            const systemPrompt = `আপনি একজন অভিজ্ঞ ও তথ্যবহুল শিক্ষা এবং ক্যারিয়ার পরামর্শদাতা। আপনার কাজ হলো ব্যবহারকারীকে সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট স্কুল ও কলেজের বিভিন্ন কারিগরি কোর্স (যেমন SSC Vocational, HSC BMT, Diploma in Engineering/Agriculture) এবং কর্মজীবনের সুযোগ সম্পর্কে নিরপেক্ষ ও সঠিক তথ্য দিয়ে সহায়তা করা। উত্তর বাংলায় দিন। প্রয়োজনে Google Search ব্যবহার করুন।`;
-
-            const payload = {
-                contents: [{ parts: [{ text: query }] }],
-                tools: [{ "google_search": {} }],
-                systemInstruction: { parts: [{ text: systemPrompt }] },
-            };
-
-            try {
-                const response = await callGeminiAPI(payload, GEMINI_MODEL);
-                document.getElementById('loading-message').remove(); // Remove loading message
-                if (response.type === 'text') {
-                    displayMessage(response.text, false, response.sources); // Display AI response
-                } else {
-                    throw new Error("Unexpected response type for Q&A.");
-                }
-            } catch (error) {
-                const loadingMsg = document.getElementById('loading-message');
-                if (loadingMsg) loadingMsg.remove();
-                advisorError.textContent = 'API থেকে উত্তর আনা সম্ভব হয়নি। অনুগ্রহ করে আবার চেষ্টা করুন।';
-                advisorError.classList.remove('hidden');
-                console.error("Q&A Error:", error);
-            } finally {
-                sendAdvisorBtn.disabled = false;
-            }
-        }
+          
         
         sendAdvisorBtn.addEventListener('click', handleAdvisorQuery);
         advisorInput.addEventListener('keypress', (e) => {
@@ -1120,102 +1089,7 @@
         });
 
 
-        // --- GEMINI INTEGRATION 3: FOUNDER'S MESSAGE TTS ---
-        const ttsFounderBtn = document.getElementById('tts-founder-btn');
-        const ttsStatus = document.getElementById('tts-status');
-        const founderMessageText = document.getElementById('founder-message-text').innerText;
-        const ttsIcon = document.getElementById('tts-icon');
-        let audio = null; // Audio element reference
-
-        // Pre-processing the text to make it suitable for TTS API (e.g., removing extra formatting)
-        const cleanMessage = founderMessageText.replace(/প্রিয় শিক্ষার্থীবৃন্দ ও অভিভাবকবৃন্দ,|— ড. এ বি এম মশিউর রহমান/g, '').replace(/\*\*/g, '').trim();
-
-        ttsFounderBtn.addEventListener('click', async () => {
-            if (ttsFounderBtn.disabled) return;
-            
-            // If audio is currently playing, stop and reset
-            if (audio && !audio.paused) {
-                audio.pause();
-                audio.currentTime = 0;
-                ttsStatus.textContent = 'প্রতিষ্ঠাতার বাণী শুনুন ✨';
-                ttsIcon.innerHTML = `<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>`;
-                return;
-            }
-
-            // Start TTS process
-            ttsFounderBtn.disabled = true;
-            ttsStatus.textContent = 'অডিও তৈরি হচ্ছে...';
-            ttsIcon.innerHTML = `<circle cx="10" cy="10" r="10" class="opacity-75" fill="currentColor"></circle><path class="opacity-75" fill="white" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>`; // Spinner icon SVG (Simplified for inline use)
-
-            const ttsPayload = {
-                contents: [{
-                    parts: [{ text: cleanMessage }]
-                }],
-                generationConfig: {
-                    responseModalities: ["AUDIO"],
-                    speechConfig: {
-                        voiceConfig: {
-                            prebuiltVoiceConfig: { voiceName: "Charon" } // Charon is Informative
-                        }
-                    }
-                },
-                model: "gemini-2.5-flash-preview-tts"
-            };
-
-            try {
-                const response = await callGeminiAPI(ttsPayload, "gemini-2.5-flash-preview-tts", 3);
-
-                if (response.type === 'audio' && response.audioData.data) {
-                    const audioData = response.audioData.data;
-                    const mimeType = response.audioData.mimeType; // Should be audio/L16;rate=16000
-
-                    const sampleRateMatch = mimeType.match(/rate=(\d+)/);
-                    const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1], 10) : 16000;
-
-                    const pcmData = base64ToArrayBuffer(audioData);
-                    // The API returns signed PCM16 audio data.
-                    const pcm16 = new Int16Array(pcmData);
-                    const wavBlob = pcmToWav(pcm16, sampleRate);
-                    const audioUrl = URL.createObjectURL(wavBlob);
-
-                    if (audio) {
-                        audio.pause();
-                        URL.revokeObjectURL(audio.src);
-                    }
-                    audio = new Audio(audioUrl);
-                    
-                    audio.onended = () => {
-                        ttsStatus.textContent = 'আবার শুনুন';
-                        ttsIcon.innerHTML = `<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>`;
-                        ttsFounderBtn.disabled = false;
-                    };
-                    
-                    audio.onplay = () => {
-                        ttsStatus.textContent = 'থামান (চলছে...)';
-                        ttsIcon.innerHTML = `<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM9 9a1 1 0 00-1 1v4a1 1 0 102 0v-4a1 1 0 00-1-1zm3 0a1 1 0 00-1 1v4a1 1 0 102 0v-4a1 1 0 00-1-1z" clip-rule="evenodd"></path>`; // Pause icon
-                    };
-                    
-                    audio.play().catch(e => {
-                        console.error("Audio playback failed:", e);
-                        ttsStatus.textContent = 'প্লেব্যাক ব্যর্থ 🔇';
-                        ttsIcon.innerHTML = `<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>`;
-                    });
-
-                } else {
-                    throw new Error("TTS response missing audio data.");
-                }
-
-            } catch (error) {
-                console.error("TTS Generation Error:", error);
-                ttsStatus.textContent = 'অডিও তৈরি করা যায়নি ❌';
-                ttsIcon.innerHTML = `<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>`;
-            } finally {
-                if (audio && audio.paused) {
-                     ttsFounderBtn.disabled = false;
-                }
-            }
-        });
-
+    
 
         // --- UI & General Logic ---
         document.getElementById('mobile-menu-button').addEventListener('click', function() {
