@@ -184,81 +184,7 @@
         }
 
 
-        // --- AI Advisor Logic (Gemini API Integration - THIS IS THE EXISTING API) ---
-        
-        // Global variables for API key and URL (Must be included but left empty/as-is)
-        const apiKey = ""; 
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-
-        // Utility for Exponential Backoff (Simplified)
-        async function fetchWithRetry(url, options, maxRetries = 3) {
-            for (let i = 0; i < maxRetries; i++) {
-                try {
-                    const response = await fetch(url, options);
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                    return response;
-                } catch (error) {
-                    if (i === maxRetries - 1) throw error;
-                    const delay = Math.pow(2, i) * 1000;
-                    await new Promise(resolve => setTimeout(resolve, delay));
-                }
-            }
-        }
-
-        async function getAiAdvice() {
-            const queryInput = document.getElementById('ai-query');
-            const resultBox = document.getElementById('ai-advisor-result');
-            const userQuery = queryInput.value.trim();
-
-            if (!userQuery) {
-                resultBox.innerHTML = '<p class="text-red-400">অনুগ্রহ করে আপনার প্রশ্ন লিখুন।</p>';
-                return;
-            }
-
-            resultBox.innerHTML = '<div class="flex items-center space-x-2 text-blue-400"><div class="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-400"></div><p>AI পরামর্শদাতা উত্তর খুঁজছে...</p></div>';
-            queryInput.disabled = true;
-
-            const systemPrompt = `আপনি সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট স্কুল অ্যান্ড কলেজের একজন বন্ধুত্বপূর্ণ এবং তথ্যপূর্ণ পরামর্শদাতা। আপনার লক্ষ্য হলো সংক্ষিপ্ত, নির্ভুল এবং সহায়ক উত্তর প্রদান করা।
-            প্রতিষ্ঠানের মূল কোর্সসমূহ হলো: এসএসসি (ভোকেশনাল), এইচএসসি (বিএমটি), ডিপ্লোমা ইন ইঞ্জিনিয়ারিং (ইলেকট্রিক্যাল, সিভিল), এবং ডিপ্লোমা ইন এগ্রিকালচার।
-            শুধুমাত্র ভর্তি, কোর্স, বা ক্যারিয়ার সম্পর্কিত প্রশ্নের উত্তর দিন। প্রতিষ্ঠানের ঠিকানা বা যোগাযোগের তথ্য জিজ্ঞাসা করলে, শুধু যোগাযোগের সেকশনে দেখার জন্য অনুরোধ করুন। উত্তরটি অবশ্যই বাংলায় দিন।`;
-
-            const payload = {
-                contents: [{ parts: [{ text: userQuery }] }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                },
-                tools: [{ "google_search": {} }], // Use Google Search for grounding if necessary
-            };
-
-            const options = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            };
-
-            try {
-                const response = await fetchWithRetry(apiUrl, options);
-                const result = await response.json();
-                
-                const candidate = result.candidates?.[0];
-                let text = "দুঃখিত, কোনো উত্তর পাওয়া যায়নি।";
-                
-                if (candidate && candidate.content?.parts?.[0]?.text) {
-                    text = candidate.content.parts[0].text;
-                }
-                
-                // Display the result
-                resultBox.innerHTML = `<p class="whitespace-pre-wrap">${text}</p>`;
-
-            } catch (error) {
-                console.error("AI API Error:", error);
-                resultBox.innerHTML = `<p class="text-red-400">সার্ভার সংযোগে ত্রুটি বা API এর সমস্যা হয়েছে। অনুগ্রহ করে পরে চেষ্টা করুন।</p>`;
-            } finally {
-                queryInput.disabled = false;
-            }
-        }
-
-        // --- NEW FUNCTION: SSC Vocational Exam Routine 2025 ---
+        // --- SSC Vocational Exam Routine 2025 ---
         function showExamRoutine2025() {
             // Note: Modal content uses standard Tailwind, so the text needs to be dark for the white modal background
             const content = `
@@ -502,7 +428,7 @@
                     </a>
                 </div>
                 
-                <!-- Desktop Nav Links (UPDATED WITH smoothScroll JS) -->
+                <!-- Desktop Nav Links (AI Advisor Link Removed) -->
                 <nav class="hidden md:block">
                     <div class="flex items-baseline space-x-6 text-sm">
                         <a href="#home" onclick="smoothScroll(event, 'home')" class="text-gray-200 hover:text-accent font-medium transition duration-200">হোম</a>
@@ -510,7 +436,6 @@
                         <a href="#notices" onclick="smoothScroll(event, 'notices')" class="text-gray-200 hover:text-accent font-medium transition duration-200">নোটিশ</a>
                         <a href="#courses" onclick="smoothScroll(event, 'courses')" class="text-gray-200 hover:text-accent font-medium transition duration-200">কোর্সসমূহ</a>
                         <a href="#features" onclick="smoothScroll(event, 'features')" class="text-gray-200 hover:text-accent font-medium transition duration-200">বৈশিষ্ট্য</a>
-                        <a href="#advisor" onclick="smoothScroll(event, 'advisor')" class="text-accent font-bold hover:text-white transition duration-200">AI পরামর্শদাতা ✨</a>
                         <a href="#infrastructure" onclick="smoothScroll(event, 'infrastructure')" class="text-gray-200 hover:text-accent font-medium transition duration-200">অবকাঠামো</a>
                         <a href="#contact" onclick="smoothScroll(event, 'contact')" class="text-gray-200 hover:text-accent font-medium transition duration-200">যোগাযোগ</a>
                     </div>
@@ -528,7 +453,7 @@
             </div>
         </div>
         
-        <!-- Mobile Menu (UPDATED WITH smoothScroll JS) -->
+        <!-- Mobile Menu (AI Advisor Link Removed) -->
         <div class="md:hidden hidden glass-panel" id="mobile-menu">
             <div class="px-2 pt-2 pb-3 space-y-1">
                 <a href="#home" onclick="smoothScroll(event, 'home')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">হোম</a>
@@ -536,7 +461,6 @@
                 <a href="#notices" onclick="smoothScroll(event, 'notices')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">নোটিশ</a>
                 <a href="#courses" onclick="smoothScroll(event, 'courses')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">কোর্সসমূহ</a>
                 <a href="#features" onclick="smoothScroll(event, 'features')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">বৈশিষ্ট্য</a>
-                <a href="#advisor" onclick="smoothScroll(event, 'advisor')" class="text-accent font-bold hover:bg-white/10 block px-3 py-2 rounded-md">AI পরামর্শদাতা ✨</a>
                 <a href="#infrastructure" onclick="smoothScroll(event, 'infrastructure')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">অবকাঠামো</a>
                 <a href="#contact" onclick="smoothScroll(event, 'contact')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">যোগাযোগ</a>
             </div>
@@ -784,37 +708,6 @@
                         <h3 class="text-xl font-bold text-white mb-2">চাকরিজীবীদের জন্য বিশেষ ব্যবস্থা</h3>
                         <p class="text-gray-400">যারা বর্তমানে চাকরি করছেন, তাদের জন্য **ছুটির দিনে (শুক্র/শনি)** বিশেষ ক্লাস ও পরীক্ষার ব্যবস্থা রয়েছে।</p>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- AI Advisor Section -->
-        <section id="advisor" class="py-16 bg-primary/20">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 class="text-4xl font-extrabold mb-3 flex items-center justify-center space-x-3 text-white">
-                    <span class="text-accent">✨</span> 
-                    <span>কোর্স পরামর্শদাতা (AI Advisor)</span>
-                </h2>
-                <p class="text-lg mb-8 text-gray-300">
-                    ভর্তি সংক্রান্ত বা যেকোনো টেকনিক্যাল কোর্স সম্পর্কে জানতে নিচে আপনার প্রশ্ন লিখুন। আমাদের AI পরামর্শদাতা তাৎক্ষণিকভাবে উত্তর দেবে।
-                </p>
-
-                <!-- AI Panel (Glass Panel) -->
-                <div class="glass-panel p-6 rounded-xl shadow-2xl">
-                    <!-- AI Result Box -->
-                    <div id="ai-advisor-result" class="min-h-24 bg-black/30 p-4 rounded-lg mb-4 text-left text-gray-300 border-l-4 border-accent">
-                        <p class="font-semibold text-accent">AI পরামর্শদাতা:</p>
-                        <p class="text-sm text-gray-400">সিটি আইটি ইন্সটিটিউটের কোর্স, ভর্তি প্রক্রিয়া, বা যেকোনো ক্যারিয়ার সম্পর্কিত প্রশ্ন জিজ্ঞাসা করুন।</p>
-                    </div>
-
-                    <!-- User Input -->
-                    <form onsubmit="event.preventDefault(); getAiAdvice();" class="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3">
-                        <input type="text" id="ai-query" placeholder="আপনার প্রশ্নটি লিখুন, যেমন: ডিপ্লোমা ইন সিভিল ইঞ্জিনিয়ারিং-এ ভর্তির যোগ্যতা কী?" required class="w-full md:w-3/4 p-3 border border-white/20 rounded-lg text-white bg-black/30 focus:ring-accent focus:border-accent placeholder-gray-500">
-                        <!-- Button uses btn-secondary (Teal Gradient) -->
-                        <button type="submit" class="w-full md:w-1/4 btn-secondary py-3 rounded-lg font-bold">
-                            প্রশ্ন করুন
-                        </button>
-                    </form>
                 </div>
             </div>
         </section>
