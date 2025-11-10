@@ -120,6 +120,16 @@
             z-index: 50;
         }
         /* Adjusted styles for modal content */
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .schedule-table th, .schedule-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #e5e7eb;
+        }
         .schedule-table th {
             background-color: #1a237e;
             color: white;
@@ -383,6 +393,18 @@
             `;
             showDetails('এসএসসি ভোকেশনাল পাঠ্যক্রম', content);
         }
+
+        // --- Results Modal Function (UPDATED TO "COMING SOON") ---
+        function showResultsDetails() {
+            const content = `
+                <div class="space-y-6 text-center text-gray-800 p-8">
+                    <p class="text-4xl font-extrabold text-red-600 mb-4">📢 ফলাফল শীঘ্রই আসছে 📢</p>
+                    <p class="text-lg text-gray-700">২০২৫ শিক্ষাবর্ষের সকল পরীক্ষার ফলাফল প্রক্রিয়াধীন। ফলাফল প্রকাশের সাথে সাথেই এখানে বিস্তারিত তথ্য আপডেট করা হবে।</p>
+                    <p class="text-sm italic text-gray-500 mt-4">আপডেট তথ্যের জন্য অনুগ্রহ করে আমাদের নোটিশ বোর্ড অনুসরণ করুন।</p>
+                </div>
+            `;
+            showDetails('ফলাফল আপডেট', content);
+        }
     </script>
 </head>
 <body class="liquid-bg font-sans min-h-screen">
@@ -396,7 +418,7 @@
         <div class="bg-white rounded-xl p-6 w-full max-w-4xl shadow-2xl transform scale-100">
             <h3 id="modal-title" class="text-2xl font-bold text-primary mb-3 border-b pb-2 text-gray-800">বিস্তারিত তথ্য</h3>
             <div id="modal-content" class="text-gray-700 max-h-[80vh] overflow-y-auto mb-5 text-base"></div>
-            <button onclick="closeModal()" class="w-full btn-primary py-3 rounded-lg font-semibold">বন্ধ করুন</button>
+            <button onclick="closeModal()" class="w-full btn-primary py-3 px-4 rounded-lg font-semibold">বন্ধ করুন</button>
         </div>
     </div>
     
@@ -428,7 +450,7 @@
                     </a>
                 </div>
                 
-                <!-- Desktop Nav Links (AI Advisor Link Removed) -->
+                <!-- Desktop Nav Links (New Result Link Added) -->
                 <nav class="hidden md:block">
                     <div class="flex items-baseline space-x-6 text-sm">
                         <a href="#home" onclick="smoothScroll(event, 'home')" class="text-gray-200 hover:text-accent font-medium transition duration-200">হোম</a>
@@ -436,6 +458,7 @@
                         <a href="#notices" onclick="smoothScroll(event, 'notices')" class="text-gray-200 hover:text-accent font-medium transition duration-200">নোটিশ</a>
                         <a href="#courses" onclick="smoothScroll(event, 'courses')" class="text-gray-200 hover:text-accent font-medium transition duration-200">কোর্সসমূহ</a>
                         <a href="#features" onclick="smoothScroll(event, 'features')" class="text-gray-200 hover:text-accent font-medium transition duration-200">বৈশিষ্ট্য</a>
+                        <a href="#results" onclick="smoothScroll(event, 'results')" class="text-gray-200 hover:text-accent font-medium transition duration-200">ফলাফল</a>
                         <a href="#infrastructure" onclick="smoothScroll(event, 'infrastructure')" class="text-gray-200 hover:text-accent font-medium transition duration-200">অবকাঠামো</a>
                         <a href="#contact" onclick="smoothScroll(event, 'contact')" class="text-gray-200 hover:text-accent font-medium transition duration-200">যোগাযোগ</a>
                     </div>
@@ -453,7 +476,7 @@
             </div>
         </div>
         
-        <!-- Mobile Menu (AI Advisor Link Removed) -->
+        <!-- Mobile Menu (New Result Link Added) -->
         <div class="md:hidden hidden glass-panel" id="mobile-menu">
             <div class="px-2 pt-2 pb-3 space-y-1">
                 <a href="#home" onclick="smoothScroll(event, 'home')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">হোম</a>
@@ -461,6 +484,7 @@
                 <a href="#notices" onclick="smoothScroll(event, 'notices')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">নোটিশ</a>
                 <a href="#courses" onclick="smoothScroll(event, 'courses')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">কোর্সসমূহ</a>
                 <a href="#features" onclick="smoothScroll(event, 'features')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">বৈশিষ্ট্য</a>
+                <a href="#results" onclick="smoothScroll(event, 'results')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">ফলাফল</a>
                 <a href="#infrastructure" onclick="smoothScroll(event, 'infrastructure')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">অবকাঠামো</a>
                 <a href="#contact" onclick="smoothScroll(event, 'contact')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">যোগাযোগ</a>
             </div>
@@ -475,7 +499,7 @@
                 <p class="text-lg font-bold text-accent mb-2">সফলতার ১৪ বছরের পথচলা</p>
                 <!-- Main headline color is text-accent (Yellow) -->
                 <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg">
-                    সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট <br class="hidden md:inline">& স্কুল & কলেজ
+                    সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট <br class="hidden md:inline"> স্কুল & কলেজ
                 </h1>
                 <p class="text-gray-400 text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
                     টেকনোলজি নির্ভর উজ্জ্বল ভবিষ্যতের পথে আপনার প্রথম পদক্ষেপ।
@@ -711,6 +735,29 @@
                 </div>
             </div>
         </section>
+        
+        <!-- Results Section (Updated) -->
+        <section id="results" class="py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-extrabold section-heading inline-block pb-1 mb-10">ফলাফল ও সাফল্য</h2>
+                <p class="text-lg text-gray-400 mb-10">শিক্ষার মান ও কঠোর পরিচর্যার ফলস্বরূপ প্রতি বছর আমাদের শিক্ষার্থীরা বোর্ড পরীক্ষায় ঈর্ষণীয় সাফল্য অর্জন করে।</p>
+
+                <div class="glass-panel p-8 rounded-xl shadow-2xl text-center border-t-8 border-indigo-500">
+                    <span class="text-7xl font-extrabold text-accent block leading-none">১০০%</span>
+                    <p class="text-2xl font-semibold text-white mt-2 mb-6">এসএসসি ভোকেশনাল বোর্ড পরীক্ষায় শতভাগ কৃতকার্য</p>
+                    
+                    <p class="text-gray-300 max-w-2xl mx-auto mb-8">
+                        শিক্ষক, শিক্ষার্থী ও অভিভাবকদের সম্মিলিত প্রচেষ্টায় আমরা ধারাবাহিকভাবে এই সাফল্য ধরে রেখেছি। 
+                        আমাদের শিক্ষার্থীরা শুধু পাস করে না, তারা উচ্চ জিপিএ নিয়ে ভবিষ্যতে ডিপ্লোমা বা কর্মজীবনের জন্য প্রস্তুত হয়।
+                    </p>
+
+                    <button onclick="showResultsDetails()" class="btn-primary text-white py-3 px-8 rounded-full font-bold text-lg hover:shadow-xl transition duration-300">
+                        বিস্তারিত ফলাফল ও পরিসংখ্যান দেখুন
+                    </button>
+                </div>
+            </div>
+        </section>
+        <!-- End Results Section -->
 
         <!-- Infrastructure Section -->
         <section id="infrastructure" class="py-16">
@@ -813,13 +860,13 @@
                         </div>
                     </div>
                     
-                    <!-- Google Maps Embed -->
+                    <!-- Google Maps Embed (UPDATED: SRC replaced with user's new code) -->
                     <div class="glass-panel p-8 rounded-xl shadow-xl">
                         <h3 class="text-xl font-bold text-white mb-4 border-b pb-2 border-white/20">আমাদের অবস্থান (Google Maps)</h3>
-                        <div class="w-full h-64 rounded-lg overflow-hidden border border-white/20">
-                             <!-- Google Maps Embed using the provided URL (Shared link converted to Embed) -->
+                        <div class="w-full h-80 rounded-lg overflow-hidden border-2 border-primary shadow-xl">
+                             <!-- Google Maps Embed using the user's new URL -->
                             <iframe 
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3632.748689531109!2d90.43579067520448!3d24.135086078736783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375628b8c2c62c2f%3A0x8677f59d0426d03a!2sCity%20Information%20Technology%20Institute%20School%20%26%20College!5e0!3m2!1sen!2sbd!4v1701198424151!5m2!1sen!2sbd" 
+                                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d832.7450891984148!2d90.4690081!3d24.2079795!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x37567931b3562d07%3A0xea8fb95663b4f086!2z4Ka44Ka_4Kaf4Ka_IOCmrOCnh-CmuOCmsOCmleCmvuCmsOCmvyDgpofgpqjgpqvgprDgpq7gp4fgprbgpqgg4Kaf4KeH4KaV4Kao4KeL4Kay4Kac4Ka_IOCmh-CmqOCnjeCmuOCmn-Cmv-Cmn-Cmv-CmieCmnw!5e1!3m2!1sen!2sbd!4v1762762851800!5m2!1sen!2sbd" 
                                 width="100%" 
                                 height="100%" 
                                 style="border:0;" 
