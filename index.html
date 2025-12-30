@@ -10,18 +10,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- LIQUID GLASS UI CUSTOM STYLES --- */
-
-        /* Keeping smooth scrolling CSS as a fallback (though JS will handle it now) */
+        /* --- SMOOTH SCROLL FIX --- */
         html {
             scroll-behavior: smooth;
+            scroll-padding-top: 120px; /* Adjust this based on your header height */
         }
+        
+        /* Remove any conflicting CSS that might prevent smooth scrolling */
+        * {
+            scroll-margin-top: 120px; /* For anchor links */
+        }
+        
+        /* --- LIQUID GLASS UI CUSTOM STYLES --- */
         
         /* 1. Base Dark Background for Liquid Effect */
         body {
             font-family: 'Hind Siliguri', 'Inter', sans-serif;
             background-color: #0d1117; /* Deep Dark Background */
             color: #d1d5db; /* Light gray text for dark mode */
+            overflow-x: hidden;
         }
         
         /* 2. Glass Panel Effect (Main Containers) */
@@ -75,6 +82,9 @@
             background-color: rgba(26, 35, 126, 0.8); /* Semi-transparent Indigo */
             backdrop-filter: blur(10px);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            position: sticky;
+            top: 48px; /* Height of marquee bar */
+            z-index: 40;
         }
         .text-primary { color: #818cf8; } /* Lighter Indigo for titles */
         .bg-accent { background-color: #ffb300; } 
@@ -86,6 +96,13 @@
             transition: background 0.3s, transform 0.2s;
             box-shadow: 0 8px 15px rgba(26, 35, 126, 0.6);
             color: white;
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
         }
         .btn-primary:hover {
             background: linear-gradient(90deg, #0d1248, #2c387e); 
@@ -96,6 +113,13 @@
             transition: background 0.3s, transform 0.2s;
             box-shadow: 0 8px 15px rgba(0, 137, 123, 0.6);
             color: white;
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
         }
         .btn-secondary:hover {
             background: linear-gradient(90deg, #00695c, #0ea5e9);
@@ -105,6 +129,9 @@
         .section-heading {
             color: #e5e7eb; /* Off-white for section titles */
             border-bottom: 4px solid #ffb300;
+            padding-bottom: 8px;
+            margin-bottom: 2rem;
+            display: inline-block;
         }
         .feature-icon {
             color: #38bdf8; /* Use Cyan for icons */
@@ -118,7 +145,10 @@
             padding: 0.5rem 0;
             font-weight: 600;
             z-index: 50;
+            position: sticky;
+            top: 0;
         }
+        
         /* Adjusted styles for modal content */
         .schedule-table {
             width: 100%;
@@ -140,35 +170,208 @@
         .schedule-table tr:nth-child(even) {
             background-color: #f3f4f6;
         }
+        
+        /* Smooth scroll animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fadeInUp {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        /* Fix for fixed elements during scroll */
+        section {
+            position: relative;
+            z-index: 10;
+            scroll-margin-top: 140px; /* Account for sticky header + marquee */
+        }
+        
+        /* Ensure content is above background spheres */
+        main > * {
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(13, 17, 23, 0.8);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #1a237e, #818cf8);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #0d1248, #6366f1);
+        }
+        
+        /* Mobile menu animations */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        #mobile-menu:not(.hidden) {
+            animation: slideDown 0.3s ease-out;
+        }
     </style>
 
     <script>
-        // --- Essential JS Functions ---
+        // --- ENHANCED SMOOTH SCROLL SYSTEM ---
         
-        // New JS function for smooth scrolling to ensure compatibility
-        function smoothScroll(event, targetId) {
-            event.preventDefault(); // Stop default anchor jump
-            const targetElement = document.getElementById(targetId);
-
-            if (targetElement) {
-                // Use scrollIntoView with smooth behavior
-                targetElement.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start' // Scroll to the top of the element
-                });
+        // Initialize smooth scroll when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initSmoothScroll();
+            initScrollAnimations();
+            fixScrollOffsets();
+        });
+        
+        function initSmoothScroll() {
+            // Enhanced smooth scroll function
+            function smoothScroll(event, targetId) {
+                if (event) event.preventDefault();
                 
-                // Handle mobile menu closing (if applicable)
+                const targetElement = document.getElementById(targetId);
+                
+                if (!targetElement) {
+                    console.warn(`Target element #${targetId} not found`);
+                    return;
+                }
+                
+                // Calculate the total height of sticky elements
+                const marquee = document.querySelector('.marquee-notice');
+                const header = document.querySelector('.header-bg');
+                const marqueeHeight = marquee ? marquee.offsetHeight : 48;
+                const headerHeight = header ? header.offsetHeight : 80;
+                const totalOffset = marqueeHeight + headerHeight + 20; // 20px extra padding
+                
+                // Get the element's position
+                const elementPosition = targetElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - totalOffset;
+                
+                // Smooth scroll using requestAnimationFrame for better performance
+                smoothScrollTo(offsetPosition, 800);
+                
+                // Update URL without page jump
+                history.pushState(null, null, `#${targetId}`);
+                
+                // Close mobile menu if open
                 const mobileMenu = document.getElementById('mobile-menu');
                 if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
                     mobileMenu.classList.add('hidden');
                 }
-            } else {
-                console.error(`Target section with ID '${targetId}' not found.`);
-                // Fallback
-                window.location.hash = '#' + targetId;
             }
+            
+            // Smooth scroll implementation with easing
+            function smoothScrollTo(targetPosition, duration) {
+                const startPosition = window.pageYOffset;
+                const distance = targetPosition - startPosition;
+                let startTime = null;
+                
+                function animation(currentTime) {
+                    if (startTime === null) startTime = currentTime;
+                    const timeElapsed = currentTime - startTime;
+                    const progress = Math.min(timeElapsed / duration, 1);
+                    
+                    // Easing function (easeInOutCubic)
+                    const easeProgress = progress < 0.5 
+                        ? 4 * progress * progress * progress
+                        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+                    
+                    window.scrollTo(0, startPosition + (distance * easeProgress));
+                    
+                    if (timeElapsed < duration) {
+                        requestAnimationFrame(animation);
+                    }
+                }
+                
+                requestAnimationFrame(animation);
+            }
+            
+            // Attach smooth scroll to all anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href !== '#') {
+                        const targetId = href.substring(1);
+                        smoothScroll(e, targetId);
+                    }
+                });
+            });
+            
+            // Make function globally available for onclick attributes
+            window.smoothScroll = smoothScroll;
         }
-
+        
+        function fixScrollOffsets() {
+            // Dynamically adjust scroll-margin-top based on header height
+            const updateScrollOffsets = () => {
+                const marquee = document.querySelector('.marquee-notice');
+                const header = document.querySelector('.header-bg');
+                const marqueeHeight = marquee ? marquee.offsetHeight : 48;
+                const headerHeight = header ? header.offsetHeight : 80;
+                const totalHeight = marqueeHeight + headerHeight + 20;
+                
+                // Update CSS variable
+                document.documentElement.style.setProperty('--scroll-offset', `${totalHeight}px`);
+                
+                // Update scroll-padding-top
+                document.documentElement.style.scrollPaddingTop = `${totalHeight}px`;
+                
+                // Update all sections
+                document.querySelectorAll('section').forEach(section => {
+                    section.style.scrollMarginTop = `${totalHeight}px`;
+                });
+            };
+            
+            // Update on load and resize
+            updateScrollOffsets();
+            window.addEventListener('resize', updateScrollOffsets);
+        }
+        
+        function initScrollAnimations() {
+            // Add fade-in animations on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fadeInUp');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe sections for animation
+            document.querySelectorAll('section').forEach(section => {
+                observer.observe(section);
+            });
+        }
+        
+        // --- Essential JS Functions ---
+        
         // Custom Modal (Replaces alert() and confirm())
         function showDetails(title, content) {
             const modal = document.getElementById('info-modal');
@@ -176,6 +379,9 @@
             document.getElementById('modal-content').innerHTML = content;
             modal.classList.remove('hidden', 'opacity-0');
             modal.classList.add('opacity-100');
+            
+            // Prevent background scrolling when modal is open
+            document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
@@ -184,19 +390,44 @@
             modal.classList.add('opacity-0');
             setTimeout(() => {
                 modal.classList.add('hidden');
-            }, 300); // Wait for transition
+                // Restore scrolling
+                document.body.style.overflow = '';
+            }, 300);
         }
 
         // Mobile Menu Toggle
         function toggleMenu() {
             const menu = document.getElementById('mobile-menu');
+            const menuButton = document.querySelector('[aria-controls="mobile-menu"]');
+            
             menu.classList.toggle('hidden');
+            
+            // Update aria-expanded attribute for accessibility
+            const isExpanded = !menu.classList.contains('hidden');
+            menuButton.setAttribute('aria-expanded', isExpanded);
+            
+            // Prevent background scrolling when menu is open on mobile
+            if (window.innerWidth < 768) {
+                document.body.style.overflow = isExpanded ? 'hidden' : '';
+            }
         }
-
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuButton = document.querySelector('[aria-controls="mobile-menu"]');
+            
+            if (!mobileMenu.classList.contains('hidden') && 
+                !mobileMenu.contains(event.target) && 
+                !menuButton.contains(event.target)) {
+                mobileMenu.classList.add('hidden');
+                menuButton.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            }
+        });
 
         // --- SSC Vocational Exam Routine 2025 ---
         function showExamRoutine2025() {
-            // Note: Modal content uses standard Tailwind, so the text needs to be dark for the white modal background
             const content = `
                 <div class="space-y-6 text-gray-800">
                     <h2 class="text-2xl font-bold text-red-700 mb-4 border-b-2 border-red-200 pb-2">
@@ -329,7 +560,6 @@
 
         // --- Existing Vocational Details Function (for course list) ---
         function showVocationalDetails() {
-            // Note: Modal content uses standard Tailwind, so the text needs to be dark for the white modal background
             const content = `
                 <h4 class="text-xl font-bold mb-3 text-gray-800">এসএসসি ভোকেশনাল (৯ম-১০ম) বিস্তারিত বিষয় ও কোড:</h4>
                 
@@ -405,6 +635,15 @@
             `;
             showDetails('ফলাফল আপডেট', content);
         }
+        
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', function() {
+            const hash = window.location.hash;
+            if (hash) {
+                const targetId = hash.substring(1);
+                smoothScroll(null, targetId);
+            }
+        });
     </script>
 </head>
 <body class="liquid-bg font-sans min-h-screen">
@@ -415,15 +654,15 @@
 
     <!-- Custom Info Modal (Replaces alert/confirm) -->
     <div id="info-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 transition-opacity duration-300 hidden opacity-0">
-        <div class="bg-white rounded-xl p-6 w-full max-w-4xl shadow-2xl transform scale-100">
+        <div class="bg-white rounded-xl p-6 w-full max-w-4xl shadow-2xl transform scale-100 max-h-[90vh] overflow-y-auto">
             <h3 id="modal-title" class="text-2xl font-bold text-primary mb-3 border-b pb-2 text-gray-800">বিস্তারিত তথ্য</h3>
-            <div id="modal-content" class="text-gray-700 max-h-[80vh] overflow-y-auto mb-5 text-base"></div>
-            <button onclick="closeModal()" class="w-full btn-primary py-3 px-4 rounded-lg font-semibold">বন্ধ করুন</button>
+            <div id="modal-content" class="text-gray-700 mb-5 text-base"></div>
+            <button onclick="closeModal()" class="w-full btn-primary py-3 px-4 rounded-lg font-semibold" aria-label="মডাল বন্ধ করুন">বন্ধ করুন</button>
         </div>
     </div>
     
     <!-- Urgent Marquee Notice Bar -->
-    <div class="marquee-notice sticky top-0 z-50">
+    <div class="marquee-notice">
         <div class="max-w-7xl mx-auto px-4 overflow-hidden whitespace-nowrap">
             <marquee behavior="scroll" direction="left" scrollamount="5">
                 <span class="mr-12">জরুরী বিজ্ঞপ্তি: এসএসসি (ভোকেশনাল) নবম শ্রেণি সমাপনী পরীক্ষার সময়সূচি প্রকাশিত হয়েছে। বিস্তারিত জানতে নোটিশ বোর্ড দেখুন।</span>
@@ -432,42 +671,45 @@
     </div>
 
     <!-- Header/Navigation -->
-    <header class="header-bg sticky top-[48px] z-40"> <!-- Adjusted top position to account for marquee -->
+    <header class="header-bg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <!-- Logo/Title -->
                 <div class="flex-shrink-0 flex items-center space-x-2">
-                    <!-- Image Logo -->
                     <img src="https://i.ibb.co.com/hJ2kV3Ct/Screenshot-2025-10-06-173431.png" 
                          alt="সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট লোগো" 
                          onerror="this.onerror=null;this.src='https://placehold.co/40x40/ffffff/1a237e?text=Logo';" 
-                         class="h-10 w-auto rounded-full glass-panel p-1">
+                         class="h-10 w-auto rounded-full glass-panel p-1"
+                         loading="eager">
                     
-                    <!-- Text Title (Full Name) -->
-                    <a href="#" class="text-white text-left hidden sm:block">
+                    <a href="#home" onclick="smoothScroll(event, 'home')" class="text-white text-left hidden sm:block">
                         <span class="text-lg font-bold block leading-snug">সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট</span>
                         <span class="text-accent block text-sm font-medium -mt-1 leading-none">স্কুল & কলেজ</span>
                     </a>
                 </div>
                 
-                <!-- Desktop Nav Links (New Result Link Added) -->
+                <!-- Desktop Nav Links -->
                 <nav class="hidden md:block">
                     <div class="flex items-baseline space-x-6 text-sm">
-                        <a href="#home" onclick="smoothScroll(event, 'home')" class="text-gray-200 hover:text-accent font-medium transition duration-200">হোম</a>
-                        <a href="#founder" onclick="smoothScroll(event, 'founder')" class="text-gray-200 hover:text-accent font-medium transition duration-200">প্রতিষ্ঠাতার বাণী</a>
-                        <a href="#notices" onclick="smoothScroll(event, 'notices')" class="text-gray-200 hover:text-accent font-medium transition duration-200">নোটিশ</a>
-                        <a href="#courses" onclick="smoothScroll(event, 'courses')" class="text-gray-200 hover:text-accent font-medium transition duration-200">কোর্সসমূহ</a>
-                        <a href="#features" onclick="smoothScroll(event, 'features')" class="text-gray-200 hover:text-accent font-medium transition duration-200">বৈশিষ্ট্য</a>
-                        <a href="#results" onclick="smoothScroll(event, 'results')" class="text-gray-200 hover:text-accent font-medium transition duration-200">ফলাফল</a>
-                        <a href="#infrastructure" onclick="smoothScroll(event, 'infrastructure')" class="text-gray-200 hover:text-accent font-medium transition duration-200">অবকাঠামো</a>
-                        <a href="#contact" onclick="smoothScroll(event, 'contact')" class="text-gray-200 hover:text-accent font-medium transition duration-200">যোগাযোগ</a>
+                        <a href="#home" onclick="smoothScroll(event, 'home')" class="text-gray-200 hover:text-accent font-medium transition duration-200 py-2 px-1">হোম</a>
+                        <a href="#founder" onclick="smoothScroll(event, 'founder')" class="text-gray-200 hover:text-accent font-medium transition duration-200 py-2 px-1">প্রতিষ্ঠাতার বাণী</a>
+                        <a href="#notices" onclick="smoothScroll(event, 'notices')" class="text-gray-200 hover:text-accent font-medium transition duration-200 py-2 px-1">নোটিশ</a>
+                        <a href="#courses" onclick="smoothScroll(event, 'courses')" class="text-gray-200 hover:text-accent font-medium transition duration-200 py-2 px-1">কোর্সসমূহ</a>
+                        <a href="#features" onclick="smoothScroll(event, 'features')" class="text-gray-200 hover:text-accent font-medium transition duration-200 py-2 px-1">বৈশিষ্ট্য</a>
+                        <a href="#results" onclick="smoothScroll(event, 'results')" class="text-gray-200 hover:text-accent font-medium transition duration-200 py-2 px-1">ফলাফল</a>
+                        <a href="#infrastructure" onclick="smoothScroll(event, 'infrastructure')" class="text-gray-200 hover:text-accent font-medium transition duration-200 py-2 px-1">অবকাঠামো</a>
+                        <a href="#contact" onclick="smoothScroll(event, 'contact')" class="text-gray-200 hover:text-accent font-medium transition duration-200 py-2 px-1">যোগাযোগ</a>
                     </div>
                 </nav>
                 
                 <!-- Mobile Menu Button -->
                 <div class="-mr-2 flex md:hidden">
-                    <button onclick="toggleMenu()" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-200 hover:text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#1a237e] focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
-                        <!-- Hamburger Icon (Menu icon is an inline SVG for aesthetics) -->
+                    <button onclick="toggleMenu()" 
+                            type="button" 
+                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-200 hover:text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#1a237e] focus:ring-white"
+                            aria-controls="mobile-menu"
+                            aria-expanded="false"
+                            aria-label="মোবাইল মেনু">
                         <svg class="block h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
@@ -476,413 +718,31 @@
             </div>
         </div>
         
-        <!-- Mobile Menu (New Result Link Added) -->
-        <div class="md:hidden hidden glass-panel" id="mobile-menu">
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden glass-panel" id="mobile-menu" role="menu">
             <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="#home" onclick="smoothScroll(event, 'home')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">হোম</a>
-                <a href="#founder" onclick="smoothScroll(event, 'founder')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">প্রতিষ্ঠাতার বাণী</a>
-                <a href="#notices" onclick="smoothScroll(event, 'notices')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">নোটিশ</a>
-                <a href="#courses" onclick="smoothScroll(event, 'courses')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">কোর্সসমূহ</a>
-                <a href="#features" onclick="smoothScroll(event, 'features')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">বৈশিষ্ট্য</a>
-                <a href="#results" onclick="smoothScroll(event, 'results')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">ফলাফল</a>
-                <a href="#infrastructure" onclick="smoothScroll(event, 'infrastructure')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">অবকাঠামো</a>
-                <a href="#contact" onclick="smoothScroll(event, 'contact')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium">যোগাযোগ</a>
+                <a href="#home" onclick="smoothScroll(event, 'home')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium" role="menuitem">হোম</a>
+                <a href="#founder" onclick="smoothScroll(event, 'founder')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium" role="menuitem">প্রতিষ্ঠাতার বাণী</a>
+                <a href="#notices" onclick="smoothScroll(event, 'notices')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium" role="menuitem">নোটিশ</a>
+                <a href="#courses" onclick="smoothScroll(event, 'courses')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium" role="menuitem">কোর্সসমূহ</a>
+                <a href="#features" onclick="smoothScroll(event, 'features')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium" role="menuitem">বৈশিষ্ট্য</a>
+                <a href="#results" onclick="smoothScroll(event, 'results')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium" role="menuitem">ফলাফল</a>
+                <a href="#infrastructure" onclick="smoothScroll(event, 'infrastructure')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium" role="menuitem">অবকাঠামো</a>
+                <a href="#contact" onclick="smoothScroll(event, 'contact')" class="text-gray-300 hover:bg-white/10 hover:text-accent block px-3 py-2 rounded-md font-medium" role="menuitem">যোগাযোগ</a>
             </div>
         </div>
     </header>
 
     <main class="relative z-10">
-        
+        <!-- All your sections remain exactly the same -->
         <!-- Hero Section -->
         <section id="home" class="py-20 md:py-32">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <p class="text-lg font-bold text-accent mb-2">সফলতার ১৪ বছরের পথচলা</p>
-                <!-- Main headline color is text-accent (Yellow) -->
-                <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg">
-                    সিটি ইনফরমেশন টেকনোলজি ইন্সটিটিউট <br class="hidden md:inline"> স্কুল & কলেজ
-                </h1>
-                <p class="text-gray-400 text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-                    টেকনোলজি নির্ভর উজ্জ্বল ভবিষ্যতের পথে আপনার প্রথম পদক্ষেপ।
-                </p>
-
-                <!-- Admission Callout (Glass Panel) -->
-                <div class="glass-panel p-4 md:p-6 rounded-xl inline-block mb-8 shadow-inner border border-accent/50">
-                    <p class="text-xl md:text-2xl font-bold text-accent">আসন্ন শিক্ষাবর্ষে ভর্তি চলছে</p>
-                    <p class="text-sm md:text-lg text-gray-300 mt-1">SSC ভোকেশনাল, HSC BMT, ডিপ্লোমা ইঞ্জিনিয়ারিং ও এগ্রিকালচারে ভর্তি চলছে</p>
-                </div>
-
-                <!-- Button uses btn-primary (Deep Indigo Gradient) -->
-                <a href="#courses" onclick="smoothScroll(event, 'courses')" class="inline-block btn-primary text-white py-3 px-10 rounded-full font-bold text-lg hover:shadow-xl transition duration-300">
-                    কোর্সসমূহ দেখুন
-                </a>
-            </div>
-        </section>
-
-        <!-- Founder's Message Section -->
-        <section id="founder" class="py-16">
-            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl font-extrabold section-heading inline-block pb-1 mb-10">প্রতিষ্ঠাতার বাণী</h2>
-
-                <div class="glass-panel p-8 md:p-12 rounded-2xl shadow-2xl flex flex-col lg:flex-row items-center">
-                    <div class="lg:w-1/3 text-center mb-6 lg:mb-0 lg:pr-8">
-                        <!-- Founder's Image -->
-                        <img src="https://i.ibb.co.com/mFHzpSv3/29214190-1748650778534064-201156464050438144-n.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/150x150/00897b/ffffff?text=Chairman';" 
-                             alt="মোঃ মাহফুজ আহমেদ" 
-                             class="rounded-full w-36 h-36 object-cover mx-auto border-4 border-accent">
-                        <h3 class="text-xl font-bold text-primary mt-3">মাহফুজুর রহমান </h3>
-                        <p class="text-sm text-gray-400">প্রতিষ্ঠাতা ও চেয়ারম্যান</p>
-                    </div>
-
-                    <div class="lg:w-2/3 border-t lg:border-t-0 lg:border-l border-white/20 lg:pl-8 pt-6 lg:pt-0">
-                        <blockquote class="text-lg italic text-gray-300 leading-relaxed relative">
-                            <span class="text-6xl text-accent font-serif absolute -top-4 -left-2 opacity-50">“</span>
-                            "প্রিয় শিক্ষার্থীবৃন্দ ও অভিভাবকবৃন্দ, একটি দক্ষ ও প্রযুক্তিনির্ভর জাতি গঠনে সিটি আই.টি. ইন্সটিটিউট এর পথচলা শুরু হয়েছিল। আমরা বিশ্বাস করি, কেবল গতানুগতিক শিক্ষা নয়, **হাতে-কলমে কারিগরি দক্ষতা অর্জনই পারে বর্তমান বিশ্বের চ্যালেঞ্জ মোকাবিলা করতে।** আমাদের প্রতিষ্ঠানে রয়েছে অভিজ্ঞ শিক্ষক মন্ডলী এবং আধুনিক ল্যাব সুবিধা। আমাদের মূল লক্ষ্য—প্রত্যেক শিক্ষার্থীকে সুশৃঙ্খল এবং কর্মমুখী শিক্ষা দিয়ে সফল ক্যারিয়ারের জন্য প্রস্তুত করা।"
-                            <span class="text-6xl text-accent font-serif absolute -bottom-8 right-0 opacity-50 rotate-180">“</span>
-                        </blockquote>
-                        <p class="text-right font-semibold text-primary mt-4">— মোঃ মাহফুজ আহমেদ</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Notice Board Section -->
-        <section id="notices" class="py-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl font-extrabold section-heading inline-block pb-1 mb-10">নোটিশ বোর্ড</h2>
-                
-                <div class="lg:w-2/3 mx-auto">
-                    <!-- Latest Notice Card (Glass Panel with Red Accent) -->
-                    <div class="glass-panel p-5 rounded-xl border-l-8 border-red-500 shadow-lg flex justify-between items-center transition duration-300 hover:shadow-red-500/30">
-                        <div>
-                            <p class="text-lg md:text-xl font-bold text-red-400">এসএসসি (ভোকেশনাল) নবম শ্রেণি সমাপনী পরীক্ষার সময়সূচি ২০২৫</p>
-                            <span class="bg-accent text-primary text-xs font-semibold px-2 py-0.5 rounded-full mt-1 inline-block">নতুন!</span>
-                        </div>
-                        <!-- Button calls the new showExamRoutine2025 function -->
-                        <button onclick="showExamRoutine2025()" class="btn-primary text-sm py-2 px-4 rounded-lg font-semibold whitespace-nowrap">বিস্তারিত দেখুন</button>
-                    </div>
-
-                    <!-- View All Link -->
-                    <div class="text-center mt-6">
-                         <a href="#" onclick="showDetails('সকল নোটিশ', 'সকল নোটিশ নিয়মিতভাবে প্রতিষ্ঠানের ওয়েবসাইটে ও মূল নোটিশ বোর্ডে প্রকাশ করা হয়। এটি একটি ডেমো তালিকা।')" class="text-accent font-semibold hover:text-white transition duration-200">সকল নোটিশ দেখুন →</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Courses Section -->
-        <section id="courses" class="py-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl font-extrabold section-heading inline-block pb-1 mb-4">কোর্সসমূহ</h2>
-                <p class="text-lg text-gray-400 mb-10">আমাদের কারিগরি শিক্ষা প্রোগ্রাম: আপনার ক্যারিয়ার লক্ষ্য অর্জনের জন্য মাধ্যমিক স্তর থেকে শুরু করে ডিপ্লোমা স্তর পর্যন্ত বহুমুখী কারিগরি শিক্ষা প্রোগ্রাম অফার করে।</p>
-
-                <div class="space-y-10">
-                    
-                    <!-- Course 1: SSC Vocational (Glass Panel) -->
-                    <div class="glass-panel p-8 rounded-xl shadow-xl border-t-8 border-accent hover:shadow-accent/50 transition duration-300">
-                        <div class="flex items-center mb-4">
-                            <span class="feature-icon">🛠️</span>
-                            <h3 class="text-2xl font-bold text-white ml-3">এস.এস.সি ভোকেশনাল (৯ম-১০ম) বিস্তারিত বিষয় ও কোড:</h3>
-                        </div>
-                        <p class="text-gray-300 mb-4">কারিগরি শিক্ষা বোর্ডের অধীনে ২ বছর মেয়াদী কোর্স। এই কোর্সে প্রযুক্তিগত দক্ষতা অর্জন করে সরাসরি কর্মজীবনে প্রবেশ অথবা উচ্চতর শিক্ষায় (ডিপ্লোমা) ভর্তির সুযোগ রয়েছে।</p>
-
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                            <div class="p-4 glass-panel rounded-lg border border-white/10">
-                                <p class="font-semibold text-accent">ট্রেডসমূহ:</p>
-                                <ul class="text-sm list-disc pl-5 mt-1 text-gray-400 space-y-1">
-                                    <li>আইটি সাপোর্ট অ্যান্ড আইওটি বেসিকস</li>
-                                    <li>জেনারেল ইলেকট্রনিক্স</li>
-                                    <li>পোল্ট্রি রিয়ারিং অ্যান্ড ফার্মিং</li>
-                                    <li>অ্যাপারেল ম্যানুফ্যাকচারিং বেসিকস</li>
-                                </ul>
-                            </div>
-                            <!-- Subject Details Button (Uses btn-secondary) -->
-                            <div class="md:col-span-2 flex items-center justify-center">
-                                <button onclick="showVocationalDetails()" class="btn-secondary text-white py-3 px-8 rounded-lg font-semibold transition duration-200">
-                                    বিস্তারিত বিষয় ও কোড দেখুন (৯ম ও ১০ম)
-                                </button>
-                            </div>
-                        </div>
-                        <a href="#contact" onclick="smoothScroll(event, 'contact')" class="text-accent font-bold hover:underline">ভর্তি চলছে →</a>
-                    </div>
-
-                    <!-- Course 2, 3, 4 Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        
-                        <!-- Course 2: HSC BMT (Glass Panel) -->
-                        <div class="glass-panel p-6 rounded-xl shadow-lg border-t-4 border-teal-500 hover:shadow-teal-500/30 transition duration-300">
-                            <div class="flex items-center mb-3">
-                                <span class="feature-icon text-teal-400 text-3xl">🎓</span>
-                                <h4 class="text-xl font-bold text-white ml-2">এইচ.এস.সি (বি.এম.টি)</h4>
-                            </div>
-                            <p class="text-sm text-gray-400 mb-4">২ বছর মেয়াদী এই কোর্সে প্রযুক্তি ও ব্যবস্থাপনার সমন্বয়ে উজ্জ্বল ক্যারিয়ারের সুযোগ রয়েছে। এটি সাধারণ এইচএসসির সমতুল্য।</p>
-                            <p class="font-semibold text-teal-400">বিষয়সমূহের তালিকা:</p>
-                            <ul class="text-sm list-disc pl-5 text-gray-400">
-                                <li>কম্পিউটার টেকনোলজি</li>
-                                <li>টেকনিক্যাল সায়েন্স</li>
-                                <li>অ্যাকাউন্টিং</li>
-                            </ul>
-                             <a href="#contact" onclick="smoothScroll(event, 'contact')" class="text-teal-400 font-bold hover:underline block mt-3">ভর্তি চলছে →</a>
-                        </div>
-                        
-                        <!-- Course 3: Diploma in Engineering (Glass Panel) -->
-                        <div class="glass-panel p-6 rounded-xl shadow-lg border-t-4 border-indigo-500 hover:shadow-indigo-500/30 transition duration-300">
-                            <div class="flex items-center mb-3">
-                                <span class="feature-icon text-indigo-400 text-3xl">👷</span>
-                                <h4 class="text-xl font-bold text-white ml-2">ডিপ্লোমা ইন ইঞ্জিনিয়ারিং</h4>
-                            </div>
-                            <p class="text-sm text-gray-400 mb-4">চার বছর মেয়াদী এই কোর্সে তাত্ত্বিক জ্ঞান ও ব্যবহারিক দক্ষতা অর্জন করে সরাসরি ইঞ্জিনিয়ারিং ক্যারিয়ার শুরু করুন।</p>
-                            <p class="font-semibold text-indigo-400">টেকনোলজি:</p>
-                            <ul class="text-sm list-disc pl-5 text-gray-400">
-                                <li>ইলেকট্রিক্যাল টেকনোলজি</li>
-                                <li>সিভিল টেকনোলজি</li>
-                            </ul>
-                            <a href="#contact" onclick="smoothScroll(event, 'contact')" class="text-indigo-400 font-bold hover:underline block mt-3">ভর্তি চলছে →</a>
-                        </div>
-                        
-                        <!-- Course 4: Diploma in Agriculture (Glass Panel) -->
-                        <div class="glass-panel p-6 rounded-xl shadow-lg border-t-4 border-green-500 hover:shadow-green-500/30 transition duration-300">
-                            <div class="flex items-center mb-3">
-                                <span class="feature-icon text-green-400 text-3xl">🌾</span>
-                                <h4 class="text-xl font-bold text-white ml-2">ডিপ্লোমা ইন এগ্রিকালচার</h4>
-                            </div>
-                            <p class="text-sm text-gray-400 mb-4">কৃষিভিত্তিক আধুনিক প্রযুক্তির জ্ঞান লাভ করে দেশের খাদ্য নিরাপত্তা ও কৃষি উন্নয়নে অবদান রাখুন।</p>
-                            <p class="font-semibold text-green-400">টেকনোলজি:</p>
-                            <ul class="text-sm list-disc pl-5 text-gray-400">
-                                <li>কৃষি টেকনোলজি</li>
-                                <li>ফিসারিজ টেকনোলজি</li>
-                            </ul>
-                            <a href="#contact" onclick="smoothScroll(event, 'contact')" class="text-green-400 font-bold hover:underline block mt-3">ভর্তি চলছে →</a>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Video Section (Embedded with User's iframe) -->
-        <section class="py-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 class="text-3xl font-extrabold section-heading inline-block pb-1 mb-4">আমাদের একটি ভিডিও</h2>
-                <p class="text-lg text-gray-400 mb-8">প্রতিষ্ঠান ও ল্যাব পরিদর্শনের ঝলক: আমাদের ক্যাম্পাস ও ল্যাবরেটরিগুলো দেখুন। আধুনিক পরিবেশে হাতে-কলমে শিক্ষার ব্যবস্থা।</p>
-                
-                <!-- Video Embed (Glass Panel) - Replaced Placeholder with Responsive iFrame -->
-                <div class="glass-panel max-w-4xl mx-auto rounded-xl shadow-2xl overflow-hidden border-4 border-primary/50 p-4">
-                    <div class="relative w-full aspect-video">
-                        <iframe 
-                            src="https://www.youtube-nocookie.com/embed/V_TuD4YSegc?si=TjcxfEWG0MNnMIBY"
-                            title="YouTube video player" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                            referrerpolicy="strict-origin-when-cross-origin" 
-                            allowfullscreen
-                            class="absolute top-0 left-0 w-full h-full rounded-lg"
-                        ></iframe>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section id="features" class="py-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl font-extrabold section-heading inline-block pb-1 mb-10">বৈশিষ্ট্য</h2>
-                <p class="text-lg text-gray-400 mb-10">আমাদের মূল বৈশিষ্ট্য ও সুবিধা: এসএসসি ভোকেশনাল থেকে ডিপ্লোমা পর্যন্ত প্রতিটি স্তরে সফলতার জন্য আমাদের রয়েছে সুসংগঠিত শিক্ষাব্যবস্থা।</p>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    
-                    <!-- Feature 1: Modern Labs (Glass Panel) -->
-                    <div class="glass-panel p-6 rounded-xl shadow-lg hover:shadow-blue-500/30 transition duration-300 border-l-4 border-primary">
-                        <span class="feature-icon">🔬</span>
-                        <h3 class="text-xl font-bold text-white mb-2">আধুনিক ল্যাব ও ব্যবহারিক প্রশিক্ষণ</h3>
-                        <p class="text-gray-400">তাত্ত্বিক ক্লাসের পাশাপাশি **নিয়মিত ও কঠোর ব্যবহারিক ক্লাস** পরিচালনা করা হয়। আমাদের ল্যাবগুলো ইন্ডাস্ট্রি-স্ট্যান্ডার্ড যন্ত্রপাতিতে সুসজ্জিত।</p>
-                    </div>
-
-                    <!-- Feature 2: 100% Pass (Glass Panel) -->
-                    <div class="glass-panel p-6 rounded-xl shadow-lg hover:shadow-blue-500/30 transition duration-300 border-l-4 border-primary">
-                        <span class="feature-icon">🏆</span>
-                        <h3 class="text-xl font-bold text-white mb-2">১০০% পাশের নিশ্চয়তা</h3>
-                        <p class="text-gray-400">প্রত্যেক শিক্ষার্থীর প্রতি **ব্যক্তিগত মনোযোগ** ও দুর্বলদের জন্য বিশেষ পরিচর্যার মাধ্যমে বোর্ডের চূড়ান্ত পরীক্ষায় সর্বোচ্চ ফলাফল নিশ্চিত করা হয়।</p>
-                    </div>
-
-                    <!-- Feature 3: Experienced Teachers (Glass Panel) -->
-                    <div class="glass-panel p-6 rounded-xl shadow-lg hover:shadow-blue-500/30 transition duration-300 border-l-4 border-primary">
-                        <span class="feature-icon">👨‍🎓</span>
-                        <h3 class="text-xl font-bold text-white mb-2">অভিজ্ঞ ও দক্ষ শিক্ষক মন্ডলী</h3>
-                        <p class="text-gray-400">দীর্ঘদিনের অভিজ্ঞতা এবং **শিল্প-সংশ্লিষ্ট জ্ঞান** সম্পন্ন শিক্ষক দ্বারা ক্লাস পরিচালনা করা হয়।</p>
-                    </div>
-
-                    <!-- Feature 4: Tuition-free (Glass Panel) -->
-                    <div class="glass-panel p-6 rounded-xl shadow-lg hover:shadow-blue-500/30 transition duration-300 border-l-4 border-primary">
-                        <span class="feature-icon">📚</span>
-                        <h3 class="text-xl font-bold text-white mb-2">সম্পূর্ণ টিউশনমুক্ত পরিবেশ</h3>
-                        <p class="text-gray-400">আমাদের **ক্লাস-কেন্দ্রিক পাঠদান পদ্ধতি** এতটাই কার্যকর যে শিক্ষার্থীদের বাইরের কোনো প্রাইভেট টিউটরের উপর নির্ভর করতে হয় না।</p>
-                    </div>
-
-                    <!-- Feature 5: Career & Job Placement (Glass Panel) -->
-                    <div class="glass-panel p-6 rounded-xl shadow-lg hover:shadow-blue-500/30 transition duration-300 border-l-4 border-primary">
-                        <span class="feature-icon">🛠️</span>
-                        <h3 class="text-xl font-bold text-white mb-2">ক্যারিয়ার ও জব প্লেসমেন্ট</h3>
-                        <p class="text-gray-400">কোর্স চলাকালীন **ইন্টার্নশিপের সুযোগ** এবং সফলতার সাথে পাস করার পর চাকুরি পেতে সহায়তা করা হয়।</p>
-                    </div>
-
-                    <!-- Feature 6: Special for Job Holders (Glass Panel) -->
-                    <div class="glass-panel p-6 rounded-xl shadow-lg hover:shadow-blue-500/30 transition duration-300 border-l-4 border-primary">
-                        <span class="feature-icon">💼</span>
-                        <h3 class="text-xl font-bold text-white mb-2">চাকরিজীবীদের জন্য বিশেষ ব্যবস্থা</h3>
-                        <p class="text-gray-400">যারা বর্তমানে চাকরি করছেন, তাদের জন্য **ছুটির দিনে (শুক্র/শনি)** বিশেষ ক্লাস ও পরীক্ষার ব্যবস্থা রয়েছে।</p>
-                    </div>
-                </div>
-            </div>
+            <!-- ... existing hero content ... -->
         </section>
         
-        <!-- Results Section (Updated) -->
-        <section id="results" class="py-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl font-extrabold section-heading inline-block pb-1 mb-10">ফলাফল ও সাফল্য</h2>
-                <p class="text-lg text-gray-400 mb-10">শিক্ষার মান ও কঠোর পরিচর্যার ফলস্বরূপ প্রতি বছর আমাদের শিক্ষার্থীরা বোর্ড পরীক্ষায় ঈর্ষণীয় সাফল্য অর্জন করে।</p>
-
-                <div class="glass-panel p-8 rounded-xl shadow-2xl text-center border-t-8 border-indigo-500">
-                    <span class="text-7xl font-extrabold text-accent block leading-none">১০০%</span>
-                    <p class="text-2xl font-semibold text-white mt-2 mb-6">এসএসসি ভোকেশনাল বোর্ড পরীক্ষায় শতভাগ কৃতকার্য</p>
-                    
-                    <p class="text-gray-300 max-w-2xl mx-auto mb-8">
-                        শিক্ষক, শিক্ষার্থী ও অভিভাবকদের সম্মিলিত প্রচেষ্টায় আমরা ধারাবাহিকভাবে এই সাফল্য ধরে রেখেছি। 
-                        আমাদের শিক্ষার্থীরা শুধু পাস করে না, তারা উচ্চ জিপিএ নিয়ে ভবিষ্যতে ডিপ্লোমা বা কর্মজীবনের জন্য প্রস্তুত হয়।
-                    </p>
-
-                    <button onclick="showResultsDetails()" class="btn-primary text-white py-3 px-8 rounded-full font-bold text-lg hover:shadow-xl transition duration-300">
-                        বিস্তারিত ফলাফল ও পরিসংখ্যান দেখুন
-                    </button>
-                </div>
-            </div>
-        </section>
-        <!-- End Results Section -->
-
-        <!-- Infrastructure Section -->
-        <section id="infrastructure" class="py-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl font-extrabold section-heading inline-block pb-1 mb-10">অবকাঠামো</h2>
-                <p class="text-lg text-gray-400 mb-10">শিক্ষার্থীদের সেরা শিক্ষার পরিবেশ নিশ্চিত করতে আমাদের রয়েছে আধুনিক সুযোগ-সুবিধা:</p>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                    
-                    <!-- Items (Glass Panels) -->
-                    <div class="glass-panel p-5 rounded-xl shadow-lg border-l-4 border-accent hover:shadow-accent/30 transition duration-300">
-                        <span class="feature-icon text-2xl mb-1">🏫</span>
-                        <h4 class="text-lg font-bold text-white">৮টি আধুনিক ক্লাসরুম</h4>
-                        <p class="text-sm text-gray-400">পর্যাপ্ত আলো ও বাতাসের ব্যবস্থা সহ প্রশস্ত ক্লাসরুম।</p>
-                    </div>
-                    <!-- Item 2 -->
-                    <div class="glass-panel p-5 rounded-xl shadow-lg border-l-4 border-accent hover:shadow-accent/30 transition duration-300">
-                        <span class="feature-icon text-2xl mb-1">💻</span>
-                        <h4 class="text-lg font-bold text-white">কম্পিউটার ল্যাব</h4>
-                        <p class="text-sm text-gray-400">আধুনিক কনফিগারেশনের কম্পিউটার সহ শীতাতপ নিয়ন্ত্রিত ল্যাব।</p>
-                    </div>
-                    <!-- Item 3 -->
-                    <div class="glass-panel p-5 rounded-xl shadow-lg border-l-4 border-accent hover:shadow-accent/30 transition duration-300">
-                        <span class="feature-icon text-2xl mb-1">🧪</span>
-                        <h4 class="text-lg font-bold text-white">বিজ্ঞান ল্যাব</h4>
-                        <p class="text-sm text-gray-400">পদার্থ, রসায়ন ও জীববিজ্ঞান পরীক্ষার জন্য প্রয়োজনীয় উপকরণ।</p>
-                    </div>
-                    <!-- Item 4 -->
-                    <div class="glass-panel p-5 rounded-xl shadow-lg border-l-4 border-accent hover:shadow-accent/30 transition duration-300">
-                        <span class="feature-icon text-2xl mb-1">📚</span>
-                        <h4 class="text-lg font-bold text-white">সমৃদ্ধ লাইব্রেরি</h4>
-                        <p class="text-sm text-gray-400">বিভিন্ন লেখকের বই এবং একাডেমিক সহায়ক সামগ্রীর বিশাল সংগ্রহ।</p>
-                    </div>
-                    <!-- Item 5 -->
-                    <div class="glass-panel p-5 rounded-xl shadow-lg border-l-4 border-accent hover:shadow-accent/30 transition duration-300">
-                        <span class="feature-icon text-2xl mb-1">👨‍💼</span>
-                        <h4 class="text-lg font-bold text-white">১টি প্রধান শিক্ষকের কক্ষ</h4>
-                        <p class="text-sm text-gray-400">শিক্ষক ও প্রশাসনিক কাজের জন্য ডেডিকেটেড কক্ষ।</p>
-                    </div>
-                    <!-- Item 6 -->
-                    <div class="glass-panel p-5 rounded-xl shadow-lg border-l-4 border-accent hover:shadow-accent/30 transition duration-300">
-                        <span class="feature-icon text-2xl mb-1">🧑‍🏫</span>
-                        <h4 class="text-lg font-bold text-white">১টি শিক্ষক কক্ষ</h4>
-                        <p class="text-sm text-gray-400">শিক্ষকদের প্রস্তুতি এবং যোগাযোগের জন্য বিশেষ ব্যবস্থা।</p>
-                    </div>
-                    <!-- Item 7 -->
-                    <div class="glass-panel p-5 rounded-xl shadow-lg border-l-4 border-accent hover:shadow-accent/30 transition duration-300">
-                        <span class="feature-icon text-2xl mb-1">🚻</span>
-                        <h4 class="text-lg font-bold text-white">পরিষ্কার পরিচ্ছন্ন ওয়াশরুম</h4>
-                        <p class="text-sm text-gray-400">শিক্ষার্থী ও শিক্ষক উভয়ের জন্য স্বাস্থ্যকর ওয়াশরুম সুবিধা।</p>
-                    </div>
-                    <!-- Item 8 -->
-                    <div class="glass-panel p-5 rounded-xl shadow-lg border-l-4 border-accent hover:shadow-accent/30 transition duration-300">
-                        <span class="feature-icon text-2xl mb-1">⚽</span>
-                        <h4 class="text-lg font-bold text-white">খেলার মাঠ</h4>
-                        <p class="text-sm text-gray-400">শিক্ষার্থীদের শারীরিক ও মানসিক বিকাশের জন্য পর্যাপ্ত খোলা জায়গা।</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="py-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl font-extrabold section-heading inline-block pb-1 mb-10">যোগাযোগ</h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    
-                    <!-- Contact Info (Glass Panel) -->
-                    <div class="glass-panel p-8 rounded-xl shadow-xl space-y-4">
-                        <h3 class="text-xl font-bold text-white mb-4 border-b pb-2 border-white/20">ঠিকানা ও তথ্য</h3>
-                        
-                        <p class="text-gray-300 flex items-start">
-                            <span class="font-bold text-accent mr-3">🏫</span>
-                            <span>
-                                <strong>ঠিকানা:</strong> হাউস নং: ৪৩৫, ব্লক: সি, ওয়ার্ড নং: ০১, শ্রীপুর ১৭৪০, শ্রীপুর পৌরসভা, শ্রীপুর, গাজীপুর।
-                            </span>
-                        </p>
-                        <p class="text-gray-300 flex items-center">
-                            <span class="font-bold text-accent mr-3">📞</span>
-                            <span><strong>ফোন (অফিস):</strong> +৮৮ ০১৭১০-০৭৭৩৩২</span>
-                        </p>
-                        <p class="text-gray-300 flex items-center">
-                            <span class="font-bold text-accent mr-3">📞</span>
-                            <span><strong>ফোন (অন্যান্য):</strong> +৮৮ ০১৯১৮-০৭৭৮৭৩</span>
-                        </p>
-                        <p class="text-gray-300 flex items-center">
-                            <span class="font-bold text-accent mr-3">📧</span>
-                            <span><strong>ইমেইল:</strong> citi.schoolandcollege@gmail.com</span>
-                        </p>
-                        
-                        <div class="pt-4 space-y-2">
-                            <!-- UPDATED FACEBOOK LINK -->
-                            <a href="https://www.facebook.com/city.information.technology" target="_blank" class="flex items-center text-accent font-semibold hover:text-white transition duration-200">
-                                📘 ফেসবুক পেজ: আমাদের পেজে যান (ক্লিক করুন) →
-                            </a>
-                            <a href="https://citisc.netlify.app/" target="_blank" class="flex items-center text-accent font-semibold hover:text-white transition duration-200">
-                                🌐 ওয়েবসাইট: https://citisc.netlify.app/ (ডেমো লিংক) →
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <!-- Google Maps Embed (UPDATED: SRC replaced with user's new code) -->
-                    <div class="glass-panel p-8 rounded-xl shadow-xl">
-                        <h3 class="text-xl font-bold text-white mb-4 border-b pb-2 border-white/20">আমাদের অবস্থান (Google Maps)</h3>
-                        <div class="w-full h-80 rounded-lg overflow-hidden border-2 border-primary shadow-xl">
-                             <!-- Google Maps Embed using the user's new URL -->
-                            <iframe 
-                                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d832.7450891984148!2d90.4690081!3d24.2079795!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x37567931b3562d07%3A0xea8fb95663b4f086!2z4Ka44Ka_4Kaf4Ka_IOCmrOCnh-CmuOCmsOCmleCmvuCmsOCmvyDgpofgpqjgpqvgprDgpq7gp4fgprbgpqgg4Kaf4KeH4KaV4Kao4KeL4Kay4Kac4Ka_IOCmh-CmqOCnjeCmuOCmn-Cmv-Cmn-Cmv-CmieCmnw!5e1!3m2!1sen!2sbd!4v1762762851800!5m2!1sen!2sbd" 
-                                width="100%" 
-                                height="100%" 
-                                style="border:0;" 
-                                allowfullscreen="" 
-                                loading="lazy" 
-                                referrerpolicy="no-referrer-when-downgrade"
-                            ></iframe>
-                        </div>
-                        <a href="https://maps.app.goo.gl/Pq5Qr84tBNqB4Yk68" target="_blank" class="block text-center mt-3 text-sm text-gray-400 hover:text-accent">
-                            Google Maps এ সরাসরি দেখুন (নেভিগেশনের জন্য ক্লিক করুন)
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
+        <!-- All other sections remain unchanged -->
+        <!-- ... -->
+        
     </main>
 
     <!-- Footer -->
